@@ -41,8 +41,8 @@ public class MechanumProtoBot extends OpMode    {
         mobert = hardwareMap.servo.get("mobert");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
-        left = 0.0;
-        right = 1.0;
+        left = 0.32;
+        right = .60;
         runtime.reset();
         BNO055IMU imu;
     }
