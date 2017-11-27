@@ -49,6 +49,9 @@ public class MechanumProtoBot extends OpMode    {
 
     public void loop()
     {
+
+        //MAIN DRIVE
+
         double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
@@ -57,12 +60,30 @@ public class MechanumProtoBot extends OpMode    {
         final double v3 = r * Math.cos(robotAngle) - rightX;
         final double v4 = r * Math.sin(robotAngle) - rightX;
 
-        // This is a test change --
-
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
+
+        //ORIENTATION CALIBRATION
+
+        //if (gamepad1.left_stick_button) {
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
+        final double v6 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
+        final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
+        final double v8 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
+
+        motorFrontRight.setPower(v5);
+        motorFrontLeft.setPower(v6);
+        motorBackRight.setPower(v7);
+        motorBackLeft.setPower(v8);
+
+        //    runtime.reset();
+        //}
+
+        //COLLECTION SERVOS
 
         if (gamepad2.b) {
             if (left < 1.0 && right > 0.0) {
@@ -107,26 +128,12 @@ public class MechanumProtoBot extends OpMode    {
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
 
-        //This is our orientation code for having forward always be forward
 
-        //if (gamepad1.left_stick_button) {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-        final double v6 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-        final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
-        final double v8 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
-
-        motorFrontRight.setPower(v5);
-        motorFrontLeft.setPower(v6);
-        motorBackRight.setPower(v7);
-        motorBackLeft.setPower(v8);
-
-        //    runtime.reset();
-        //}
 
         // top.setPower(gamepad2.right_stick_x * .5);
         // front.setPower(gamepad2.left_stick_x * .5);
+
+        //BELT CONTROLS
 
         if (gamepad2.dpad_up) {
             top.setPower(-0.3);
