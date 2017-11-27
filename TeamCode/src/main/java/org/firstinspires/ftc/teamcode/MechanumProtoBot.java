@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class MechanumProtoBot extends OpMode    {
 
     ElapsedTime runtime = new ElapsedTime();
-//hello
+
     private Orientation angles;
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
@@ -80,7 +80,6 @@ public class MechanumProtoBot extends OpMode    {
         motorBackRight.setPower(v7);
         motorBackLeft.setPower(v8);
 
-        //    runtime.reset();
         //}
 
         //COLLECTION SERVOS
