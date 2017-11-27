@@ -107,6 +107,8 @@ public class MechanumProtoBot extends OpMode    {
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
 
+        //This is our orientation code for having forward always be forward
+
         //if (gamepad1.left_stick_button) {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
