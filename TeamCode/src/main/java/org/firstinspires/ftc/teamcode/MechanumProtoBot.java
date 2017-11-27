@@ -65,44 +65,40 @@ public class MechanumProtoBot extends OpMode    {
         motorBackLeft.setPower(v4);
 
         if (gamepad2.b) {
-            if (left < 1.0 && right > 0.0) {
-                left += .01;
-                right -= .01;
-            }
-            franny.setPosition(left);
-            mobert.setPosition(right);
+
+            franny.setPosition(.1);
+            mobert.setPosition(.9);
+
         } else if (gamepad2.x) {
-            if (left > 0.0 && right < 1.0) {
-                left -= .01;
-                right += .01;
-            }
-            franny.setPosition(left);
-            mobert.setPosition(right);
-        }
 
-        if (gamepad2.left_bumper) {
-            if (left < 1.0) {
-                left += .01;
+            franny.setPosition(1);
+            mobert.setPosition(0);
             }
-            franny.setPosition(left);
-        } else if (gamepad2.left_trigger > .7) {
-            if (left > 0.0) {
-                left -= .01;
-            }
-            franny.setPosition(left);
-        }
 
-        if (gamepad2.right_bumper) {
-            if (right > 0) {
-                right -= .01;
-            }
-            mobert.setPosition(right);
-        } else if (gamepad2.right_trigger > .7) {
-            if (right < 1) {
-                right += .01;
-            }
-            mobert.setPosition(right);
-        }
+//
+//        if (gamepad2.left_bumper) {
+//            if (left < 1.0) {
+//                left += .01;
+//            }
+//            franny.setPosition(left);
+//        } else if (gamepad2.left_trigger > .7) {
+//            if (left > 0.0) {
+//                left -= .01;
+//            }
+//            franny.setPosition(left);
+//        }
+//
+//        if (gamepad2.right_bumper) {
+//            if (right > 0) {
+//                right -= .01;
+//            }
+//            mobert.setPosition(right);
+//        } else if (gamepad2.right_trigger > .7) {
+//            if (right < 1) {
+//                right += .01;
+//            }
+//            mobert.setPosition(right);
+//        }
 
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);

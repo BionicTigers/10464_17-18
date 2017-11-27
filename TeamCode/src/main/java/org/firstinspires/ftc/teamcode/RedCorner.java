@@ -1,28 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.hardware.Sensor;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name="Red Corner", group="Red")
-public class RedCorner extends OpMode {
+public class RedCorner extends AutonomousBase {
 
     double xTime;
     int i;
@@ -45,8 +33,8 @@ public class RedCorner extends OpMode {
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backLeft");
-        motorBackLeft = hardwareMap.dcMotor.get("backRight");
+        motorBackRight = hardwareMap.dcMotor.get("backRight");
+        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
         servo = hardwareMap.servo.get("servo");
@@ -55,6 +43,7 @@ public class RedCorner extends OpMode {
         gameState2 = 0;
         started = false;
         waitTime = 0;
+        map.setRobot(10,8);
 
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -124,96 +113,96 @@ public class RedCorner extends OpMode {
             case 1:
                 startDeg = motorBackRight.getCurrentPosition();
                 if (sensorColor.red() > sensorColor.blue()) {
-                    //motorBackLeft.setTargetPosition(1);
-                    //motorBackLeft.setPower(.6);
-                    //motorFrontRight.setTargetPosition(1);
+
                     motorFrontLeft.setPower(-.6);
-                    motorBackRight.setPower(.6);
-                    //motorFrontRight.setPower(-.6);
+                    motorBackRight.setPower(-.6);
+                    motorBackLeft.setPower(.6);
+                    motorFrontRight.setPower(.6);
+
                 } else {
 
-                //if (sensorColor.red() < sensorColor.blue()) {
-                    //motorBackLeft.setTargetPosition(1);
-                    motorBackRight.setPower(-.6);
-                    //motorFrontRight.setTargetPosition(1);
-                    //motorFrontRight.setPower(.6);
-                    //motorBackLeft.setPower(-.6);
-                    motorFrontLeft.setPower(.6);
-                }
+                    if (sensorColor.red() < sensorColor.blue()) {
 
-                gameState2 = 2;
-                break;
-
-            case 2:
-                if (Math.abs(startDeg - motorBackRight.getCurrentPosition()) > 300) {
-                    motorBackLeft.setPower(-motorBackLeft.getPower());
-                    motorFrontRight.setPower(-motorFrontRight.getPower());
-                    motorBackRight.setPower(-motorBackRight.getPower());
-                    motorFrontLeft.setPower(-motorFrontLeft.getPower());
-                    gameState2 = 3;
-                    startDeg = motorBackRight.getCurrentPosition();
-                    servo.setPosition(.5);
-                }
-                break;
-
-            case 3: //stops robot, why?
-                if (Math.abs(startDeg - motorBackRight.getCurrentPosition()) > 300) {
-                    motorBackLeft.setPower(0);
-                    motorFrontRight.setPower(0);
-                    motorBackRight.setPower(0);
-                    motorFrontLeft.setPower(0);
-                    gameState2 = 4;
-                    waitTime = System.currentTimeMillis()+3000;
-                    startDeg = motorBackRight.getCurrentPosition();
-                }
-                break;
-
-            case 4:
-                RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-                if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
-                /* Found an instance of the template. In the actual game, you will probably
-                 * loop until this condition occurs, then move on to act accordingly depending
-                 * on which VuMark was visible. */
-                    telemetry.addData("VuMark", "%s visible", vuMark);
-
-                /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
-                 * it is perhaps unlikely that you will actually need to act on this pose information, but
-                 * we illustrate it nevertheless, for completeness. */
-                    OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
-                    telemetry.addData("Pose", format(pose));
-
-                /* We further illustrate how to decompose the pose into useful rotational and
-                 * translational components */
-                    if (pose != null) {
-                        VectorF trans = pose.getTranslation();
-                        Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
-                        // Extract the X, Y, and Z components of the offset of the target relative to the robot
-                        double tX = trans.get(0);
-                        double tY = trans.get(1);
-                        double tZ = trans.get(2);
-
-                        // Extract the rotational components of the target relative to the robot
-                        double rX = rot.firstAngle;
-                        double rY = rot.secondAngle;
-                        double rZ = rot.thirdAngle;
+                        motorFrontLeft.setPower(.6);
+                        motorBackRight.setPower(.6);
+                        motorBackLeft.setPower(-.6);
+                        motorFrontRight.setPower(-.6);
                     }
                 }
-                else {
-                    telemetry.addData("VuMark", "not visible");
-                }
-                if (waitTime <= System.currentTimeMillis()){
-                    gameState2 = 5;
-                    startDeg = motorBackRight.getCurrentPosition();
-                }
+                gameState2 = 5;
                 break;
 
+
+
+//                case 2:
+//                if (Math.abs(startDeg - motorBackRight.getCurrentPosition()) > 300) {
+//                    motorBackLeft.setPower(-motorBackLeft.getPower());
+//                    motorFrontRight.setPower(-motorFrontRight.getPower());
+//                    motorBackRight.setPower(-motorBackRight.getPower());
+//                    motorFrontLeft.setPower(-motorFrontLeft.getPower());
+//                    gameState2 = 3;
+//                    startDeg = motorBackRight.getCurrentPosition();
+//                    servo.setPosition(.5);
+//                }
+//                break;
+//
+//            case 3: //stops robot, why?
+//                if (Math.abs(startDeg - motorBackRight.getCurrentPosition()) > 300) {
+//                    motorBackLeft.setPower(0);
+//                    motorFrontRight.setPower(0);
+//                    motorBackRight.setPower(0);
+//                    motorFrontLeft.setPower(0);
+//                    gameState2 = 4;
+//                    waitTime = System.currentTimeMillis()+3000;
+//                    startDeg = motorBackRight.getCurrentPosition();
+//                }
+//                break;
+//
+//            case 4:
+//                RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+//                if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+//
+//                /* Found an instance of the template. In the actual game, you will probably
+//                 * loop until this condition occurs, then move on to act accordingly depending
+//                 * on which VuMark was visible. */
+//                    telemetry.addData("VuMark", "%s visible", vuMark);
+//
+//                /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
+//                 * it is perhaps unlikely that you will actually need to act on this pose information, but
+//                 * we illustrate it nevertheless, for completeness. */
+//                    OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
+//                    telemetry.addData("Pose", format(pose));
+//
+//                /* We further illustrate how to decompose the pose into useful rotational and
+//                 * translational components */
+//                    if (pose != null) {
+//                        VectorF trans = pose.getTranslation();
+//                        Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+//
+//                        // Extract the X, Y, and Z components of the offset of the target relative to the robot
+//                        double tX = trans.get(0);
+//                        double tY = trans.get(1);
+//                        double tZ = trans.get(2);
+//
+//                        // Extract the rotational components of the target relative to the robot
+//                        double rX = rot.firstAngle;
+//                        double rY = rot.secondAngle;
+//                        double rZ = rot.thirdAngle;
+//                    }
+//                }
+//                else {
+//                    telemetry.addData("VuMark", "not visible");
+//                }
+//                if (waitTime <= System.currentTimeMillis()){
+//                    gameState2 = 5;
+//                    startDeg = motorBackRight.getCurrentPosition();
+//                }
+//                break;
+
             case 5:
-                motorBackRight.setPower(-0.5);
-                motorBackLeft.setPower(-0.5);
-                motorFrontLeft.setPower(0.5);
-                motorFrontRight.setPower(0.5);
+
+                map.setGoal(10, 9);
+                moveState = MoveState.STRAFE_TOWARDS_GOAL;
 
         }
         telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
@@ -224,6 +213,7 @@ public class RedCorner extends OpMode {
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+
     }
 
 }
