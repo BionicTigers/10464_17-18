@@ -49,8 +49,9 @@ public class MechanumProtoBot extends OpMode    {
 
     public void loop()
     {
-
-        //MAIN DRIVE
+        ////////////////
+        // MAIN DRIVE //
+        ////////////////
 
         double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
@@ -65,7 +66,9 @@ public class MechanumProtoBot extends OpMode    {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
-        //ORIENTATION CALIBRATION
+        /////////////////////////////
+        // ORIENTATION CALIBRATION //
+        /////////////////////////////
 
         //if (gamepad1.left_stick_button) {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -82,7 +85,9 @@ public class MechanumProtoBot extends OpMode    {
 
         //}
 
-        //COLLECTION SERVOS
+        ///////////////////////
+        // COLLECTION SERVOS //
+        ///////////////////////
 
         if (gamepad2.b) {
             if (left < 1.0 && right > 0.0) {
@@ -127,12 +132,9 @@ public class MechanumProtoBot extends OpMode    {
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
 
-
-
-        // top.setPower(gamepad2.right_stick_x * .5);
-        // front.setPower(gamepad2.left_stick_x * .5);
-
-        //BELT CONTROLS
+        ///////////////////
+        // BELT CONTROLS //
+        ///////////////////
 
         if (gamepad2.dpad_up) {
             top.setPower(-0.3);
@@ -151,6 +153,3 @@ public class MechanumProtoBot extends OpMode    {
         }
     }
 }
-
-
-
