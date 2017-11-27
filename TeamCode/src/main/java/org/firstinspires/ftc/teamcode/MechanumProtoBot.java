@@ -107,21 +107,21 @@ public class MechanumProtoBot extends OpMode    {
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
 
-        if (gamepad1.left_stick_button && runtime.seconds() > 0.3) {
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
-                    AngleUnit.DEGREES);
-            final double v5 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
-            final double v6 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
-            final double v7 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-            final double v8 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
+        //if (gamepad1.left_stick_button) {
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-            motorFrontRight.setPower(v5);
-            motorFrontLeft.setPower(v6);
-            motorBackRight.setPower(-v7);
-            motorBackLeft.setPower(-v8);
+        final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
+        final double v6 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
+        final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
+        final double v8 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
 
-            runtime.reset();
-        }
+        motorFrontRight.setPower(v5);
+        motorFrontLeft.setPower(v6);
+        motorBackRight.setPower(v7);
+        motorBackLeft.setPower(v8);
+
+        //    runtime.reset();
+        //}
 
         // top.setPower(gamepad2.right_stick_x * .5);
         // front.setPower(gamepad2.left_stick_x * .5);
