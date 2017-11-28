@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -15,8 +14,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @TeleOp(name="Mechanum Protobot Tank", group="Protobot")
 
 public class MechanumProtoBot extends OpMode    {
-
-    ElapsedTime runtime = new ElapsedTime();
 
     private Orientation angles;
     private DcMotor motorFrontRight;
@@ -42,8 +39,7 @@ public class MechanumProtoBot extends OpMode    {
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
         left = 0.32;
-        right = 0.6;
-        runtime.reset();
+        right = .60;
         BNO055IMU imu;
     }
 
@@ -56,34 +52,34 @@ public class MechanumProtoBot extends OpMode    {
         double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
-        //final double v1 = r * Math.sin(robotAngle) + rightX;
-        //final double v2 = r * Math.cos(robotAngle) + rightX;
-        //final double v3 = r * Math.cos(robotAngle) - rightX;
-        //final double v4 = r * Math.sin(robotAngle) - rightX;
+        final double v1 = r * Math.sin(robotAngle) + rightX;
+        final double v2 = r * Math.cos(robotAngle) + rightX;
+        final double v3 = r * Math.cos(robotAngle) - rightX;
+        final double v4 = r * Math.sin(robotAngle) - rightX;
 
-        //motorFrontRight.setPower(v1);
-        //motorFrontLeft.setPower(v2);
-        //motorBackRight.setPower(v3);
-        //motorBackLeft.setPower(v4);
+        motorFrontRight.setPower(v1);
+        motorFrontLeft.setPower(v2);
+        motorBackRight.setPower(v3);
+        motorBackLeft.setPower(v4);
 
         /////////////////////////////
         // ORIENTATION CALIBRATION //
         /////////////////////////////
 
         //if (gamepad1.left_stick_button) {
-        angles = imu.getAngularOrientation();
+        //angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        telemetry.addData("heading", angles);
+        //telemetry.addData("heading", angles);
 
-        final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-        final double v6 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-        final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
-        final double v8 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
+        //final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
+        //final double v6 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
+        //final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
+        //final double v8 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
 
-        motorFrontRight.setPower(v5);
-        motorFrontLeft.setPower(v6);
-        motorBackRight.setPower(v7);
-        motorBackLeft.setPower(v8);
+        //motorFrontRight.setPower(v5);
+        //motorFrontLeft.setPower(v6);
+        //motorBackRight.setPower(v7);
+        //motorBackLeft.setPower(v8);
 
         //}
 
@@ -133,9 +129,6 @@ public class MechanumProtoBot extends OpMode    {
 
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
-        telemetry.addData("franny", franny);
-        telemetry.addData("mobert", mobert);
-
 
         ///////////////////
         // BELT CONTROLS //
