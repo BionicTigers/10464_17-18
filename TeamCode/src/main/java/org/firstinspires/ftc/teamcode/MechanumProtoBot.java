@@ -71,7 +71,9 @@ public class MechanumProtoBot extends OpMode    {
         /////////////////////////////
 
         //if (gamepad1.left_stick_button) {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation();
+
+        telemetry.addData("heading", angles);
 
         final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
         final double v6 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
