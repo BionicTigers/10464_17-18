@@ -87,15 +87,16 @@ public class MechanumProtoBot extends OpMode    {
         // COLLECTION SERVOS //
         ///////////////////////
 
-        if (gamepad2.b) {
-            if (left < 1.0 && right > 0.0) {
+        if (gamepad2.x) {
+            if (left < 0.3 && right > 0.32) {
                 left += .01;
                 right -= .01;
             }
             franny.setPosition(left);
             mobert.setPosition(right);
-        } else if (gamepad2.x) {
-            if (left > 0.0 && right < 1.0) {
+        }
+        else if (gamepad2.b) {
+            if (left > 0.00 && right < 1.0) {
                 left -= .01;
                 right += .01;
             }
@@ -104,11 +105,12 @@ public class MechanumProtoBot extends OpMode    {
         }
 
         if (gamepad2.left_bumper) {
-            if (left < 1.0) {
+            if (left < 0.3) {
                 left += .01;
             }
             franny.setPosition(left);
-        } else if (gamepad2.left_trigger > .7) {
+        }
+        else if (gamepad2.left_trigger > .7) {
             if (left > 0.0) {
                 left -= .01;
             }
@@ -116,11 +118,12 @@ public class MechanumProtoBot extends OpMode    {
         }
 
         if (gamepad2.right_bumper) {
-            if (right > 0) {
+            if (right > 0.32) {
                 right -= .01;
             }
             mobert.setPosition(right);
-        } else if (gamepad2.right_trigger > .7) {
+        }
+        else if (gamepad2.right_trigger > .7) {
             if (right < 1) {
                 right += .01;
             }
@@ -129,15 +132,18 @@ public class MechanumProtoBot extends OpMode    {
 
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
+        telemetry.addData("franny", franny);
+        telemetry.addData("mobert", mobert);
+
 
         ///////////////////
         // BELT CONTROLS //
         ///////////////////
 
         if (gamepad2.dpad_up) {
-            top.setPower(-0.3);
+            top.setPower(-0.45);
         } else if (gamepad2.dpad_down) {
-            top.setPower(0.3);
+            top.setPower(0.45);
         } else {
             top.setPower(0);
         }
