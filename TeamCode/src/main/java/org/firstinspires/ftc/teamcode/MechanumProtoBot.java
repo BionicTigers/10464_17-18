@@ -42,7 +42,7 @@ public class MechanumProtoBot extends OpMode    {
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
         left = 0.32;
-        right = .60;
+        right = 0.6;
         runtime.reset();
         BNO055IMU imu;
     }
@@ -133,6 +133,9 @@ public class MechanumProtoBot extends OpMode    {
 
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
+        telemetry.addData("franny", franny);
+        telemetry.addData("mobert", mobert);
+
 
         ///////////////////
         // BELT CONTROLS //
