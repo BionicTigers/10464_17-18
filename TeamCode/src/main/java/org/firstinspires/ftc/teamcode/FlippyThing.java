@@ -46,7 +46,7 @@ public class FlippyThing extends OpMode    {
         runtime.reset();
         BNO055IMU imu;
     }
-
+//flippy
     public void loop(){
     if (gamepad2.b) {
         if (left < 0.3 && right > 0.32) {
