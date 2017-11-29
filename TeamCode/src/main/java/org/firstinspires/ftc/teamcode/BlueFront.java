@@ -1,24 +1,44 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name="Blue Front", group="Blue")
-class BlueFront extends AutonomousBase {
+public class BlueFront extends AutonomousBase {
 
     double xTime;
     int i;
     private OpenGLMatrix lastLocation;
     private DcMotor motorFrontRight;
     private DcMotor motorBackLeft;
+    private DcMotor motorFrontLeft;
+    private DcMotor motorBackRight;
     private DcMotor top;
     private DcMotor front;
     private Servo servo;
     private VuforiaLocalizer vuforia;
+    private VuforiaTrackable relicTemplate;
+    private int startDeg;
+    private int gameState2;
+    private ColorSensor sensorColor;
+    private boolean started;
+    private long waitTime;
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
