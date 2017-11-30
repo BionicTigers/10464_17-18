@@ -28,7 +28,7 @@ public class RedCorner extends AutonomousBase {
     private int gameState;
     private ColorSensor sensorColor;
     private boolean started;
-    private long waitTime;
+    private double waitTime;
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -55,27 +55,23 @@ public class RedCorner extends AutonomousBase {
         //super.gameState();
         if (!started) {
             started = true;
-            waitTime = System.currentTimeMillis() + 1000;
+            waitTime = getRuntime();
         }
         switch (gameState) {
-            case 0: //Start
-//                if (waitTime <= System.currentTimeMillis()) {
-//                    //May be cause of nullPointer
-//                    //sTime = getRuntime();
-                //7map.setRobot(10,8);
+            case 0:
+
                 servo.setPosition(0.92);
-                telemetry.addData("Servo Position", servo.getPosition());
+                telemetry.addData("Time", getRuntime());
 
-                gameState = 1;
+                sTime = getRuntime();
+                map.setRobot(10, 8);
 
-                if(gameState == 0) {
 
-                    sensorColor.red();
-                    sensorColor.blue();
-                    telemetry.addData("State", gameState);
-                    telemetry.addData("Color value blue", sensorColor.blue());
-                    telemetry.addData("Color value red", sensorColor.red());
+                if (waitTime + 1 <= sTime) {
+                    waitTime = getRuntime() + .5;
+                    gameState = 1;
                 }
+
 
             case 1:
 
@@ -83,21 +79,24 @@ public class RedCorner extends AutonomousBase {
 
                 //startDeg = motorBackRight.getCurrentPosition();
                 //telemetry.addData("After startDeg", 3);
+                sTime = getRuntime();
                 if (sensorColor.red() > sensorColor.blue()) {
 
-                    motorFrontLeft.setPower(-.6);
+                    motorFrontLeft.setPower(.6);
                     motorBackRight.setPower(-.6);
 
                 }
-                else if (sensorColor.red() < sensorColor.blue()) {
+                else {
 
                     motorBackRight.setPower(.6);
-                    motorFrontLeft.setPower(.6);
+                    motorFrontLeft.setPower(-.6);
 
                 }
 
 
+                if (waitTime <= sTime) {
                     gameState = 2;
+                }
                     break;
 
 // commented vuforia goes here
