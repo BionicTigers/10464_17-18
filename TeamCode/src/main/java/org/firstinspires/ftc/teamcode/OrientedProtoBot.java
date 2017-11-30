@@ -4,14 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name="Oriented ProtoBot", group="Protobot")
 
-public class OrientedProtoBot extends OpMode    {
-
+public abstract class OrientedProtoBot extends OpMode {
 
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
@@ -23,10 +24,16 @@ public class OrientedProtoBot extends OpMode    {
     private Servo mobert = null;
     private double left;
     private double right;
-    private GyroSensor gyro;
+    ModernRoboticsI2cGyro gyro;
+    HardwareMap hwMap;
 
-    public void init()
-    {
+    public void HardwareOmniRobot(){
+
+        hwMap = null;
+    }
+
+    public void init(HardwareMap ahwMap, boolean rungyro) {
+        hwMap = ahwMap;
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backLeft");
@@ -35,14 +42,15 @@ public class OrientedProtoBot extends OpMode    {
         mobert = hardwareMap.servo.get("mobert");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
-        gyro = hardwareMap.gyroSensor.get("gyro");
         left = 0.32;
         right = .60;
-        gyro.calibrate();
+        if(rungyro == true) {
+            gyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyro");
+            gyro.calibrate();
+        }
     }
 
-    public void loop()
-    {
+    public void loop() {
         /////////////////////////////
         // ORIENTATION CALIBRATION //
         /////////////////////////////
@@ -65,7 +73,6 @@ public class OrientedProtoBot extends OpMode    {
         motorBackLeft.setPower(v8);
 
 
-
         ///////////////////////
         // COLLECTION SERVOS //
         ///////////////////////
@@ -77,8 +84,7 @@ public class OrientedProtoBot extends OpMode    {
             }
             franny.setPosition(left);
             mobert.setPosition(right);
-        }
-        else if (gamepad2.b) {
+        } else if (gamepad2.b) {
             if (left > 0.00 && right < 1.0) {
                 left -= .01;
                 right += .01;
@@ -92,8 +98,7 @@ public class OrientedProtoBot extends OpMode    {
                 left += .01;
             }
             franny.setPosition(left);
-        }
-        else if (gamepad2.left_trigger > .7) {
+        } else if (gamepad2.left_trigger > .7) {
             if (left > 0.0) {
                 left -= .01;
             }
@@ -105,8 +110,7 @@ public class OrientedProtoBot extends OpMode    {
                 right -= .01;
             }
             mobert.setPosition(right);
-        }
-        else if (gamepad2.right_trigger > .7) {
+        } else if (gamepad2.right_trigger > .7) {
             if (right < 1) {
                 right += .01;
             }
