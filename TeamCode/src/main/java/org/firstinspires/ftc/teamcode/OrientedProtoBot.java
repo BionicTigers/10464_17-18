@@ -1,24 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@TeleOp(name="OrientedProtobBot Tank", group="Protobot")
+@TeleOp(name="Oriented ProtoBot", group="Protobot")
 
-public class OrientedProtoBot extends OpMode    {
+public abstract class OrientedProtoBot extends OpMode {
 
-    ElapsedTime runtime = new ElapsedTime();
-    //hello
-    private Orientation angles;
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
@@ -29,10 +24,16 @@ public class OrientedProtoBot extends OpMode    {
     private Servo mobert = null;
     private double left;
     private double right;
-    private BNO055IMU imu;
+    ModernRoboticsI2cGyro gyro;
+    HardwareMap hwMap;
 
-    public void init()
-    {
+    public void HardwareOmniRobot(){
+
+        hwMap = null;
+    }
+
+    public void init(HardwareMap ahwMap, boolean rungyro) {
+        hwMap = ahwMap;
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backLeft");
@@ -41,38 +42,50 @@ public class OrientedProtoBot extends OpMode    {
         mobert = hardwareMap.servo.get("mobert");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
-        left = 0.0;
-        right = 1.0;
-        runtime.reset();
-        BNO055IMU imu;
+        left = 0.32;
+        right = .60;
+        if(rungyro == true) {
+            gyro = hwMap.get(ModernRoboticsI2cGyro.class, "gyro");
+            gyro.calibrate();
+        }
     }
 
-    public void loop()
-    {
-        double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
+    public void loop() {
+        /////////////////////////////
+        // ORIENTATION CALIBRATION //
+        /////////////////////////////
+
+
+        int a = gyro.getHeading();
+
+        telemetry.addData("heading", a);
+        double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
-        final double v1 = r * Math.cos(robotAngle) - rightX;
-        final double v2 = r * Math.sin(robotAngle) - rightX;
-        final double v3 = r * Math.cos(robotAngle) + rightX;
-        final double v4 = r * Math.sin(robotAngle) + rightX;
+        final double v5 = r * Math.sin(robotAngle) + rightX + a;
+        final double v6 = r * Math.cos(robotAngle) + rightX + a;
+        final double v7 = r * Math.cos(robotAngle) - rightX + a;
+        final double v8 = r * Math.sin(robotAngle) - rightX + a;
 
-        // This is a test change --
+        motorFrontRight.setPower(v5);
+        motorFrontLeft.setPower(v6);
+        motorBackRight.setPower(v7);
+        motorBackLeft.setPower(v8);
 
-        motorFrontRight.setPower(v1);
-        motorFrontLeft.setPower(v2);
-        motorBackRight.setPower(-v3);
-        motorBackLeft.setPower(-v4);
 
-        if (gamepad2.b) {
-            if (left < 1.0 && right > 0.0) {
+        ///////////////////////
+        // COLLECTION SERVOS //
+        ///////////////////////
+
+        if (gamepad2.x) {
+            if (left < 0.3 && right > 0.32) {
                 left += .01;
                 right -= .01;
             }
             franny.setPosition(left);
             mobert.setPosition(right);
-        } else if (gamepad2.x) {
-            if (left > 0.0 && right < 1.0) {
+        } else if (gamepad2.b) {
+            if (left > 0.00 && right < 1.0) {
                 left -= .01;
                 right += .01;
             }
@@ -81,7 +94,7 @@ public class OrientedProtoBot extends OpMode    {
         }
 
         if (gamepad2.left_bumper) {
-            if (left < 1.0) {
+            if (left < 0.3) {
                 left += .01;
             }
             franny.setPosition(left);
@@ -93,7 +106,7 @@ public class OrientedProtoBot extends OpMode    {
         }
 
         if (gamepad2.right_bumper) {
-            if (right > 0) {
+            if (right > 0.32) {
                 right -= .01;
             }
             mobert.setPosition(right);
@@ -106,30 +119,18 @@ public class OrientedProtoBot extends OpMode    {
 
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
+        telemetry.addData("franny", franny);
+        telemetry.addData("mobert", mobert);
 
-        if (gamepad1.left_stick_button && runtime.seconds() > 0.3) {
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
-                    AngleUnit.DEGREES);
-            final double v5 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
-            final double v6 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
-            final double v7 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-            final double v8 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
 
-            motorFrontRight.setPower(v5);
-            motorFrontLeft.setPower(v6);
-            motorBackRight.setPower(-v7);
-            motorBackLeft.setPower(-v8);
-
-            runtime.reset();
-        }
-
-        // top.setPower(gamepad2.right_stick_x * .5);
-        // front.setPower(gamepad2.left_stick_x * .5);
+        ///////////////////
+        // BELT CONTROLS //
+        ///////////////////
 
         if (gamepad2.dpad_up) {
-            top.setPower(-0.3);
+            top.setPower(-0.45);
         } else if (gamepad2.dpad_down) {
-            top.setPower(0.3);
+            top.setPower(0.45);
         } else {
             top.setPower(0);
         }
@@ -143,6 +144,7 @@ public class OrientedProtoBot extends OpMode    {
         }
     }
 }
-
-
-
+///////////////////////////////////////////////////////////////////////////
+//Now for the part of the code we edit when commit says theres no changes//
+///////////////////////////////////////////////////////////////////////////
+//Push Please
