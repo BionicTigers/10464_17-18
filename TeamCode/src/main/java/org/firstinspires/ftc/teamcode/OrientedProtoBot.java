@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class OrientedProtoBot extends OpMode    {
 
-    private Orientation angles;
+
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
@@ -23,7 +23,7 @@ public class OrientedProtoBot extends OpMode    {
     private Servo mobert = null;
     private double left;
     private double right;
-    private BNO055IMU imu;
+    private GyroSensor gyro;
 
     public void init()
     {
@@ -35,9 +35,10 @@ public class OrientedProtoBot extends OpMode    {
         mobert = hardwareMap.servo.get("mobert");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
+        gyro = hardwareMap.gyroSensor.get("gyro");
         left = 0.32;
         right = .60;
-        BNO055IMU imu;
+        gyro.calibrate();
     }
 
     public void loop()
@@ -47,16 +48,16 @@ public class OrientedProtoBot extends OpMode    {
         /////////////////////////////
 
 
-        angles = imu.getAngularOrientation();
+        int a = gyro.getHeading();
 
-        telemetry.addData("heading", angles);
+        telemetry.addData("heading", a);
         double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
-        final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-        final double v6 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-        final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
-        final double v8 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
+        final double v5 = r * Math.sin(robotAngle) + rightX + a;
+        final double v6 = r * Math.cos(robotAngle) + rightX + a;
+        final double v7 = r * Math.cos(robotAngle) - rightX + a;
+        final double v8 = r * Math.sin(robotAngle) - rightX + a;
 
         motorFrontRight.setPower(v5);
         motorFrontLeft.setPower(v6);
