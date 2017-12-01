@@ -82,16 +82,29 @@ public class RedFront extends AutonomousBase {
                 //startDeg = motorBackRight.getCurrentPosition();
                 //telemetry.addData("After startDeg", 3);
                 sTime = getRuntime();
+                telemetry.addData("red", sensorColor.red());
+                telemetry.addData("blue", sensorColor.blue());
+
                 if (sensorColor.red() > sensorColor.blue()) {
 
                     motorFrontLeft.setPower(-.6);
                     motorBackRight.setPower(-.6);
+
+                    if(getRuntime() <= sTime + 5) {
+                        servo.setPosition(.5);
+                        moveState = MoveState.STOP;
+                    }
 
                 }
                 else {
 
                     motorBackRight.setPower(.6);
                     motorFrontLeft.setPower(.6);
+
+                    if(getRuntime() <= sTime + 5) {
+                        servo.setPosition(.5);
+                        moveState = MoveState.STOP;
+                    }
 
                 }
 
@@ -110,6 +123,9 @@ public class RedFront extends AutonomousBase {
 
                 map.setGoal(11, 5);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
+                if(map.distanceToGoal()<=.1) {
+                    moveState = MoveState.STOP;
+                }
 
                 break;
 
