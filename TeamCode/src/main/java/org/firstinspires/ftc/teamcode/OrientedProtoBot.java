@@ -28,27 +28,52 @@ public class OrientedProtoBot extends OpMode    {
     private double left;
     private double right;
     private BNO055IMU imu;
+    private double commandState;
+    private double initState;
 
     public void init()
     {
+        initState = 0;
+        telemetry.addData("initState", initState);
+        initState = 1;
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+        initState = 2;
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+        initState = 3;
         motorBackRight = hardwareMap.dcMotor.get("backLeft");
+        initState = 4;
         motorBackLeft = hardwareMap.dcMotor.get("backRight");
+        initState = 5;
         franny = hardwareMap.servo.get("franny");
+        initState = 6;
         mobert = hardwareMap.servo.get("mobert");
+        initState = 7;
         top = hardwareMap.dcMotor.get("top");
+        initState = 8;
         front = hardwareMap.dcMotor.get("front");
+        initState = 9;
         left = 0.32;
+        initState = 10;
         right = .60;
+        initState = 11;
         BNO055IMU imu;
+        initState = 12;
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        initState = 13;
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        initState = 14;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        initState = 15;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        initState = 16;
         parameters.loggingEnabled = true;
+        initState = 17;
         parameters.loggingTag = "IMU";
+        initState = 18;
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        initState = 19;
+        commandState = 0;
+        initState = 20;
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
@@ -82,25 +107,35 @@ public class OrientedProtoBot extends OpMode    {
 
 
         if (gamepad1.a) {
-                telemetry.addData("angles", angles.firstAngle);
-                telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                double P = -((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
-                double H = (angles.firstAngle * Math.PI) / 180;
-                double Ht = (Math.PI + Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
-
-                motorBackRight.setPower(P * Math.sin(H - Ht));
-                motorFrontLeft.setPower(P * Math.sin(H - Ht));
-                motorBackLeft.setPower(P * Math.cos(H - Ht));
-                motorFrontRight.setPower(P * Math.cos(H - Ht));
+            telemetry.addData("commandState", commandState);
+            telemetry.addData("angles", angles.firstAngle);
+            commandState = 1;
+            telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+            commandState = 2;
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            commandState = 3;
+            double P = -((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
+            commandState = 4;
+            double H = (angles.firstAngle * Math.PI) / 180;
+            commandState = 5;
+            double Ht = (Math.PI + Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
+            commandState = 6;
+            motorBackRight.setPower(P * Math.sin(H - Ht));
+            commandState = 7;
+            motorFrontLeft.setPower(P * Math.sin(H - Ht));
+            commandState = 8;
+            motorBackLeft.setPower(P * Math.cos(H - Ht));
+            commandState = 9;
+            motorFrontRight.setPower(P * Math.cos(H - Ht));
+            commandState = 10;
             }
         else {
             telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+            commandState = 11;
             motorFrontRight.setPower(v1);
             motorFrontLeft.setPower(v2);
             motorBackRight.setPower(v3);
             motorBackLeft.setPower(v4);
-
         }
 
 
