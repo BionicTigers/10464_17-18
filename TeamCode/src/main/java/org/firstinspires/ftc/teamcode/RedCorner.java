@@ -33,8 +33,8 @@ public class RedCorner extends AutonomousBase {
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backLeft");
-        motorBackLeft = hardwareMap.dcMotor.get("backRight");
+        motorBackRight = hardwareMap.dcMotor.get("backRight");
+        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
         servo = hardwareMap.servo.get("servo");
@@ -55,7 +55,7 @@ public class RedCorner extends AutonomousBase {
         //super.gameState();
         if (!started) {
             started = true;
-            waitTime = getRuntime();
+            waitTime = getRuntime() + 3;
         }
         switch (gameState) {
             case 0:
@@ -72,6 +72,8 @@ public class RedCorner extends AutonomousBase {
                     gameState = 1;
                 }
 
+                break;
+
 
             case 1:
 
@@ -82,19 +84,19 @@ public class RedCorner extends AutonomousBase {
                 sTime = getRuntime();
                 if (sensorColor.red() > sensorColor.blue()) {
 
-                    motorFrontLeft.setPower(.6);
-                    motorBackRight.setPower(-.6);
+                    motorFrontLeft.setPower(-.6);
+                    motorBackRight.setPower(.6);
 
                 }
                 else {
 
-                    motorBackRight.setPower(.6);
-                    motorFrontLeft.setPower(-.6);
+                    motorBackRight.setPower(-.6);
+                    motorFrontLeft.setPower(.6);
 
                 }
 
 
-                if (waitTime <= sTime) {
+                if (waitTime + .5 <= sTime) {
                     gameState = 2;
                 }
                     break;
