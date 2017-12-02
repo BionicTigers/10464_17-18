@@ -85,7 +85,7 @@ public class MechanumProtoBot extends OpMode    {
         ///////////////////////
 
         if (gamepad2.x) {
-            if (left < 0.3 && right > 0.32) {
+            if (left < 0.35 && right > 0.32) {
                 left += .01;
                 right -= .01;
             }
@@ -102,7 +102,7 @@ public class MechanumProtoBot extends OpMode    {
         }
 
         if (gamepad2.left_bumper) {
-            if (left < 0.3) {
+            if (left < 0.35) {
                 left += .01;
             }
             franny.setPosition(left);
