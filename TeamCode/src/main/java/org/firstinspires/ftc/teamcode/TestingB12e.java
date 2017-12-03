@@ -9,9 +9,11 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
-@Autonomous(name="Red Front", group="Red")
-public class RedFront extends AutonomousBase {
 
+@Autonomous(name="testingB12e", group="Red")
+
+
+public class TestingB12e extends AutonomousBase {
     double xTime;
     int i;
     private OpenGLMatrix lastLocation;
@@ -59,93 +61,32 @@ public class RedFront extends AutonomousBase {
         //super.gameState();
         if (!started) {
             started = true;
-            waitTime = getRuntime() + 3;
         }
         switch (gameState) {
             case 0:
                 franny.setPosition(.35);
                 mobert.setPosition(.32);
-                servo.setPosition(0.92);
-                telemetry.addData("Time", getRuntime());
-
-                sTime = getRuntime();
-                map.setRobot(10, 2);
-
-
-                if (waitTime + 1 <= sTime) {
-                    waitTime = getRuntime() + .5;
-                    gameState = 1;
+                map.setGoal(10, 4);
+                //moveState =
+                motorFrontRight.setPower(0.5);
+                motorFrontLeft.setPower(0.5);
+                motorBackRight.setPower(-0.5);
+                motorBackLeft.setPower(-0.5);
+                if (map.distanceToGoal() <= .1) {
+                    moveState = MoveState.STOP;
                 }
-
+                gameState = 1;
                 break;
-//rawrhhhh 12345678
 
             case 1:
-
-                sTime = getRuntime();
-                telemetry.addData("red", sensorColor.red());
-                telemetry.addData("blue", sensorColor.blue());
-
-                if (sensorColor.red() > sensorColor.blue()) {
-
-                    motorFrontLeft.setPower(-.6);
-                    motorBackRight.setPower(-.6);
-                    if(getRuntime() <= sTime + 1)
-                        gameState = 2;
-                }
-                else {
-
-                    motorBackRight.setPower(.6);
-                    motorFrontLeft.setPower(.6);
-                    gameState = 2;
-
-                }
-
-                if(getRuntime() <= sTime + 1.5) {
-                    //servo.setPosition(.5);
-                    //moveState = MoveState.STOP;
-                    gameState = 2;
-                }
-
-                //if (waitTime + .5 <= sTime) {
-                //    gameState = 2;
-                //}
-                break;
-
-// commented vuforia goes here
-            case 2:
-                servo.setPosition(.5);
-                sTime = getRuntime() + 2;
-                moveState = MoveState.STOP;
-                if(sTime <= getRuntime())
-                    gameState = 3;
-                break;
-
-            case 3:
-
-                map.setGoal(11, 5);
-                moveState = MoveState.STRAFE_TOWARDS_GOAL;
-                if(map.distanceToGoal()<=.1) {
+                map.setGoal(10, 4);
+                moveState = MoveState.FORWARD;
+                if (map.distanceToGoal() <= .1) {
                     moveState = MoveState.STOP;
-                    motorFrontLeft.setPower(0);
-                    motorFrontRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    motorBackRight.setPower(0);
                 }
 
                 break;
 
         }
-        telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
-        //telemetry.addData("Start degrees", startDeg);
-
     }
-
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-
-
-
-    }
-
 }
