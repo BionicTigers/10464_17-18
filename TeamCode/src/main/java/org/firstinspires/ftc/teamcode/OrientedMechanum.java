@@ -134,7 +134,7 @@ public abstract class OrientedMechanum extends OpMode {
         /////////////////////////////
 
 
-        if (gamepad1.a)
+        if (gamepad1.right_trigger > .7)
         {
             composeTelemetry();
             telemetry.addData("angles", angles.firstAngle);
