@@ -6,14 +6,18 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ReadWriteFile;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorBNO055IMUCalibration;
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
+import java.io.File;
 import java.util.Locale;
 
 @TeleOp(name="OrientedMechanum", group="Protobot")
@@ -32,7 +36,7 @@ public class OrientedMechanum extends OpMode {
     private Servo mobert = null; //right servo
     private double left;
     private double right;
-    private BNO055IMU imu;
+    BNO055IMU imu;
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -45,7 +49,6 @@ public class OrientedMechanum extends OpMode {
         front = hardwareMap.dcMotor.get("front");
         left = 0.32;
         right = .60;
-        BNO055IMU imu;
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -66,6 +69,7 @@ public class OrientedMechanum extends OpMode {
         double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
+        telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
         final double v1 = r * Math.sin(robotAngle) + rightX;
         final double v2 = r * Math.cos(robotAngle) + rightX;
         final double v3 = r * Math.cos(robotAngle) - rightX;
@@ -148,9 +152,28 @@ public class OrientedMechanum extends OpMode {
         /////////////////////////////
 
         if (gamepad1.a) {
+            // Get the calibration data
+            BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
+
+            // Save the calibration data to a file. You can choose whatever file
+            // name you wish here, but you'll want to indicate the same file name
+            // when you initialize the IMU in an opmode in which it is used. If you
+            // have more than one IMU on your robot, you'll of course want to use
+            // different configuration file names for each.
+            String filename = "AdafruitIMUCalibration.json";
+            File file = AppUtil.getInstance().getSettingsFile(filename);
+            ReadWriteFile.writeFile(file, calibrationData.serialize());
+            telemetry.log().add("saved to '%s'", filename);
+
+            // Wait for the button to be released
+            while (gamepad1.a) {
+                telemetry.update();
+
+            }
+
             composeTelemetry();
             telemetry.update();
-            telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+            //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             double P = -((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
             double H = (angles.firstAngle * Math.PI) / 180;
@@ -161,7 +184,7 @@ public class OrientedMechanum extends OpMode {
             motorBackLeft.setPower(P * Math.cos(H - Ht));
             motorFrontRight.setPower(P * Math.cos(H - Ht));
         } else {
-            telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+            //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
             motorFrontRight.setPower(v1);
             motorFrontLeft.setPower(v2);
             motorBackRight.setPower(v3);
@@ -171,7 +194,7 @@ public class OrientedMechanum extends OpMode {
     }
 
 
-    private void composeTelemetry() {
+    private String composeTelemetry() {
         // At the beginning of each telemetry update, grab a bunch of data
         // from the IMU that we will then display in separate lines.
         telemetry.addAction(new Runnable() {
@@ -235,7 +258,10 @@ public class OrientedMechanum extends OpMode {
                                         + gravity.zAccel * gravity.zAccel));
                     }
                 });
+        return formatAngle(angles.angleUnit, angles.firstAngle);
     }
+
+
 
 
 

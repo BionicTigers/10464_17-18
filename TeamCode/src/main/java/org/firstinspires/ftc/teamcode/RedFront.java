@@ -21,6 +21,8 @@ public class RedFront extends AutonomousBase {
     private DcMotor motorBackRight;
     private DcMotor top;
     private DcMotor front;
+    private Servo franny = null; //left servo
+    private Servo mobert = null; //right servo
     private Servo servo;
     private VuforiaLocalizer vuforia;
     private VuforiaTrackable relicTemplate;
@@ -37,6 +39,8 @@ public class RedFront extends AutonomousBase {
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
+        franny = hardwareMap.servo.get("franny");
+        mobert = hardwareMap.servo.get("mobert");
         servo = hardwareMap.servo.get("servo");
         sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
         //startDeg = 0;
@@ -59,12 +63,13 @@ public class RedFront extends AutonomousBase {
         }
         switch (gameState) {
             case 0:
-
+                franny.setPosition(.35);
+                mobert.setPosition(.32);
                 servo.setPosition(0.92);
                 telemetry.addData("Time", getRuntime());
 
                 sTime = getRuntime();
-                map.setRobot(10, 8);
+                map.setRobot(10, 2);
 
 
                 if (waitTime + 1 <= sTime) {
@@ -85,24 +90,26 @@ public class RedFront extends AutonomousBase {
 
                     motorFrontLeft.setPower(-.6);
                     motorBackRight.setPower(-.6);
+                    gameState = 2;
                 }
 
                 if(getRuntime() <= sTime + 3) {
                     //servo.setPosition(.5);
                     //moveState = MoveState.STOP;
-                    gameState = 101;
+                    gameState = 2;
 
                 }
                 else {
 
                     motorBackRight.setPower(.6);
                     motorFrontLeft.setPower(.6);
+                    gameState = 2;
                 }
 
                 if(getRuntime() <= sTime + 3) {
                     //servo.setPosition(.5);
                     //moveState = MoveState.STOP;
-                    gameState = 101;
+                    gameState = 2;
                 }
 
                 //if (waitTime + .5 <= sTime) {
@@ -111,15 +118,15 @@ public class RedFront extends AutonomousBase {
                 break;
 
 // commented vuforia goes here
-            case 101:
+            case 2:
                 sTime = getRuntime() + 2;
                 moveState = MoveState.STOP;
                 servo.setPosition(.5);
                 if(sTime <= getRuntime())
-                    gameState = 2;
+                    gameState = 3;
                 break;
 
-            case 2:
+            case 3:
 
                 map.setGoal(11, 5);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
