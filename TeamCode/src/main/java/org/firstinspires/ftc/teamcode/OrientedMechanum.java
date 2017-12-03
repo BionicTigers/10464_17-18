@@ -326,8 +326,3 @@ public abstract class OrientedMechanum extends OpMode {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 }
-///////////////////////////////////////////////////////////////////////////
-//Now for the part of the code we edit when commit says theres no changes//
-///////////////////////////////////////////////////////////////////////////
-
-
