@@ -65,6 +65,8 @@ public class OrientedMechanum extends OpMode {
         ////////////////
         // MAIN DRIVE //
         ////////////////
+        composeTelemetry();
+        telemetry.update();
 
         double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
