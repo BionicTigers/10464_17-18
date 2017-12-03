@@ -317,6 +317,14 @@ public abstract class OrientedMechanum extends OpMode {
                     }
                 });
     }
+
+    String formatAngle(AngleUnit angleUnit, double angle) {
+        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
+    }
+
+    String formatDegrees(double degrees){
+        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
+    }
 }
 ///////////////////////////////////////////////////////////////////////////
 //Now for the part of the code we edit when commit says theres no changes//
