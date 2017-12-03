@@ -19,13 +19,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
-@TeleOp(name="Oriented Protobot Tank", group="Protobot")
+@TeleOp(name="Oriented Mechanum", group="Protobot")
 
-public abstract class OrientedProtoBot extends OpMode {
+public abstract class OrientedMechanum extends OpMode {
 
 
     /* Declare OpMode members. */
-    DcMotor Hex_Motor;
     Orientation angles;
     Acceleration gravity;
     DcMotor motorFrontRight;
