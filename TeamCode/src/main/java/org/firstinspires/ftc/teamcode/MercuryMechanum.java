@@ -23,8 +23,8 @@ public class MercuryMechanum extends OpMode    {
     private DcMotor motorBackRight;
     private DcMotor top;
     private DcMotor front;
-    private Servo franny = null;
-    private Servo mobert = null;
+    private Servo franny = null; //left servo
+    private Servo mobert = null; //right servo
     private double left;
     private double right;
     private BNO055IMU imu;
