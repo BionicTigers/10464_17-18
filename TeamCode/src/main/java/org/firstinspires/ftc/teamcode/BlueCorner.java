@@ -121,13 +121,12 @@ public class BlueCorner extends AutonomousBase {
             case 2:
                 sTime = getRuntime() + 2;
                 moveState = MoveState.STOP;
-                servo.setPosition(.5);
                 if(sTime <= getRuntime())
                     gameState = 3;
                 break;
 
             case 3:
-
+                servo.setPosition(.5);
                 map.setGoal(11, 3);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
                 if(map.distanceToGoal()<=.1) {
