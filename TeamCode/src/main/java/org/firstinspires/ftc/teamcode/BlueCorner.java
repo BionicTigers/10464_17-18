@@ -112,7 +112,7 @@ public class BlueCorner extends AutonomousBase {
                     gameState = 2;
                 }
 
-                //if (waitTime + .5 <= sTime) {
+                //if (waitTime + .5 >= sTime) {
                 //    gameState = 2;
                 //}
                 break;
