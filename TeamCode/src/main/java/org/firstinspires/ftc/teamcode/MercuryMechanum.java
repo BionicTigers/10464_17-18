@@ -42,19 +42,19 @@ public class MercuryMechanum extends OpMode    {
         left = 0.32;
         right = .60;
         BNO055IMU imu;
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        //BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        //parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        //parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        //parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        //parameters.loggingEnabled = true;
+        //parameters.loggingTag = "IMU";
+        //parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
+        //imu = hardwareMap.get(BNO055IMU.class, "imu");
+        //imu.initialize(parameters);
     }
 
     public void loop()
@@ -81,27 +81,27 @@ public class MercuryMechanum extends OpMode    {
         /////////////////////////////
 
 
-        if (gamepad1.left_stick_button) {
-            if (imu.isGyroCalibrated()) {
-                telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                double P = -((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
-                double H = (angles.firstAngle * Math.PI) / 180;
-                double Ht = (Math.PI + Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
+        //if (gamepad1.left_stick_button) {
+            //if (imu.isGyroCalibrated()) {
+                //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+                //angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                //double P = -((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
+                //double H = (angles.firstAngle * Math.PI) / 180;
+                //double Ht = (Math.PI + Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
 
-                motorBackRight.setPower(P * Math.sin(H - Ht));
-                motorFrontLeft.setPower(P * Math.sin(H - Ht));
-                motorBackLeft.setPower(P * Math.cos(H - Ht));
-                motorFrontRight.setPower(P * Math.cos(H - Ht));
-            }
-        }else {
-            telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
-            motorFrontRight.setPower(v1);
-            motorFrontLeft.setPower(v2);
-            motorBackRight.setPower(v3);
-            motorBackLeft.setPower(v4);
+                //motorBackRight.setPower(P * Math.sin(H - Ht));
+                //motorFrontLeft.setPower(P * Math.sin(H - Ht));
+                //motorBackLeft.setPower(P * Math.cos(H - Ht));
+                //motorFrontRight.setPower(P * Math.cos(H - Ht));
+        //    }
+        //}else {
+            //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+            //motorFrontRight.setPower(v1);
+            //motorFrontLeft.setPower(v2);
+            //motorBackRight.setPower(v3);
+            //motorBackLeft.setPower(v4);
 
-        }
+        //}
 
 
 
