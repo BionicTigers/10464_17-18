@@ -71,63 +71,42 @@ public class RedFront extends AutonomousBase {
                 sTime = getRuntime();
                 map.setRobot(10, 2);
 
-
                 if (waitTime + 1 <= sTime) {
                     waitTime = getRuntime() + .5;
                     gameState = 1;
                 }
-
                 break;
 
-
             case 1:
-
                 sTime = getRuntime();
                 telemetry.addData("red", sensorColor.red());
                 telemetry.addData("blue", sensorColor.blue());
 
                 if (sensorColor.red() > sensorColor.blue()) {
-
                     motorFrontLeft.setPower(-.6);
                     motorBackRight.setPower(-.6);
-                    gameState = 2;
-                }
-
-                if(getRuntime() <= sTime + 1) {
-                    //servo.setPosition(.5);
-                    //moveState = MoveState.STOP;
-                    gameState = 2;
-
+                    if(getRuntime() >= sTime + 5)
+                        gameState = 2;
                 }
                 else {
-
                     motorBackRight.setPower(.6);
                     motorFrontLeft.setPower(.6);
-                    gameState = 2;
+                    if(getRuntime() >= sTime + 5)
+                        gameState = 2;
                 }
-
-                if(getRuntime() <= sTime + 1) {
-                    //servo.setPosition(.5);
-                    //moveState = MoveState.STOP;
-                    gameState = 2;
-                }
-
-                //if (waitTime + .5 <= sTime) {
-                //    gameState = 2;
-                //}
                 break;
 
 // commented vuforia goes here
             case 2:
-                servo.setPosition(.5);
-                sTime = getRuntime() + 2;
-                moveState = MoveState.STOP;
-                if(sTime <= getRuntime())
+                sTime = getRuntime()+ 1;
+                servo.setPosition(.3);
+                if(getRuntime() >= sTime) {
+                    moveState = MoveState.STOP;
                     gameState = 3;
+                }
                 break;
 
             case 3:
-
                 map.setGoal(11, 5);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
                 if(map.distanceToGoal()<=.1) {
@@ -137,20 +116,13 @@ public class RedFront extends AutonomousBase {
                     motorBackLeft.setPower(0);
                     motorBackRight.setPower(0);
                 }
-
                 break;
-
         }
         telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
         //telemetry.addData("Start degrees", startDeg);
-
     }
-
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-
-
-
     }
 
 }
