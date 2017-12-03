@@ -77,10 +77,6 @@ public class RedFront extends AutonomousBase {
 
             case 1:
 
-                //telemetry.addData("Time left", waitTime - System.currentTimeMillis());
-
-                //startDeg = motorBackRight.getCurrentPosition();
-                //telemetry.addData("After startDeg", 3);
                 sTime = getRuntime();
                 telemetry.addData("red", sensorColor.red());
                 telemetry.addData("blue", sensorColor.blue());
@@ -89,25 +85,23 @@ public class RedFront extends AutonomousBase {
 
                     motorFrontLeft.setPower(-.6);
                     motorBackRight.setPower(-.6);
+                }
 
-                    if(getRuntime() <= sTime + 5) {
-                        servo.setPosition(.5);
-                        moveState = MoveState.STOP;
-                    }
+                if(getRuntime() <= sTime + 5) {
+                    servo.setPosition(.5);
+                    moveState = MoveState.STOP;
 
                 }
                 else {
 
                     motorBackRight.setPower(.6);
                     motorFrontLeft.setPower(.6);
-
-                    if(getRuntime() <= sTime + 5) {
-                        servo.setPosition(.5);
-                        moveState = MoveState.STOP;
-                    }
-
                 }
 
+                if(getRuntime() <= sTime + 5) {
+                    servo.setPosition(.5);
+                    moveState = MoveState.STOP;
+                }
 
                 if (waitTime + .5 <= sTime) {
                     gameState = 2;
