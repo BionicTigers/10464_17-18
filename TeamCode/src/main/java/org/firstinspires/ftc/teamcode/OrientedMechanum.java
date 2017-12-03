@@ -67,7 +67,7 @@ public class OrientedMechanum extends OpMode {
         ////////////////
         // MAIN DRIVE //
         ////////////////
-        composeTelemetry();
+        //composeTelemetry();
         telemetry.update();
 
 
