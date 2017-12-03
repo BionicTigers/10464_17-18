@@ -33,8 +33,8 @@ public abstract class OrientedMechanum extends OpMode {
     DcMotor motorBackRight;
     DcMotor top;
     DcMotor front;
-    Servo franny = null;
-    Servo mobert = null;
+    Servo franny = null; //left servo
+    Servo mobert = null; //right servo
     double left;
     double right;
     BNO055IMU imu;
