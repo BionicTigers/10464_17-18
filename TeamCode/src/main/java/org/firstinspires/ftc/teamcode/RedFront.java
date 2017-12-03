@@ -71,7 +71,7 @@ public class RedFront extends AutonomousBase {
                 sTime = getRuntime();
                 map.setRobot(10, 2);
 
-                if (waitTime + 1 <= sTime) {
+                if (waitTime  <= sTime + 1) {
                     waitTime = getRuntime() + .5;
                     gameState = 1;
                 }
