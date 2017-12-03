@@ -12,9 +12,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@TeleOp(name="Mechanum Protobot Tank", group="Protobot")
+@TeleOp(name="MercuryMechanum", group="Protobot")
 
-public class MechanumProtoBot extends OpMode    {
+public class MercuryMechanum extends OpMode    {
 
     private Orientation angles;
     private DcMotor motorFrontRight;
