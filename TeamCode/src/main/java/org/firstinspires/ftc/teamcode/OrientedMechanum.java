@@ -69,7 +69,7 @@ public class OrientedMechanum extends OpMode {
         double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
-        telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+       // telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
         final double v1 = r * Math.sin(robotAngle) + rightX;
         final double v2 = r * Math.cos(robotAngle) + rightX;
         final double v3 = r * Math.cos(robotAngle) - rightX;
@@ -152,25 +152,22 @@ public class OrientedMechanum extends OpMode {
 
         if (gamepad1.a) {
             // Get the calibration data
-            BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
+            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+            parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+            parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+            parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+            parameters.loggingEnabled = true;
+            parameters.loggingTag = "IMU";
+            parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-            // Save the calibration data to a file. You can choose whatever file
-            // name you wish here, but you'll want to indicate the same file name
-            // when you initialize the IMU in an opmode in which it is used. If you
-            // have more than one IMU on your robot, you'll of course want to use
-            // different configuration file names for each.
-            String filename = "AdafruitIMUCalibration.json";
+            imu.initialize(parameters);
+
+            BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
+            String filename = "BNO055IMUCalibration.json";
             File file = AppUtil.getInstance().getSettingsFile(filename);
             ReadWriteFile.writeFile(file, calibrationData.serialize());
             telemetry.log().add("saved to '%s'", filename);
 
-            // Wait for the button to be released
-            while (gamepad1.a) {
-                telemetry.update();
-
-            }
-
-            composeTelemetry();
             telemetry.update();
             //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
