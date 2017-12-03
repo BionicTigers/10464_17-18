@@ -93,7 +93,7 @@ public class RedFront extends AutonomousBase {
                     gameState = 2;
                 }
 
-                if(getRuntime() <= sTime + 3) {
+                if(getRuntime() <= sTime + 1) {
                     //servo.setPosition(.5);
                     //moveState = MoveState.STOP;
                     gameState = 2;
@@ -106,7 +106,7 @@ public class RedFront extends AutonomousBase {
                     gameState = 2;
                 }
 
-                if(getRuntime() <= sTime + 3) {
+                if(getRuntime() <= sTime + 1) {
                     //servo.setPosition(.5);
                     //moveState = MoveState.STOP;
                     gameState = 2;
@@ -119,6 +119,7 @@ public class RedFront extends AutonomousBase {
 
 // commented vuforia goes here
             case 2:
+                servo.setPosition(.5);
                 sTime = getRuntime() + 2;
                 moveState = MoveState.STOP;
                 if(sTime <= getRuntime())
@@ -126,7 +127,7 @@ public class RedFront extends AutonomousBase {
                 break;
 
             case 3:
-                servo.setPosition(.5);
+
                 map.setGoal(11, 5);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
                 if(map.distanceToGoal()<=.1) {
