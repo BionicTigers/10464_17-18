@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
-@Autonomous(name="Blue Front", group="Blue")
+@Autonomous(name="Blue Front", group="Red")
 public class BlueFront extends AutonomousBase {
 
     double xTime;
