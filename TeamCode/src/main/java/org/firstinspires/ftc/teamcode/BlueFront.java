@@ -131,6 +131,10 @@ public class BlueFront extends AutonomousBase {
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
                 if(map.distanceToGoal()<=.1) {
                     moveState = MoveState.STOP;
+                    motorFrontLeft.setPower(0);
+                    motorFrontRight.setPower(0);
+                    motorBackLeft.setPower(0);
+                    motorBackRight.setPower(0);
                 }
 
                 break;
