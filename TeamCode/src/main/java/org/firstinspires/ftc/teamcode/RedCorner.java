@@ -128,7 +128,7 @@ public class RedCorner extends AutonomousBase {
 
             case 3:
 
-                map.setGoal(11, 5);
+                map.setGoal(9, 11);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
                 if(map.distanceToGoal()<=.1) {
                     moveState = MoveState.STOP;

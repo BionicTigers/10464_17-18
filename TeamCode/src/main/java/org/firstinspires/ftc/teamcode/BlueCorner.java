@@ -88,8 +88,8 @@ public class BlueCorner extends AutonomousBase {
 
                 if (sensorColor.red() > sensorColor.blue()) {
 
-                    motorFrontLeft.setPower(-.6);
-                    motorBackRight.setPower(-.6);
+                    motorFrontLeft.setPower(.6);
+                    motorBackRight.setPower(.6);
                     gameState = 2;
                 }
 
@@ -101,8 +101,8 @@ public class BlueCorner extends AutonomousBase {
                 }
                 else {
 
-                    motorBackRight.setPower(.6);
-                    motorFrontLeft.setPower(.6);
+                    motorBackRight.setPower(-.6);
+                    motorFrontLeft.setPower(-.6);
                     gameState = 2;
                 }
 
@@ -128,7 +128,7 @@ public class BlueCorner extends AutonomousBase {
 
             case 3:
 
-                map.setGoal(11, 5);
+                map.setGoal(11, 3);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
                 if(map.distanceToGoal()<=.1) {
                     moveState = MoveState.STOP;
