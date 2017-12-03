@@ -42,8 +42,7 @@ public abstract class OrientedMechanum extends OpMode {
     String formatAngle;
 
 
-    public class SensorBNO055IMU extends LinearOpMode
-    {
+    public class SensorBNO055IMU extends LinearOpMode {
         //----------------------------------------------------------------------------------------------
         // State
         //----------------------------------------------------------------------------------------------
@@ -59,17 +58,18 @@ public abstract class OrientedMechanum extends OpMode {
         // Main logic
         //----------------------------------------------------------------------------------------------
 
-        @Override public void runOpMode() {
+        @Override
+        public void runOpMode() {
 
             // Set up the parameters with which we will use our IMU. Note that integration
             // algorithm here just reports accelerations to the logcat log; it doesn't actually
             // provide positional information.
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-            parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-            parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+            parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+            parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
             parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-            parameters.loggingEnabled      = true;
-            parameters.loggingTag          = "IMU";
+            parameters.loggingEnabled = true;
+            parameters.loggingTag = "IMU";
             parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
             // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
@@ -97,64 +97,6 @@ public abstract class OrientedMechanum extends OpMode {
         // Telemetry Configuration
         //----------------------------------------------------------------------------------------------
 
-        void composeTelemetry() {
-
-            // At the beginning of each telemetry update, grab a bunch of data
-            // from the IMU that we will then display in separate lines.
-            telemetry.addAction(new Runnable() { @Override public void run()
-            {
-                // Acquiring the angles is relatively expensive; we don't want
-                // to do that in each of the three items that need that info, as that's
-                // three times the necessary expense.
-                angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                gravity  = imu.getGravity();
-            }
-            });
-
-            telemetry.addLine()
-                    .addData("status", new Func<String>() {
-                        @Override public String value() {
-                            return imu.getSystemStatus().toShortString();
-                        }
-                    })
-                    .addData("calib", new Func<String>() {
-                        @Override public String value() {
-                            return imu.getCalibrationStatus().toString();
-                        }
-                    });
-
-            telemetry.addLine()
-                    .addData("heading", new Func<String>() {
-                        @Override public String value() {
-                            return formatAngle(angles.angleUnit, angles.firstAngle);
-                        }
-                    })
-                    .addData("roll", new Func<String>() {
-                        @Override public String value() {
-                            return formatAngle(angles.angleUnit, angles.secondAngle);
-                        }
-                    })
-                    .addData("pitch", new Func<String>() {
-                        @Override public String value() {
-                            return formatAngle(angles.angleUnit, angles.thirdAngle);
-                        }
-                    });
-
-            telemetry.addLine()
-                    .addData("grvty", new Func<String>() {
-                        @Override public String value() {
-                            return gravity.toString();
-                        }
-                    })
-                    .addData("mag", new Func<String>() {
-                        @Override public String value() {
-                            return String.format(Locale.getDefault(), "%.3f",
-                                    Math.sqrt(gravity.xAccel*gravity.xAccel
-                                            + gravity.yAccel*gravity.yAccel
-                                            + gravity.zAccel*gravity.zAccel));
-                        }
-                    });
-        }
 
         //----------------------------------------------------------------------------------------------
         // Formatting
@@ -164,16 +106,16 @@ public abstract class OrientedMechanum extends OpMode {
             return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
         }
 
-        String formatDegrees(double degrees){
+        String formatDegrees(double degrees) {
             return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
         }
     }
+
     public void loop()
     {
         ////////////////
         // MAIN DRIVE //
         ////////////////
-
         double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
@@ -192,7 +134,9 @@ public abstract class OrientedMechanum extends OpMode {
         /////////////////////////////
 
 
-        if (gamepad1.a) {
+        if (gamepad1.a)
+        {
+            composeTelemetry();
             telemetry.addData("angles", angles.firstAngle);
             telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -305,6 +249,73 @@ public abstract class OrientedMechanum extends OpMode {
         } else {
             front.setPower(0);
         }
+    }
+
+    void composeTelemetry() {
+
+        // At the beginning of each telemetry update, grab a bunch of data
+        // from the IMU that we will then display in separate lines.
+        telemetry.addAction(new Runnable() {
+            @Override
+            public void run() {
+                // Acquiring the angles is relatively expensive; we don't want
+                // to do that in each of the three items that need that info, as that's
+                // three times the necessary expense.
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                gravity = imu.getGravity();
+            }
+        });
+
+        telemetry.addLine()
+                .addData("status", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return imu.getSystemStatus().toShortString();
+                    }
+                })
+                .addData("calib", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return imu.getCalibrationStatus().toString();
+                    }
+                });
+
+        telemetry.addLine()
+                .addData("heading", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return formatAngle(angles.angleUnit, angles.firstAngle);
+                    }
+                })
+                .addData("roll", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return formatAngle(angles.angleUnit, angles.secondAngle);
+                    }
+                })
+                .addData("pitch", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return formatAngle(angles.angleUnit, angles.thirdAngle);
+                    }
+                });
+
+        telemetry.addLine()
+                .addData("grvty", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return gravity.toString();
+                    }
+                })
+                .addData("mag", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return String.format(Locale.getDefault(), "%.3f",
+                                Math.sqrt(gravity.xAccel * gravity.xAccel
+                                        + gravity.yAccel * gravity.yAccel
+                                        + gravity.zAccel * gravity.zAccel));
+                    }
+                });
     }
 }
 ///////////////////////////////////////////////////////////////////////////

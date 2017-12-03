@@ -84,7 +84,7 @@ public class RedCorner extends AutonomousBase {
                     motorBackRight.setPower(-.6);
                     motorFrontLeft.setPower(.6);
                 }
-                if (waitTime + .5 <= sTime) {
+                if (waitTime + 1 <= sTime) {
                     gameState = 2;
                 }
                     break;
