@@ -87,9 +87,10 @@ public class RedFront extends AutonomousBase {
                     motorBackRight.setPower(-.6);
                 }
 
-                if(getRuntime() <= sTime + 5) {
-                    servo.setPosition(.5);
-                    moveState = MoveState.STOP;
+                if(getRuntime() <= sTime + 3) {
+                    //servo.setPosition(.5);
+                    //moveState = MoveState.STOP;
+                    gameState = 101;
 
                 }
                 else {
@@ -98,20 +99,25 @@ public class RedFront extends AutonomousBase {
                     motorFrontLeft.setPower(.6);
                 }
 
-                if(getRuntime() <= sTime + 5) {
-                    servo.setPosition(.5);
-                    moveState = MoveState.STOP;
+                if(getRuntime() <= sTime + 3) {
+                    //servo.setPosition(.5);
+                    //moveState = MoveState.STOP;
+                    gameState = 101;
                 }
 
-                if (waitTime + .5 <= sTime) {
-                    gameState = 2;
-                }
+                //if (waitTime + .5 <= sTime) {
+                //    gameState = 2;
+                //}
                 break;
 
 // commented vuforia goes here
-
-
-
+            case 101:
+                sTime = getRuntime() + 2;
+                moveState = MoveState.STOP;
+                servo.setPosition(.5);
+                if(sTime <= getRuntime())
+                    gameState = 2;
+                break;
 
             case 2:
 
