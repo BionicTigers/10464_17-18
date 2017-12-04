@@ -24,19 +24,19 @@ import java.util.Locale;
 
 public class OrientedMechanum extends OpMode {
 
-    private Orientation angles;
-    private Acceleration gravity;
-    private DcMotor motorFrontRight;
-    private DcMotor motorFrontLeft;
-    private DcMotor motorBackLeft;
-    private DcMotor motorBackRight;
-    private DcMotor top;
-    private DcMotor front;
-    private Servo franny = null; //left servo
-    private Servo mobert = null; //right servo
-    private double left;
-    private double right;
-    private int calibToggle;
+    public Orientation angles;
+    public Acceleration gravity;
+    public DcMotor motorFrontRight;
+    public DcMotor motorFrontLeft;
+    public DcMotor motorBackLeft;
+    public DcMotor motorBackRight;
+    public DcMotor top;
+    public DcMotor front;
+    public Servo franny = null; //left servo
+    public Servo mobert = null; //right servo
+    public double left;
+    public double right;
+    public int calibToggle;
     BNO055IMU imu;
 
     public void init() {
@@ -70,14 +70,6 @@ public class OrientedMechanum extends OpMode {
         composeTelemetry();
         telemetry.update();
 
-        double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
-        double rightX = gamepad1.left_stick_x;
-        // telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
-        final double v1 = r * Math.sin(robotAngle) + rightX;
-        final double v2 = r * Math.cos(robotAngle) + rightX;
-        final double v3 = r * Math.cos(robotAngle) - rightX;
-        final double v4 = r * Math.sin(robotAngle) - rightX;
 
         /////////////////////////////
         // ORIENTATION CALIBRATION //
@@ -100,45 +92,42 @@ public class OrientedMechanum extends OpMode {
             File file = AppUtil.getInstance().getSettingsFile(filename);
             ReadWriteFile.writeFile(file, calibrationData.serialize());
             telemetry.log().add("saved to '%s'", filename);
+        }
 
-            telemetry.update();
             //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double P = -((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
-            double H = (angles.firstAngle * Math.PI) / 180;
-            double Ht = (Math.PI + Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
 
-            if (gamepad1.x)
+
+            if (gamepad1.x) {
                 calibToggle += 1;
+            }
 
 
             if ((calibToggle & 1) != 0) {
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                double P = -((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
+                double H = (angles.firstAngle * Math.PI) / 180;
+                double Ht = (Math.PI + Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
+
                 motorBackRight.setPower(P * Math.sin(H - Ht));
                 motorFrontLeft.setPower(P * Math.sin(H - Ht));
                 motorBackLeft.setPower(P * Math.cos(H - Ht));
                 motorFrontRight.setPower(P * Math.cos(H - Ht));
             }
-            else
+            else {
                 //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+                double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+                double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
+                double rightX = gamepad1.left_stick_x;
+                // telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+                final double v1 = r * Math.sin(robotAngle) + rightX;
+                final double v2 = r * Math.cos(robotAngle) + rightX;
+                final double v3 = r * Math.cos(robotAngle) - rightX;
+                final double v4 = r * Math.sin(robotAngle) - rightX;
+
                 motorFrontRight.setPower(v1);
                 motorFrontLeft.setPower(v2);
                 motorBackRight.setPower(v3);
                 motorBackLeft.setPower(v4);
-            }
-            if (gamepad2.x) {
-                if (left < 0.35 && right > 0.32) {
-                    left += .01;
-                    right -= .01;
-                }
-                franny.setPosition(left);
-                mobert.setPosition(right);
-            } else if (gamepad2.b) {
-                if (left > 0.00 && right < 1.0) {
-                    left -= .01;
-                    right += .01;
-                }
-                franny.setPosition(left);
-                mobert.setPosition(right);
             }
 
             if (gamepad2.left_bumper) {
@@ -190,6 +179,7 @@ public class OrientedMechanum extends OpMode {
                 front.setPower(0);
             }
         }
+
 
 
 
