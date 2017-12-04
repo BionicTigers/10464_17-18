@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorBNO055IMUCalibration;
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -67,7 +66,7 @@ public class OrientedMechanum extends OpMode {
         ////////////////
         // MAIN DRIVE //
         ////////////////
-        composeTelemetry();
+        //composeTelemetry();
         telemetry.update();
 
 
@@ -104,14 +103,15 @@ public class OrientedMechanum extends OpMode {
 
             if ((calibToggle & 1) != 0) {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                double P = -((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
                 double H = (angles.firstAngle * Math.PI) / 180;
-                double Ht = (Math.PI + Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
+                double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+                double Ht = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
+                double rightX = gamepad1.left_stick_x;
 
-                motorBackRight.setPower(P * Math.sin(H - Ht));
-                motorFrontLeft.setPower(P * Math.sin(H - Ht));
-                motorBackLeft.setPower(P * Math.cos(H - Ht));
-                motorFrontRight.setPower(P * Math.cos(H - Ht));
+                motorFrontRight.setPower(P * Math.sin(Ht - H) + rightX);
+                motorFrontLeft.setPower(P * Math.cos(Ht - H) + rightX);
+                motorBackRight.setPower(P * Math.cos(Ht - H) - rightX);
+                motorBackLeft.setPower(P * Math.sin(Ht - H) - rightX);
             }
             else {
                 //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
