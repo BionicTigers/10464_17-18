@@ -24,19 +24,19 @@ import java.util.Locale;
 
 public class OrientedMechanum extends OpMode {
 
-    public Orientation angles;
-    public Acceleration gravity;
+    private Orientation angles;
+    private Acceleration gravity;
     public DcMotor motorFrontRight;
     public DcMotor motorFrontLeft;
     public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
-    public DcMotor top;
+    private DcMotor top;
     public DcMotor front;
-    public Servo franny = null; //left servo
-    public Servo mobert = null; //right servo
+    private Servo franny = null; //left servo
+    private Servo mobert = null; //right servo
     public double left;
     public double right;
-    public int calibToggle;
+    private int calibToggle;
     BNO055IMU imu;
 
     public void init() {
@@ -62,7 +62,7 @@ public class OrientedMechanum extends OpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
     }
-//please push
+//please push me
     public void loop() {
         ////////////////
         // MAIN DRIVE //
