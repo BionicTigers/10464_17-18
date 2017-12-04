@@ -66,20 +66,17 @@ public class TestingB12e extends AutonomousBase {
             case 0:
                 franny.setPosition(.35);
                 mobert.setPosition(.32);
-                map.setGoal(10, 4);
+                map.setGoal(10, 3);
                 //moveState =
-                motorFrontRight.setPower(0.5);
-                motorFrontLeft.setPower(0.5);
-                motorBackRight.setPower(-0.5);
-                motorBackLeft.setPower(-0.5);
-                if (map.distanceToGoal() <= .1) {
-                    moveState = MoveState.STOP;
-                }
+                motorFrontRight.setPower(0.25);
+                motorFrontLeft.setPower(-0.25);
+                motorBackRight.setPower(0.25);
+                motorBackLeft.setPower(-0.25);
                 gameState = 1;
                 break;
 
             case 1:
-                map.setGoal(10, 4);
+                map.setGoal(10, 3);
                 moveState = MoveState.FORWARD;
                 if (map.distanceToGoal() <= .1) {
                     moveState = MoveState.STOP;
