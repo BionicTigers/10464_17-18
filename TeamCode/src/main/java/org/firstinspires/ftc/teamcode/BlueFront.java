@@ -267,7 +267,3 @@ public class BlueFront extends AutonomousBase {
     }
 
 }
-
-
-
-
