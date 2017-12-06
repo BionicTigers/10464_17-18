@@ -63,10 +63,7 @@ public class OrientedMechanum extends OpMode {
     }
 
     public void loop() {
-        ////////////////
-        // MAIN DRIVE //
-        ////////////////
-        //composeTelemetry();
+
         telemetry.update();
 
 
@@ -104,25 +101,25 @@ public class OrientedMechanum extends OpMode {
             if ((calibToggle & 1) != 0) {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 double H = (angles.firstAngle * Math.PI) / 180;
-                double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
-                double Ht = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
-                double rightX = gamepad1.left_stick_x;
+                double rightX = gamepad1.right_stick_x;
+                double rightY = gamepad1.right_stick_y;
+                double turn = gamepad1.left_stick_x;
 
-                motorFrontRight.setPower(P * Math.sin(Ht - H) + rightX);
-                motorFrontLeft.setPower(P * Math.cos(Ht - H) + rightX);
-                motorBackRight.setPower(P * Math.cos(Ht - H) - rightX);
-                motorBackLeft.setPower(P * Math.sin(Ht - H) - rightX);
+                motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn);
+                motorFrontLeft.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn);
+                motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn);
+                motorBackLeft.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn);
             }
             else {
-                //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
-                double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+
+                double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
                 double rightX = gamepad1.left_stick_x;
-                // telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
-                final double v1 = r * Math.sin(robotAngle) + rightX;
-                final double v2 = r * Math.cos(robotAngle) + rightX;
-                final double v3 = r * Math.cos(robotAngle) - rightX;
-                final double v4 = r * Math.sin(robotAngle) - rightX;
+
+                final double v1 = P * Math.sin(robotAngle) + rightX;
+                final double v2 = P * Math.cos(robotAngle) + rightX;
+                final double v3 = P * Math.cos(robotAngle) - rightX;
+                final double v4 = P * Math.sin(robotAngle) - rightX;
 
                 motorFrontRight.setPower(v1);
                 motorFrontLeft.setPower(v2);
