@@ -40,7 +40,7 @@ public class MercuryMechanum extends OpMode    {
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
         left = 0.32;
-        right = .60;
+        right = .62;
         BNO055IMU imu;
         //BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         //parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
