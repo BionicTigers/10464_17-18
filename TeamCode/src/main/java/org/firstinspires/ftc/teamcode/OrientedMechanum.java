@@ -102,7 +102,7 @@ public class OrientedMechanum extends OpMode {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 double H = (angles.firstAngle * Math.PI) / 180;
                 double rightX = gamepad1.right_stick_x;
-                double rightY = gamepad1.right_stick_y;
+                double rightY = gamepad1.left_stick_y;
                 double turn = gamepad1.left_stick_x;
 
                 motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn);

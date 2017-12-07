@@ -103,16 +103,15 @@ public class BlueFront extends AutonomousBase {
                     sTime = getRuntime() + 2;
                     map.setRobot(2, 2);
 
-                    if(this.getRuntime() > 2.0){
+
+                    if(this.getRuntime() > 55.0){
                         gameState = 2;
+                        telemetry.addData("sTime", sTime);
+                        telemetry.addData("getRuntime()", getRuntime());
                     }
                     else{
                         telemetry.addData("Its not working,", "damn it 1");
                     }
-
-                    telemetry.addData("sTime", sTime);
-                    telemetry.addData("getRuntime()", getRuntime());
-
 
                     break;
 
