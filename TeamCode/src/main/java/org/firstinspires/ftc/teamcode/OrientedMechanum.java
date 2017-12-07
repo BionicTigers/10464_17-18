@@ -102,14 +102,28 @@ public class OrientedMechanum extends OpMode {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 double H = (angles.firstAngle * Math.PI) / 180;
                 double rightX = gamepad1.right_stick_x;
-                double rightY = gamepad1.left_stick_y;
-                double turn = gamepad1.left_stick_x;
+//                double rightY = gamepad1.left_stick_y;
+//                double turn = gamepad1.left_stick_x;
+                double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+                double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
 
-                motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn);
-                motorFrontLeft.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn);
-                motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn);
-                motorBackLeft.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn);
+
+                final double v1 = P * Math.sin(robotAngle - H) + rightX;
+                final double v2 = P * Math.cos(robotAngle - H) + rightX;
+                final double v3 = P * Math.cos(robotAngle - H) - rightX;
+                final double v4 = P * Math.sin(robotAngle - H) - rightX;
+
+                motorFrontRight.setPower(v1);
+                motorFrontLeft.setPower(v2);
+                motorBackRight.setPower(v3);
+                motorBackLeft.setPower(v4);
             }
+
+//                motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn);
+//                motorFrontLeft.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn);
+//                motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn);
+//                motorBackLeft.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn);
+//            }
             else {
 
                 double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
