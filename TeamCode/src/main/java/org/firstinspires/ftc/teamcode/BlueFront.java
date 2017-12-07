@@ -108,8 +108,8 @@ public class BlueFront extends AutonomousBase {
                     gameState = 3;
                     blue = true;
                 } else {
-                    motorFrontLeft.setPower(.6);
-                    motorBackRight.setPower(.6);
+                    motorFrontLeft.setPower(-.6);
+                    motorBackRight.setPower(-.6);
                     gameState = 3;
                     blue = false;
                 }
@@ -307,12 +307,8 @@ public class BlueFront extends AutonomousBase {
         telemetry.addData("Target runtime", sTime);
     }
 
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-
-
-
-    }
+//    String format(OpenGLMatrix transformationMatrix) {
+//        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
 
 }
 
