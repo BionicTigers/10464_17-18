@@ -13,8 +13,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
-@Autonomous(name="Jared_tutorial", group="Blue")
-public class Jared_tutorial extends AutonomousBase {
+@Autonomous(name="blueJewel", group="Blue")
+public class blueJewel extends AutonomousBase {
 
     int i;
     public Orientation angles;
@@ -104,14 +104,14 @@ public class Jared_tutorial extends AutonomousBase {
             case 2: //detect color sensor and choose direction
                 waitTime = getRuntime(); //get current runTime
                 if (sensorColor.blue() > 1) { //blue
-                    motorBackLeft.setPower(.5);
-                    motorFrontRight.setPower(.55);
+                    motorFrontLeft.setPower(.5);
+                    motorBackRight.setPower(.55);
                     gameState = 3;
                     blue = true;
                 }
                 else{
-                    motorBackLeft.setPower(-.55);
-                    motorFrontRight.setPower(-.5);
+                    motorFrontLeft.setPower(-.55);
+                    motorBackRight.setPower(-.5);
                     gameState = 3;
                     blue = false;
                 }
