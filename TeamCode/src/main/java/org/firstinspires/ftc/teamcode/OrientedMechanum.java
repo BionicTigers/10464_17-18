@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
-import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -17,7 +16,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.io.File;
-import java.util.Locale;
 
 @TeleOp(name="OrientedMechanum", group="Protobot")
 public class OrientedMechanum extends OpMode {
@@ -119,6 +117,19 @@ public class OrientedMechanum extends OpMode {
                 motorFrontLeft.setPower(-v2);
                 motorBackRight.setPower(v3);
                 motorBackLeft.setPower(v4);
+
+                if(gamepad1.left_trigger > gamepad1.right_trigger){
+                    motorFrontRight.setPower(gamepad1.left_trigger);
+                    motorFrontLeft.setPower(gamepad1.left_trigger);
+                    motorBackRight.setPower(-gamepad1.left_trigger);
+                    motorBackLeft.setPower(-gamepad1.left_trigger);
+                }else{
+                    motorFrontRight.setPower(-gamepad1.right_trigger);
+                    motorFrontLeft.setPower(-gamepad1.right_trigger);
+                    motorBackRight.setPower(gamepad1.right_trigger);
+                    motorBackLeft.setPower(gamepad1.right_trigger);
+                }
+
             }
 
 
