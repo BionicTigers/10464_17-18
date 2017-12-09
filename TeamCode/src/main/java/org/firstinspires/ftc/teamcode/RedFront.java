@@ -135,9 +135,28 @@ public class RedFront extends AutonomousBase {
                 motorBackRight.setPower(0);
                 motorFrontRight.setPower(0);
                 servo.setPosition(0.52);
+                gameState = 5;
                 break;
 
             case 5:
+
+                map.setGoal(11, 5);
+                //moveState =
+                motorFrontRight.setPower(0.25);
+                motorFrontLeft.setPower(-0.25);
+                motorBackRight.setPower(0.25);
+                motorBackLeft.setPower(-0.25);
+                gameState = 6;
+                break;
+
+            case 6:
+                map.setGoal(11, 5);
+                moveState = MoveState.FORWARD;
+                if (map.distanceToGoal() <= .1) {
+                    moveState = MoveState.STOP;
+                }
+
+                break;
 
 //                telemetry.addData("jewelRot", jewelRot);
 //
