@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@TeleOp(name="MercuryMechanum", group="Protobot")
+@TeleOp(name="Mercury Mechanum", group="Protobot")
 
-public class MercuryMechanum extends OpMode    {
+public class MercuryMechanum extends OpMode {
 
     private Orientation angles;
     private DcMotor motorFrontRight;
@@ -130,11 +130,9 @@ public class MercuryMechanum extends OpMode    {
         telemetry.addData("franny", franny);
         telemetry.addData("mobert", mobert);
 
-
         ///////////////////
         // BELT CONTROLS //
         ///////////////////
-
 
         if (gamepad2.dpad_up) {
             top.setPower(-0.45);
