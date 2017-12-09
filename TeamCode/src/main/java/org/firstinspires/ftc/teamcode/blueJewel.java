@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
 @Autonomous(name="blueJewel", group="Blue")
 public class blueJewel extends AutonomousBase {
-
+// yo
     int i;
     public Orientation angles;
     private OpenGLMatrix lastLocation;

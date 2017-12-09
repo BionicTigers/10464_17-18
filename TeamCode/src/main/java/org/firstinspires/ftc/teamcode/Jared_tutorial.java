@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
 @Autonomous(name="Jared_tutorial", group="Blue")
 public class Jared_tutorial extends AutonomousBase {
-
+// yo
     int i;
     public Orientation angles;
     private OpenGLMatrix lastLocation;
