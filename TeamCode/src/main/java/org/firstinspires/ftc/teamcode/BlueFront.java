@@ -37,9 +37,9 @@ public class BlueFront extends AutonomousBase {
     private ColorSensor sensorColor;
     private boolean started;
     private double waitTime;
+    public double heading;
     BNO055IMU imu;
     private boolean blue;//true if blue detected
-
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -56,6 +56,7 @@ public class BlueFront extends AutonomousBase {
         gameState = 0;
         started = false;
         waitTime = 0;
+        heading = angles.firstAngle;
         map.setRobot(10, 2);
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -74,20 +75,16 @@ public class BlueFront extends AutonomousBase {
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         blue = false;
-
-
     }
 
     public void loop() {
         //super.gameState();
-
 
         telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
         telemetry.addData("State", gameState);
         telemetry.addData("Color value blue", sensorColor.blue());
         telemetry.addData("Current runtime", getRuntime());
         telemetry.addData("blue", blue);
-
 
         switch (gameState) {
             case 0: //preset variables
