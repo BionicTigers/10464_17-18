@@ -42,7 +42,7 @@ public class Map {
     public double angleToGoal(){
         double dX = goalX-robotX;
         double dY = goalY-robotY;
-        return (((Math.atan2(dY, dX) * 180) / Math.PI) + 450) % 360; //Ask Travis
+        return (((Math.atan2(dY, dX) * 180) / Math.PI) + 450) % 360;
     }
 
     public double distanceToGoal(){

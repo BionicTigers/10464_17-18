@@ -96,6 +96,7 @@ public class BlueFront extends AutonomousBase {
                 servo.setPosition(.9);
                 franny.setPosition(.35);
                 mobert.setPosition(.32);
+                map.setRobot(2,2);
                 break;
 
             case 1://delay to allow servo to drop
@@ -137,6 +138,34 @@ public class BlueFront extends AutonomousBase {
                 break;
 
             case 5:
+
+                map.setGoal(11, 5);
+                //moveState =
+                motorFrontRight.setPower(0.25);
+                motorFrontLeft.setPower(-0.25);
+                motorBackRight.setPower(0.25);
+                motorBackLeft.setPower(-0.25);
+                gameState = 6;
+                break;
+
+            case 6:
+                map.setGoal(1, 5);
+                moveState = MoveState.FORWARD;
+                if (map.distanceToGoal() <= .1) {
+                    moveState = MoveState.STOP;
+                    gameState = 7;
+                }
+
+                break;
+
+            case 7:
+                while (waitTime < 25) {
+                    top.setPower(.5);
+                    front.setPower(.5);
+
+                    break;
+                }
+                break;
 //                    telemetry.addData("jewelRot", jewelRot);
 //
 //                //return to original rotation to read pictograph

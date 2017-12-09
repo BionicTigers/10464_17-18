@@ -96,6 +96,7 @@ public class RedFront extends AutonomousBase {
                 servo.setPosition(.9);
                 franny.setPosition(.35);
                 mobert.setPosition(.32);
+
                 break;
 
             case 1://delay to allow servo to drop

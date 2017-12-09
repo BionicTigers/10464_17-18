@@ -74,57 +74,12 @@ public class MercuryMechanum extends OpMode    {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
-        /////////////////////////////
-        // ORIENTATION CALIBRATION //
-        /////////////////////////////
-
-
-        //if (gamepad1.left_stick_button) {
-            //if (imu.isGyroCalibrated()) {
-                //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
-                //angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                //double P = -((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
-                //double H = (angles.firstAngle * Math.PI) / 180;
-                //double Ht = (Math.PI + Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
-
-                //motorBackRight.setPower(P * Math.sin(H - Ht));
-                //motorFrontLeft.setPower(P * Math.sin(H - Ht));
-                //motorBackLeft.setPower(P * Math.cos(H - Ht));
-                //motorFrontRight.setPower(P * Math.cos(H - Ht));
-        //    }
-        //}else {
-            //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
-            //motorFrontRight.setPower(v1);
-            //motorFrontLeft.setPower(v2);
-            //motorBackRight.setPower(v3);
-            //motorBackLeft.setPower(v4);
-
-        //}
-
-
-
-        //if (gamepad1.left_stick_button) {
-        //angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        //telemetry.addData("heading", angles);
-
-        //final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-        //final double v6 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-        //final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
-        //final double v8 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
-
-        //motorFrontRight.setPower(v5);
-        //motorFrontLeft.setPower(v6);
-        //motorBackRight.setPower(v7);
-        //motorBackLeft.setPower(v8);
-
-        //}
-
         ///////////////////////
         // COLLECTION SERVOS //
         ///////////////////////
+
         if (gamepad1.dpad_up){
-            servo.setPosition(.92);
+            servo.setPosition(.52);
         }
 
         if (gamepad2.x) {
