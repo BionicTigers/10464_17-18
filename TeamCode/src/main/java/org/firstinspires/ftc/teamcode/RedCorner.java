@@ -106,18 +106,18 @@ public class RedCorner extends AutonomousBase {
             case 2: //detect color sensor and choose direction
                 waitTime = getRuntime(); //get current runTime
                 while (waitTime < 7) {
-                    if (sensorColor.blue() < 3) { //red
-                        motorFrontLeft.setPower(.5);
-                        motorBackRight.setPower(.55);
+                    if (sensorColor.blue() < 1) { //red
+                        motorFrontLeft.setPower(-.5);
+                        motorBackRight.setPower(-.55);
                         gameState = 3;
                         blue = true;
 
                         break;
                     } else {
-                        motorFrontLeft.setPower(-.55);
-                        motorBackRight.setPower(-.5);
+                        motorFrontLeft.setPower(.55);
+                        motorBackRight.setPower(.5);
                         gameState = 3;
-                        blue = false;
+                        blue = true;
 
                         break;
                     }

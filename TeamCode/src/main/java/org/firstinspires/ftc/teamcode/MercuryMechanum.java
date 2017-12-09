@@ -1,15 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name="MercuryMechanum", group="Protobot")
@@ -23,6 +19,7 @@ public class MercuryMechanum extends OpMode    {
     private DcMotor motorBackRight;
     private DcMotor top;
     private DcMotor front;
+    public Servo servo;
     private Servo franny = null; //left servo
     private Servo mobert = null; //right servo
     private double left;
@@ -39,6 +36,7 @@ public class MercuryMechanum extends OpMode    {
         mobert = hardwareMap.servo.get("mobert");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
+        servo = hardwareMap.servo.get("servo");
         left = 0.32;
         right = .62;
         BNO055IMU imu;
@@ -125,6 +123,9 @@ public class MercuryMechanum extends OpMode    {
         ///////////////////////
         // COLLECTION SERVOS //
         ///////////////////////
+        if (gamepad1.dpad_up){
+            servo.setPosition(.92);
+        }
 
         if (gamepad2.x) {
             if (left < 0.35 && right > 0.32) {
@@ -178,6 +179,7 @@ public class MercuryMechanum extends OpMode    {
         ///////////////////
         // BELT CONTROLS //
         ///////////////////
+
 
         if (gamepad2.dpad_up) {
             top.setPower(-0.45);

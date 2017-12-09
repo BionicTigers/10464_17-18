@@ -105,23 +105,20 @@ public class RedFront extends AutonomousBase {
                 break;
             case 2: //detect color sensor and choose direction
                 waitTime = getRuntime(); //get current runTime
-                while (waitTime < 7) {
-                    if (sensorColor.blue() < 3) { //red
-                        motorFrontLeft.setPower(.5);
-                        motorBackRight.setPower(.55);
-                        gameState = 3;
-                        blue = true;
 
-                        break;
-                    } else {
-                        motorFrontLeft.setPower(-.55);
-                        motorBackRight.setPower(-.5);
+                    if (sensorColor.blue() < 1) { //red
+                        motorFrontLeft.setPower(-.5);
+                        motorBackRight.setPower(-.55);
                         gameState = 3;
                         blue = false;
 
-                        break;
+                    } else {
+                        motorFrontLeft.setPower(.55);
+                        motorBackRight.setPower(.5);
+                        gameState = 3;
+                        blue = true;
                     }
-                }
+
                 break;
 
             case 3://delay to allow turn
@@ -154,9 +151,20 @@ public class RedFront extends AutonomousBase {
                 moveState = MoveState.FORWARD;
                 if (map.distanceToGoal() <= .1) {
                     moveState = MoveState.STOP;
+                    gameState = 7;
                 }
 
                 break;
+
+            case 7:
+                while (waitTime < 25) {
+                    top.setPower(.5);
+                    front.setPower(.5);
+
+                    break;
+                }
+                break;
+
 
 //                telemetry.addData("jewelRot", jewelRot);
 //
