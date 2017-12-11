@@ -30,8 +30,8 @@ public class MercuryMechanum extends OpMode {
     {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backLeft");
-        motorBackLeft = hardwareMap.dcMotor.get("backRight");
+        motorBackRight = hardwareMap.dcMotor.get("backRight");
+        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         franny = hardwareMap.servo.get("franny");
         mobert = hardwareMap.servo.get("mobert");
         top = hardwareMap.dcMotor.get("top");

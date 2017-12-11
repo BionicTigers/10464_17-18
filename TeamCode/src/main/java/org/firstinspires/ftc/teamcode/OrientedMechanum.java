@@ -98,9 +98,7 @@ public class OrientedMechanum extends OpMode {
             if ((calibToggle & 1) != 0) {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 double H = (angles.firstAngle * Math.PI) / 180;
-                double rightX = gamepad1.right_stick_x;
-                double rightY = gamepad1.left_stick_y;
-                double turn = gamepad1.left_stick_x;
+                double rightX = gamepad1.left_stick_x;
                 double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
 
@@ -113,22 +111,11 @@ public class OrientedMechanum extends OpMode {
                 final double v7 = P * Math.cos(robotAngle) - rightX - angles.firstAngle;
                 final double v8 = P * Math.sin(robotAngle) - rightX - angles.firstAngle;
 
-                motorFrontRight.setPower(-v5);
-                motorFrontLeft.setPower(-v6);
-                motorBackRight.setPower(v7);
-                motorBackLeft.setPower(v8);
+                motorFrontRight.setPower(v5);
+                motorFrontLeft.setPower(v6);
+                motorBackRight.setPower(-v7);
+                motorBackLeft.setPower(-v8);
 
-                if(gamepad1.left_trigger > gamepad1.right_trigger){
-                    motorFrontRight.setPower(gamepad1.left_trigger);
-                    motorFrontLeft.setPower(gamepad1.left_trigger);
-                    motorBackRight.setPower(-gamepad1.left_trigger);
-                    motorBackLeft.setPower(-gamepad1.left_trigger);
-                }else{
-                    motorFrontRight.setPower(-gamepad1.right_trigger);
-                    motorFrontLeft.setPower(-gamepad1.right_trigger);
-                    motorBackRight.setPower(gamepad1.right_trigger);
-                    motorBackLeft.setPower(gamepad1.right_trigger);
-                }
             }
 
 

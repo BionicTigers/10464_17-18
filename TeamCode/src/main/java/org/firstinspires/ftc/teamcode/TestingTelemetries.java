@@ -10,10 +10,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
 
-@Autonomous(name="testingB12e", group="Red")
+@Autonomous(name="Testing Telemetries", group="Red")
 
 
-public class TestingB12e extends AutonomousBase {
+public class TestingTelemetries extends AutonomousBase {
     double xTime;
     int i;
     private OpenGLMatrix lastLocation;
