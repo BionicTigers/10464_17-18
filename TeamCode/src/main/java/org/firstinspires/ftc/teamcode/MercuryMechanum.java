@@ -98,7 +98,7 @@ public class MercuryMechanum extends OpMode {
             franny.setPosition(left);
             mobert.setPosition(right);
         }
-
+        
         if (gamepad2.left_bumper) {
             if (left < 0.35) {
                 left += .01;
