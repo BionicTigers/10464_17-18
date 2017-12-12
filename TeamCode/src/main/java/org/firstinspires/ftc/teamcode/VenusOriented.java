@@ -37,13 +37,35 @@ public class VenusOriented extends OpMode {
     BNO055IMU imu;
 
 
-    public void init() {
-        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backRight");
-        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+public void init() {
+    motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+    motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+    motorBackRight = hardwareMap.dcMotor.get("backRight");
+    motorBackLeft = hardwareMap.dcMotor.get("backLeft");
 
-        calibToggle = 0;
+    calibToggle = 0;
+    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+    parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+    parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+    parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+    parameters.loggingEnabled = true;
+    parameters.loggingTag = "IMU";
+    parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+    imu = hardwareMap.get(BNO055IMU.class, "imu");
+    imu.initialize(parameters); }
+
+
+public void loop() {
+
+    telemetry.update();
+
+    /////////////////////////////
+    // ORIENTATION CALIBRATION //
+    /////////////////////////////
+
+    if (gamepad1.a) {
+        // Get the calibration data
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -52,73 +74,51 @@ public class VenusOriented extends OpMode {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters); }
+        imu.initialize(parameters);
+
+        BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
+        String filename = "BNO055IMUCalibration.json";
+        File file = AppUtil.getInstance().getSettingsFile(filename);
+        ReadWriteFile.writeFile(file, calibrationData.serialize());
+        telemetry.log().add("saved to '%s'", filename); }
+
+    if (gamepad1.x) {
+        calibToggle += 1; }
+
+    if ((calibToggle & 1) != 0) {
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double H = (angles.firstAngle * Math.PI) / 180;
+        double rightX = gamepad1.left_stick_x;
+        double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
+
+        final double v5 = P * Math.sin(robotAngle) + rightX - angles.firstAngle;
+        final double v6 = P * Math.cos(robotAngle) + rightX - angles.firstAngle;
+        final double v7 = P * Math.cos(robotAngle) - rightX - angles.firstAngle;
+        final double v8 = P * Math.sin(robotAngle) - rightX - angles.firstAngle;
+
+        motorFrontRight.setPower(v5);
+        motorFrontLeft.setPower(v6);
+        motorBackRight.setPower(v7);
+        motorBackLeft.setPower(v8); }
+
+    else {
+        double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
+        double rightX = gamepad1.left_stick_x;
+
+        final double v1 = P * Math.sin(robotAngle) + rightX;
+        final double v2 = P * Math.cos(robotAngle) + rightX;
+        final double v3 = P * Math.cos(robotAngle) - rightX;
+        final double v4 = P * Math.sin(robotAngle) - rightX;
+
+        motorFrontRight.setPower(v1);
+        motorFrontLeft.setPower(v2);
+        motorBackRight.setPower(v3);
+        motorBackLeft.setPower(v4); }
 
 
-    public void loop() {
-
-        telemetry.update();
-
-        /////////////////////////////
-        // ORIENTATION CALIBRATION //
-        /////////////////////////////
-
-        if (gamepad1.a) {
-            // Get the calibration data
-            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-            parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-            parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-            parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-            parameters.loggingEnabled = true;
-            parameters.loggingTag = "IMU";
-            parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-            imu.initialize(parameters);
-
-            BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
-            String filename = "BNO055IMUCalibration.json";
-            File file = AppUtil.getInstance().getSettingsFile(filename);
-            ReadWriteFile.writeFile(file, calibrationData.serialize());
-            telemetry.log().add("saved to '%s'", filename); }
-
-        if (gamepad1.x) {
-            calibToggle += 1; }
-
-        if ((calibToggle & 1) != 0) {
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double H = (angles.firstAngle * Math.PI) / 180;
-            double rightX = gamepad1.left_stick_x;
-            double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
-
-            final double v5 = P * Math.sin(robotAngle) + rightX - angles.firstAngle;
-            final double v6 = P * Math.cos(robotAngle) + rightX - angles.firstAngle;
-            final double v7 = P * Math.cos(robotAngle) - rightX - angles.firstAngle;
-            final double v8 = P * Math.sin(robotAngle) - rightX - angles.firstAngle;
-
-            motorFrontRight.setPower(v5);
-            motorFrontLeft.setPower(v6);
-            motorBackRight.setPower(v7);
-            motorBackLeft.setPower(v8); }
-
-        else {
-            double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
-            double rightX = gamepad1.left_stick_x;
-
-            final double v1 = P * Math.sin(robotAngle) + rightX;
-            final double v2 = P * Math.cos(robotAngle) + rightX;
-            final double v3 = P * Math.cos(robotAngle) - rightX;
-            final double v4 = P * Math.sin(robotAngle) - rightX;
-
-            motorFrontRight.setPower(v1);
-            motorFrontLeft.setPower(v2);
-            motorBackRight.setPower(v3);
-            motorBackLeft.setPower(v4); }
-
-
-    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,5 +197,4 @@ public class VenusOriented extends OpMode {
 
     String formatDegrees(double degrees) {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    }
-}
+    } }
