@@ -32,12 +32,7 @@ public class VenusOriented extends OpMode {
     public DcMotor motorFrontLeft;
     public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
-    public DcMotor top;
-    public DcMotor front;
-    public Servo franny = null; //left servo
-    public Servo mobert = null; //right servo
-    public double left;
-    public double right;
+
     public int calibToggle;
     BNO055IMU imu;
 
@@ -47,12 +42,7 @@ public class VenusOriented extends OpMode {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        franny = hardwareMap.servo.get("franny");
-        mobert = hardwareMap.servo.get("mobert");
-        top = hardwareMap.dcMotor.get("top");
-        front = hardwareMap.dcMotor.get("front");
-        left = 0.32;
-        right = .60;
+
         calibToggle = 0;
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;

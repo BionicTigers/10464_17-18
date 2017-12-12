@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -19,7 +20,10 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import java.io.File;
 import java.util.Locale;
 
+
 @TeleOp(name="Mercury Oriented", group="Protobot")
+
+
 public class MercuryOriented extends OpMode {
 
     public Orientation angles;
@@ -36,6 +40,7 @@ public class MercuryOriented extends OpMode {
     public double right;
     public int calibToggle;
     BNO055IMU imu;
+
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -58,13 +63,12 @@ public class MercuryOriented extends OpMode {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-    }
+        imu.initialize(parameters); }
+
 
     public void loop() {
 
         telemetry.update();
-
 
         /////////////////////////////
         // ORIENTATION CALIBRATION //
@@ -86,14 +90,10 @@ public class MercuryOriented extends OpMode {
             String filename = "BNO055IMUCalibration.json";
             File file = AppUtil.getInstance().getSettingsFile(filename);
             ReadWriteFile.writeFile(file, calibrationData.serialize());
-            telemetry.log().add("saved to '%s'", filename);
-        }
-
-            //telemetry.addData("imu gyro calib status", imu.getCalibrationStatus());
+            telemetry.log().add("saved to '%s'", filename); }
 
             if (gamepad1.x) {
-                calibToggle += 1;
-            }
+                calibToggle += 1; }
 
             if ((calibToggle & 1) != 0) {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -102,10 +102,6 @@ public class MercuryOriented extends OpMode {
                 double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
 
-//                motorBackLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn));
-//                motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
-//                motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
-//                motorFrontLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn));
                 final double v5 = P * Math.sin(robotAngle) + rightX - angles.firstAngle;
                 final double v6 = P * Math.cos(robotAngle) + rightX - angles.firstAngle;
                 final double v7 = P * Math.cos(robotAngle) - rightX - angles.firstAngle;
@@ -114,13 +110,9 @@ public class MercuryOriented extends OpMode {
                 motorFrontRight.setPower(v5);
                 motorFrontLeft.setPower(v6);
                 motorBackRight.setPower(v7);
-                motorBackLeft.setPower(v8);
-
-            }
-
+                motorBackLeft.setPower(v8); }
 
             else {
-
                 double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
                 double rightX = gamepad1.left_stick_x;
@@ -133,37 +125,32 @@ public class MercuryOriented extends OpMode {
                 motorFrontRight.setPower(v1);
                 motorFrontLeft.setPower(v2);
                 motorBackRight.setPower(v3);
-                motorBackLeft.setPower(v4);
-            }
+                motorBackLeft.setPower(v4); }
 
             if (gamepad2.left_bumper) {
                 if (left < 0.35) {
-                    left += .01;
-                }
-                franny.setPosition(left);
-            } else if (gamepad2.left_trigger > .7) {
+                    left += .01; }
+                franny.setPosition(left); }
+
+            else if (gamepad2.left_trigger > .7) {
                 if (left > 0.0) {
-                    left -= .01;
-                }
-                franny.setPosition(left);
-            }
+                    left -= .01; }
+                franny.setPosition(left); }
 
             if (gamepad2.right_bumper) {
                 if (right > 0.32) {
-                    right -= .01;
-                }
-                mobert.setPosition(right);
-            } else if (gamepad2.right_trigger > .7) {
+                    right -= .01; }
+                mobert.setPosition(right); }
+
+            else if (gamepad2.right_trigger > .7) {
                 if (right < 1) {
-                    right += .01;
-                }
-                mobert.setPosition(right);
-            }
+                    right += .01; }
+                mobert.setPosition(right); }
 
             telemetry.addData("Left", left);
             telemetry.addData("Right", right);
-            telemetry.addData("franny", franny);
-            telemetry.addData("mobert", mobert);
+            telemetry.addData("Franny", franny);
+            telemetry.addData("Mobert", mobert);
 
             ///////////////////
             // BELT CONTROLS //

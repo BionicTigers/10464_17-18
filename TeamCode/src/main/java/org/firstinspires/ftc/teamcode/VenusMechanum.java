@@ -20,13 +20,7 @@ public class VenusMechanum extends OpMode {
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
     private DcMotor motorBackRight;
-    private DcMotor top;
-    private DcMotor front;
-    public Servo servo;
-    private Servo franny = null; //left servo
-    private Servo mobert = null; //right servo
-    private double left;
-    private double right;
+
     private BNO055IMU imu;
 
 
@@ -35,13 +29,7 @@ public class VenusMechanum extends OpMode {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        franny = hardwareMap.servo.get("franny");
-        mobert = hardwareMap.servo.get("mobert");
-        top = hardwareMap.dcMotor.get("top");
-        front = hardwareMap.dcMotor.get("front");
-        servo = hardwareMap.servo.get("servo");
-        left = 0.32;
-        right = .62;
+
         BNO055IMU imu; }
 
 
