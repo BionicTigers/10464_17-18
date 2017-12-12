@@ -8,6 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -37,7 +40,7 @@ public class BlueFront extends AutonomousBase {
     private ColorSensor sensorColor;
     private boolean started;
     private double waitTime;
-    public double heading;
+    private double heading;
     BNO055IMU imu;
     private boolean blue;//true if blue detected
 
@@ -55,8 +58,8 @@ public class BlueFront extends AutonomousBase {
         startDeg = 0;
         gameState = 0;
         started = false;
-        waitTime = 0;
         heading = angles.firstAngle;
+        waitTime = 0;
         map.setRobot(10, 2);
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -69,6 +72,9 @@ public class BlueFront extends AutonomousBase {
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        heading = angles.firstAngle;
 
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -86,7 +92,9 @@ public class BlueFront extends AutonomousBase {
         telemetry.addData("Current runtime", getRuntime());
         telemetry.addData("blue", blue);
 
+
         switch (gameState) {
+
             case 0: //preset variables
                 waitTime = getRuntime(); //get current runTime
                 gameState = 1;
@@ -101,6 +109,7 @@ public class BlueFront extends AutonomousBase {
                     gameState = 2;
                 }
                 break;
+
             case 2: //detect color sensor and choose direction
                 waitTime = getRuntime(); //get current runTime
                 while (waitTime < 7) {
@@ -109,23 +118,23 @@ public class BlueFront extends AutonomousBase {
                         motorBackRight.setPower(.55);
                         gameState = 3;
                         blue = true;
-
                         break;
                     } else {
                         motorFrontLeft.setPower(-.55);
                         motorBackRight.setPower(-.5);
                         gameState = 3;
                         blue = false;
-
                         break;
                     }
                 }
                 break;
+
             case 3://delay to allow turn
                 if (getRuntime() > waitTime + 2.0) {
                     gameState = 4;
                 }
                 break;
+
             case 4: //stop all motors, pull servo up
                 motorFrontLeft.setPower(0);
                 motorBackLeft.setPower(0);
@@ -134,35 +143,32 @@ public class BlueFront extends AutonomousBase {
                 servo.setPosition(0.52);
                 break;
 
-            case 5:
-
-                map.setGoal(11, 5);
-                //moveState =
-                motorFrontRight.setPower(0.25);
-                motorFrontLeft.setPower(-0.25);
-                motorBackRight.setPower(0.25);
-                motorBackLeft.setPower(-0.25);
-                gameState = 6;
-                break;
-
-            case 6:
-                map.setGoal(1, 5);
-                moveState = MoveState.FORWARD;
-                if (map.distanceToGoal() <= .1) {
-                    moveState = MoveState.STOP;
-                    gameState = 7;
-                }
-
-                break;
-
-            case 7:
-                while (waitTime < 25) {
-                    top.setPower(.5);
-                    front.setPower(.5);
-
-                    break;
-                }
-                break;
+//            case 5:
+//                map.setGoal(1, 5);
+//                //moveState =
+//                motorFrontRight.setPower(0.25);
+//                motorFrontLeft.setPower(-0.25);
+//                motorBackRight.setPower(0.25);
+//                motorBackLeft.setPower(-0.25);
+//                gameState = 6;
+//                break;
+//
+//            case 6:
+//                map.setGoal(1, 5);
+//                moveState = MoveState.FORWARD;
+//                if (map.distanceToGoal() <= .1) {
+//                    moveState = MoveState.STOP;
+//                    gameState = 7;
+//                }
+//                break;
+//
+//            case 7:
+//                while (waitTime < 25) {
+//                    top.setPower(.5);
+//                    front.setPower(.5);
+//                    break;
+//                }
+//                break;
 //                    telemetry.addData("jewelRot", jewelRot);
 //
 //                //return to original rotation to read pictograph

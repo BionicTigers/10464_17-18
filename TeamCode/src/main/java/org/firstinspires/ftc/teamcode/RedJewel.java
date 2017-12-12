@@ -130,5 +130,5 @@ public class RedJewel extends AutonomousBase {
                 break;
 
         }
-}
+    }
 }

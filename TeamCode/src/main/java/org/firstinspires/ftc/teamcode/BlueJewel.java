@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
-@Autonomous(name="BlueJewel", group="Blue")
+@Autonomous(name="Blue Jewel", group="Blue")
 public class BlueJewel extends AutonomousBase {
 
     int i;
@@ -104,7 +104,7 @@ public class BlueJewel extends AutonomousBase {
                 break;
             case 2: //detect color sensor and choose direction
                 waitTime = getRuntime(); //get current runTime
-                if (sensorColor.blue() > 2) { //blue
+                if (sensorColor.blue() > 3) { //blue
                     motorFrontLeft.setPower(.5);
                     motorBackRight.setPower(.55);
                     gameState = 3;
