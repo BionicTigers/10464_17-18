@@ -38,7 +38,6 @@ public class RedJewel extends AutonomousBase {
     private boolean started;
     private double waitTime;
     BNO055IMU imu;
-    public double heading;
     private boolean blue;//true if blue detected
 
 
