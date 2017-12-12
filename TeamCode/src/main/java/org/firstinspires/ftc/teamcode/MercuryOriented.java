@@ -19,8 +19,8 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import java.io.File;
 import java.util.Locale;
 
-@TeleOp(name="Oriented Mechanum", group="Protobot")
-public class OrientedMechanum extends OpMode {
+@TeleOp(name="Mercury Oriented", group="Protobot")
+public class MercuryOriented extends OpMode {
 
     public Orientation angles;
     public Acceleration gravity;
@@ -113,8 +113,8 @@ public class OrientedMechanum extends OpMode {
 
                 motorFrontRight.setPower(v5);
                 motorFrontLeft.setPower(v6);
-                motorBackRight.setPower(-v7);
-                motorBackLeft.setPower(-v8);
+                motorBackRight.setPower(v7);
+                motorBackLeft.setPower(v8);
 
             }
 

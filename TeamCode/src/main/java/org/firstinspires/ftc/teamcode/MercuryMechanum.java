@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name="Mercury Mechanum", group="Protobot")
-
 public class MercuryMechanum extends OpMode {
 
     private Orientation angles;
@@ -26,8 +25,7 @@ public class MercuryMechanum extends OpMode {
     private double right;
     private BNO055IMU imu;
 
-    public void init()
-    {
+    public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
