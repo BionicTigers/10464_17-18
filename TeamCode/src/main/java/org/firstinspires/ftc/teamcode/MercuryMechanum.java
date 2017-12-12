@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -8,7 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+
 @TeleOp(name="Mercury Mechanum", group="Protobot")
+
 
 public class MercuryMechanum extends OpMode {
 
@@ -26,8 +29,8 @@ public class MercuryMechanum extends OpMode {
     private double right;
     private BNO055IMU imu;
 
-    public void init()
-    {
+
+    public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
@@ -39,24 +42,11 @@ public class MercuryMechanum extends OpMode {
         servo = hardwareMap.servo.get("servo");
         left = 0.32;
         right = .62;
-        BNO055IMU imu;
-        //BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        //parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        //parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        //parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        //parameters.loggingEnabled = true;
-        //parameters.loggingTag = "IMU";
-        //parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        BNO055IMU imu; }
 
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        //imu = hardwareMap.get(BNO055IMU.class, "imu");
-        //imu.initialize(parameters);
-    }
 
-    public void loop()
-    {
+    public void loop() {
+
         ////////////////
         // MAIN DRIVE //
         ////////////////
@@ -78,76 +68,65 @@ public class MercuryMechanum extends OpMode {
         // COLLECTION SERVOS //
         ///////////////////////
 
-        if (gamepad1.dpad_up){
-            servo.setPosition(.52);
-        }
+        if (gamepad1.dpad_up) {
+            servo.setPosition(.52); }
 
         if (gamepad2.x) {
             if (left < 0.35 && right > 0.32) {
                 left += .01;
-                right -= .01;
-            }
+                right -= .01; }
             franny.setPosition(left);
-            mobert.setPosition(right);
-        }
+            mobert.setPosition(right); }
+
         else if (gamepad2.b) {
             if (left > 0.00 && right < 1.0) {
                 left -= .01;
-                right += .01;
-            }
+                right += .01; }
             franny.setPosition(left);
-            mobert.setPosition(right);
-        }
-        
+            mobert.setPosition(right); }
+
         if (gamepad2.left_bumper) {
             if (left < 0.35) {
-                left += .01;
-            }
-            franny.setPosition(left);
-        }
+                left += .01; }
+            franny.setPosition(left); }
+
         else if (gamepad2.left_trigger > .7) {
             if (left > 0.0) {
-                left -= .01;
-            }
-            franny.setPosition(left);
-        }
+                left -= .01; }
+            franny.setPosition(left); }
 
         if (gamepad2.right_bumper) {
             if (right > 0.32) {
-                right -= .01;
-            }
-            mobert.setPosition(right);
-        }
+                right -= .01; }
+            mobert.setPosition(right); }
+
         else if (gamepad2.right_trigger > .7) {
             if (right < 1) {
-                right += .01;
-            }
-            mobert.setPosition(right);
-        }
+                right += .01; }
+            mobert.setPosition(right); }
 
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
-        telemetry.addData("franny", franny);
-        telemetry.addData("mobert", mobert);
+        telemetry.addData("Franny", franny);
+        telemetry.addData("Mobert", mobert);
 
         ///////////////////
         // BELT CONTROLS //
         ///////////////////
 
         if (gamepad2.dpad_up) {
-            top.setPower(-0.45);
-        } else if (gamepad2.dpad_down) {
-            top.setPower(0.45);
-        } else {
-            top.setPower(0);
-        }
+            top.setPower(-0.45); }
+        else if (gamepad2.dpad_down) {
+            top.setPower(0.45); }
+        else {
+            top.setPower(0); }
 
         if (gamepad2.y) {
-            front.setPower(-0.7);
-        } else if (gamepad2.a) {
-            front.setPower(0.7);
-        } else {
-            front.setPower(0);
-        }
-    }
+            front.setPower(-0.7); }
+        else if (gamepad2.a) {
+            front.setPower(0.7); }
+        else {
+            front.setPower(0); } }
+
+
 }
