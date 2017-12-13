@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
@@ -14,8 +17,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
 
 public class TestingTelemetries extends AutonomousBase {
-    double xTime;
+
     int i;
+    public Orientation angles;
     private OpenGLMatrix lastLocation;
     private DcMotor motorFrontRight;
     private DcMotor motorBackLeft;
@@ -28,11 +32,16 @@ public class TestingTelemetries extends AutonomousBase {
     private Servo servo;
     private VuforiaLocalizer vuforia;
     private VuforiaTrackable relicTemplate;
-    //private int startDeg;
+    private RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+    private int startDeg;
     private int gameState;
+    private boolean jewelRot;
     private ColorSensor sensorColor;
     private boolean started;
     private double waitTime;
+    private double heading;
+    BNO055IMU imu;
+    private boolean blue;//true if blue detected
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -49,41 +58,17 @@ public class TestingTelemetries extends AutonomousBase {
         gameState = 0;
         started = false;
         waitTime = 0;
-        map.setRobot(10, 2);
 
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); }
 
-    }
     public void loop() {
-        //super.gameState();
-        if (!started) {
-            started = true;
-        }
-        switch (gameState) {
-            case 0:
-                franny.setPosition(.35);
-                mobert.setPosition(.32);
-                map.setGoal(10, 3);
-                //moveState =
-                motorFrontRight.setPower(0.25);
-                motorFrontLeft.setPower(-0.25);
-                motorBackRight.setPower(0.25);
-                motorBackLeft.setPower(-0.25);
-                gameState = 1;
-                break;
-
-            case 1:
-                map.setGoal(10, 3);
-                moveState = MoveState.FORWARD;
-                if (map.distanceToGoal() <= .1) {
-                    moveState = MoveState.STOP;
-                }
-
-                break;
-
-        }
-    }
-}
+        telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
+        telemetry.addData("Blueness", sensorColor.blue());
+        telemetry.addData("Blue?", blue);
+        if (sensorColor.blue() > 3) {
+            blue = true; }
+        else {
+            blue = false; } } }

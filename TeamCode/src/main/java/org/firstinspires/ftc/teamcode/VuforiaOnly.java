@@ -35,8 +35,6 @@ public class VuforiaOnly extends AutonomousBase {
     private DcMotor motorBackRight;
     private DcMotor top;
     private DcMotor front;
-    private Servo franny = null; //left servo
-    private Servo mobert = null; //right servo
     private Servo servo;
     private VuforiaLocalizer vuforia;
     private VuforiaTrackable relicTemplate;
@@ -58,8 +56,6 @@ public class VuforiaOnly extends AutonomousBase {
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
-        franny = hardwareMap.servo.get("franny");
-        mobert = hardwareMap.servo.get("mobert");
         servo = hardwareMap.servo.get("servo");
         sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
         startDeg = 0;
@@ -89,8 +85,11 @@ public class VuforiaOnly extends AutonomousBase {
     }
 
     public void loop() {
+        telemetry.addData("State", gameState);
+        telemetry.addData("Current runtime", getRuntime());
+        telemetry.addData("relicTemple", relicTemplate);
+        telemetry.addData("VuMark", "%s visible", vuMark);
         switch (gameState) {
-
             case 0:
 
                 int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
