@@ -115,7 +115,7 @@ public class MercuryOriented extends OpMode {
                 motorFrontLeft.setPower(v6);
                 motorBackRight.setPower(v7);
                 motorBackLeft.setPower(v8);
-
+//
             }
 
 
