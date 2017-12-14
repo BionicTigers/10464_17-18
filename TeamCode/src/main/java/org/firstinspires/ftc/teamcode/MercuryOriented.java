@@ -97,43 +97,42 @@ public class MercuryOriented extends OpMode {
 
             if ((calibToggle & 1) != 0) {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                double H = (angles.firstAngle * Math.PI) / 180;
-                double rightX = gamepad1.right_stick_x;
-                double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+                double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
+                double rightX = gamepad1.left_stick_x;
 
 //              motorBackLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn));
 //              motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
 //              motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
 //              motorFrontLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn));
-                final double v5 = P * Math.sin((robotAngle - angles.firstAngle) + Math.PI/4) + rightX ;
-                final double v6 = P * Math.cos((robotAngle - angles.firstAngle) + Math.PI/4) - rightX ;
-                final double v7 = P * Math.cos((robotAngle - angles.firstAngle) + Math.PI/4) + rightX ;
-                final double v8 = P * Math.sin((robotAngle - angles.firstAngle) + Math.PI/4) - rightX ;
+                final double v5 = P * Math.sin((robotAngle - angles.firstAngle)) + rightX;
+                final double v6 = P * Math.cos((robotAngle - angles.firstAngle)) - rightX;
+                final double v7 = P * Math.cos((robotAngle - angles.firstAngle)) + rightX;
+                final double v8 = P * Math.sin((robotAngle - angles.firstAngle)) - rightX;
 
-                motorFrontRight.setPower(v5);
-                motorFrontLeft.setPower(v6);
-                motorBackRight.setPower(v7);
-                motorBackLeft.setPower(v8);
+                motorFrontLeft.setPower(v5);//1
+                motorFrontRight.setPower(v6);//2
+                motorBackLeft.setPower(v7);//3
+                motorBackRight.setPower(v8);//4
 //
             }
 
 
             else {
 
-                double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+                double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
                 double rightX = gamepad1.left_stick_x;
 
                 final double v1 = P * Math.sin(robotAngle) + rightX;
-                final double v2 = P * Math.cos(robotAngle) + rightX;
-                final double v3 = P * Math.cos(robotAngle) - rightX;
+                final double v2 = P * Math.cos(robotAngle) - rightX;
+                final double v3 = P * Math.cos(robotAngle) + rightX;
                 final double v4 = P * Math.sin(robotAngle) - rightX;
 
-                motorFrontRight.setPower(v1);
-                motorFrontLeft.setPower(v2);
-                motorBackRight.setPower(v3);
-                motorBackLeft.setPower(v4);
+                motorFrontLeft.setPower(v1);
+                motorFrontRight.setPower(v2);
+                motorBackLeft.setPower(v3);
+                motorBackRight.setPower(v4);
             }
 
             if (gamepad2.left_bumper) {
