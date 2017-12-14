@@ -38,6 +38,7 @@ public class VenusOriented extends OpMode {
 
 
 public void init() {
+
     motorFrontRight = hardwareMap.dcMotor.get("frontRight");
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
@@ -51,7 +52,6 @@ public void init() {
     parameters.loggingEnabled = true;
     parameters.loggingTag = "IMU";
     parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
     imu = hardwareMap.get(BNO055IMU.class, "imu");
     imu.initialize(parameters); }
 

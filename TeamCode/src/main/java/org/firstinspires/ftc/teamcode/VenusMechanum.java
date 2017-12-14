@@ -25,6 +25,7 @@ public class VenusMechanum extends OpMode {
 
 
 public void init() {
+
     motorFrontRight = hardwareMap.dcMotor.get("frontRight");
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
