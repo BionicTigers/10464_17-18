@@ -19,8 +19,8 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import java.io.File;
 import java.util.Locale;
 
-@TeleOp(name="Oriented Mechanum", group="Protobot")
-public class OrientedMechanum extends OpMode {
+@TeleOp(name="Mercury Oriented", group="Protobot")
+public class MercuryOriented extends OpMode {
 
     public Orientation angles;
     public Acceleration gravity;
@@ -98,23 +98,23 @@ public class OrientedMechanum extends OpMode {
             if ((calibToggle & 1) != 0) {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 double H = (angles.firstAngle * Math.PI) / 180;
-                double rightX = gamepad1.left_stick_x;
+                double rightX = gamepad1.right_stick_x;
                 double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
 
-//                motorBackLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn));
-//                motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
-//                motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
-//                motorFrontLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn));
-                final double v5 = P * Math.sin(robotAngle) + rightX - angles.firstAngle;
-                final double v6 = P * Math.cos(robotAngle) + rightX - angles.firstAngle;
-                final double v7 = P * Math.cos(robotAngle) - rightX - angles.firstAngle;
-                final double v8 = P * Math.sin(robotAngle) - rightX - angles.firstAngle;
+//              motorBackLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn));
+//              motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
+//              motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
+//              motorFrontLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn));
+                final double v5 = P * Math.sin((robotAngle - angles.firstAngle) + Math.PI/4) + rightX ;
+                final double v6 = P * Math.cos((robotAngle - angles.firstAngle) + Math.PI/4) - rightX ;
+                final double v7 = P * Math.cos((robotAngle - angles.firstAngle) + Math.PI/4) + rightX ;
+                final double v8 = P * Math.sin((robotAngle - angles.firstAngle) + Math.PI/4) - rightX ;
 
                 motorFrontRight.setPower(v5);
                 motorFrontLeft.setPower(v6);
-                motorBackRight.setPower(-v7);
-                motorBackLeft.setPower(-v8);
+                motorBackRight.setPower(v7);
+                motorBackLeft.setPower(v8);
 
             }
 
