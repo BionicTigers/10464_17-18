@@ -86,7 +86,6 @@ public class VuforiaOnly extends AutonomousBase {
     public void loop() {
         telemetry.addData("State", gameState);
         telemetry.addData("Current runtime", getRuntime());
-        telemetry.addData("VuMark", "%s visible", vuMark);
 
         switch (gameState) {
             case 0:
@@ -100,6 +99,7 @@ public class VuforiaOnly extends AutonomousBase {
                 this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
                 VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+
                 relicTemplate = relicTrackables.get(0);
                 relicTemplate.setName("relicVuMarkTemplate");
 

@@ -39,7 +39,7 @@ public class VenusOriented extends OpMode {
     public Servo franny; //Left
     public Servo mobert; //Right
     //Lift
-    public DcMotor evangilino; //Left
+    public DcMotor evangelino; //Left
     public DcMotor wilbert; //Right
     //Hammer
     public Servo hammer; //Dropper
@@ -58,7 +58,7 @@ public void init() {
     billiam = hardwareMap.dcMotor.get("billiam");
     franny = hardwareMap.servo.get("franny");
     mobert = hardwareMap.servo.get("mobert");
-    evangilino = hardwareMap.dcMotor.get("evangilino");
+    evangelino = hardwareMap.dcMotor.get("evangilino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
     hammer = hardwareMap.servo.get("hammer");
     sickle = hardwareMap.servo.get("sickle");
