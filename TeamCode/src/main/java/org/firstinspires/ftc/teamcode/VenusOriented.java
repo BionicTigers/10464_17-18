@@ -55,7 +55,13 @@ public void init() {
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-
+    billiam = hardwareMap.dcMotor.get("billiam");
+    franny = hardwareMap.servo.get("franny");
+    mobert = hardwareMap.servo.get("mobert");
+    evangilino = hardwareMap.dcMotor.get("evangilino");
+    wilbert = hardwareMap.dcMotor.get("wilbert");
+    hammer = hardwareMap.servo.get("hammer");
+    sickle = hardwareMap.servo.get("sickle");
     calibToggle = 0;
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
     parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;

@@ -31,8 +31,6 @@ public class VenusMechanum extends OpMode {
     //Hammer
     private Servo hammer; //Dropper
     private Servo sickle; //Flicker
-    //IMU
-    private BNO055IMU imu;
 
 
 public void init() {
@@ -47,8 +45,7 @@ public void init() {
     evangilino = hardwareMap.dcMotor.get("evangilino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
     hammer = hardwareMap.servo.get("hammer");
-    sickle = hardwareMap.servo.get("sickle");
-    BNO055IMU imu; }
+    sickle = hardwareMap.servo.get("sickle"); }
 
 
 public void loop() {
