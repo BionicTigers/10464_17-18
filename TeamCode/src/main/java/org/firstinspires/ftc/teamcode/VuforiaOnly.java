@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-
-        import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -25,6 +24,7 @@ import static com.sun.tools.javac.util.Constants.format;
 
 @Autonomous(name = "VuforiaOnly")
 public class VuforiaOnly extends AutonomousBase {
+
 
     int i;
     public Orientation angles;
@@ -63,6 +63,7 @@ public class VuforiaOnly extends AutonomousBase {
         started = false;
         waitTime = 0;
         map.setRobot(10, 2);
+
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -73,22 +74,20 @@ public class VuforiaOnly extends AutonomousBase {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
+        //imu.initialize(parameters);
 
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        blue = false;
-
-
     }
+
 
     public void loop() {
         telemetry.addData("State", gameState);
         telemetry.addData("Current runtime", getRuntime());
-        telemetry.addData("relicTemple", relicTemplate);
         telemetry.addData("VuMark", "%s visible", vuMark);
+
         switch (gameState) {
             case 0:
 
@@ -148,6 +147,7 @@ public class VuforiaOnly extends AutonomousBase {
                 break;
 
             case 2: // moving robot to correct position in safe zone
+                //This case needs to be after we knock over the correct jewel
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 heading = angles.firstAngle;
 
