@@ -28,13 +28,25 @@ public class VenusOriented extends OpMode {
 
     public Orientation angles;
     public Acceleration gravity;
+    //Drivetrain
     public DcMotor motorFrontRight;
     public DcMotor motorFrontLeft;
     public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
-
-    public int calibToggle;
+    //Car Washer
+    public DcMotor billiam;
+    //Conveyor Belt
+    public Servo franny; //Left
+    public Servo mobert; //Right
+    //Lift
+    public DcMotor evangilino; //Left
+    public DcMotor wilbert; //Right
+    //Hammer
+    public Servo hammer; //Dropper
+    public Servo sickle; //Flicker
+    //IMU
     BNO055IMU imu;
+    public int calibToggle;
 
 
 public void init() {
