@@ -9,6 +9,12 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 public abstract class AutonomousBase extends OpMode {
     public final double HEADING_TOLERANCE = 7; //tolerance for heading calculations
@@ -61,6 +67,7 @@ public abstract class AutonomousBase extends OpMode {
     double sTime; //Shooting timer
     double pTime; //Button presser timer
     double tDiff;
+    ElapsedTime runtime = new ElapsedTime();
 
     int startPos = 6;
     Map map = new Map(startPos); //this map object will allow for easy manipulations.
@@ -317,4 +324,56 @@ public abstract class AutonomousBase extends OpMode {
     }
 
     public double actualRuntime() {
-        return getRuntime() - tDiff;    }   }
+        return getRuntime() - tDiff;
+    }
+
+    public int Vuforia(int cameraMonitorViewId, String side, VuforiaLocalizer vuforia) {
+
+        int choosen = 0;
+
+        try {
+
+            VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
+            VuforiaTrackable relicTemplate = relicTrackables.get(0);
+            relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
+            relicTrackables.activate();
+            runtime.reset();
+            while (runtime.seconds() < 3) {
+                RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+                if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                    if(side == "red") {
+                        switch (vuMark) {
+                            case LEFT:
+                                choosen = 3;
+                                break;
+                            case CENTER:
+                                choosen = 2;
+                                break;
+                            case RIGHT:
+                                choosen = 1;
+                                break;
+                        }
+                    }
+                    else {
+                        switch (vuMark) {
+                            case LEFT:
+                                choosen = 1;
+                                break;
+                            case CENTER:
+                                choosen = 2;
+                                break;
+                            case RIGHT:
+                                choosen = 3;
+                                break;
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+            choosen = 0;
+        }
+
+        return choosen;
+    }
+}
