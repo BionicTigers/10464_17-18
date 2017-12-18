@@ -301,7 +301,8 @@ public abstract class AutonomousBase extends OpMode {
         telemetry.addData("Am I lined up?", linedUpAngle(5));
         telemetry.addData("Desired Angle", desiredAngle);
         telemetry.addData("moveState", moveState);
-        telemetry.addData("gameState", gameState);  }
+        telemetry.addData("gameState", gameState);
+    }
 
     @Override
     public void loop()  {
