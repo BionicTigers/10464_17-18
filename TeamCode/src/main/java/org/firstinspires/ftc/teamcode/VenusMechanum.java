@@ -23,7 +23,7 @@ public class VenusMechanum extends OpMode {
     private Servo franny; //Left
     private Servo mobert; //Right
     //Lift
-    private DcMotor evangelino; //Left
+    private DcMotor evangilino; //Left
     private DcMotor wilbert; //Right
     //Hammer
     private Servo tiffany; //Dropper
@@ -39,7 +39,7 @@ public void init() {
     billiam = hardwareMap.dcMotor.get("billiam");
     franny = hardwareMap.servo.get("franny");
     mobert = hardwareMap.servo.get("mobert");
-    evangelino = hardwareMap.dcMotor.get("evangilino");
+    evangilino = hardwareMap.dcMotor.get("evangilino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
     tiffany = hardwareMap.servo.get("hammer");
     mrClean = hardwareMap.servo.get("sickle"); }
