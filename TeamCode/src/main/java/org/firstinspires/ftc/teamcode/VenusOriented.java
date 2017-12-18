@@ -39,7 +39,7 @@ public class VenusOriented extends OpMode {
     public Servo franny; //Left
     public Servo mobert; //Right
     //Lift
-    public DcMotor evangilino; //Left
+    public DcMotor evangelino; //Left
     public DcMotor wilbert; //Right
     //Hammer
     public Servo hammer; //Dropper
@@ -58,7 +58,7 @@ public void init() {
     billiam = hardwareMap.dcMotor.get("billiam");
     franny = hardwareMap.servo.get("franny");
     mobert = hardwareMap.servo.get("mobert");
-    evangilino = hardwareMap.dcMotor.get("evangilino");
+    evangelino = hardwareMap.dcMotor.get("evangilino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
     hammer = hardwareMap.servo.get("hammer");
     sickle = hardwareMap.servo.get("sickle");
@@ -121,14 +121,14 @@ public void loop() {
         motorBackLeft.setPower(v8); }
 
     else {
-        double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
+        double P = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) + Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
 
-        final double v1 = P * Math.sin(robotAngle) + rightX;
-        final double v2 = P * Math.cos(robotAngle) + rightX;
-        final double v3 = P * Math.cos(robotAngle) - rightX;
-        final double v4 = P * Math.sin(robotAngle) - rightX;
+        final double v1 = -P * Math.sin(robotAngle) + rightX;
+        final double v2 = -P * Math.cos(robotAngle) + rightX;
+        final double v3 = -P * Math.cos(robotAngle) - rightX;
+        final double v4 = -P * Math.sin(robotAngle) - rightX;
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
