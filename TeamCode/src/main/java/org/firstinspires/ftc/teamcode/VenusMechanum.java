@@ -15,22 +15,37 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class VenusMechanum extends OpMode {
 
-    private Orientation angles;
+    //Drivetrain
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
     private DcMotor motorBackRight;
-
-    private BNO055IMU imu;
+    //Car Washer
+    private DcMotor billiam;
+    //Conveyor Belt
+    private Servo franny; //Left
+    private Servo mobert; //Right
+    //Lift
+    private DcMotor evangilino; //Left
+    private DcMotor wilbert; //Right
+    //Hammer
+    private Servo hammer; //Dropper
+    private Servo sickle; //Flicker
 
 
 public void init() {
+
     motorFrontRight = hardwareMap.dcMotor.get("frontRight");
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-
-    BNO055IMU imu; }
+    billiam = hardwareMap.dcMotor.get("billiam");
+    franny = hardwareMap.servo.get("franny");
+    mobert = hardwareMap.servo.get("mobert");
+    evangilino = hardwareMap.dcMotor.get("evangilino");
+    wilbert = hardwareMap.dcMotor.get("wilbert");
+    hammer = hardwareMap.servo.get("hammer");
+    sickle = hardwareMap.servo.get("sickle"); }
 
 
 public void loop() {
