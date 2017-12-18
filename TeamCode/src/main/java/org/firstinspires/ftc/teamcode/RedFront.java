@@ -81,12 +81,18 @@ public class RedFront extends AutonomousBase {
     public void loop() {
         //super.gameState();
 
+        VuforiaLocalizer vuforia;
+
 
         telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
         telemetry.addData("State", gameState);
         telemetry.addData("Color value blue", sensorColor.blue());
         telemetry.addData("Current runtime", getRuntime());
         telemetry.addData("blue", blue);
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
 
 
         switch (gameState) {
