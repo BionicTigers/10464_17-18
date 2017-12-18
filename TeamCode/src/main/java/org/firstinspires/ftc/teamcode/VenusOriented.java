@@ -111,8 +111,8 @@ public void loop() {
         double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
 
         final double v5 = P * Math.sin(robotAngle) + rightX - H;
-        final double v6 = P * Math.cos(robotAngle) + rightX - H;
-        final double v7 = P * Math.cos(robotAngle) - rightX - H;
+        final double v6 = P * Math.cos(robotAngle) - rightX - H;
+        final double v7 = P * Math.cos(robotAngle) + rightX - H;
         final double v8 = P * Math.sin(robotAngle) - rightX - H;
 
         motorFrontRight.setPower(v5);
@@ -126,8 +126,8 @@ public void loop() {
         double rightX = gamepad1.left_stick_x;
 
         final double v1 = -P * Math.sin(robotAngle) + rightX;
-        final double v2 = -P * Math.cos(robotAngle) + rightX;
-        final double v3 = -P * Math.cos(robotAngle) - rightX;
+        final double v2 = -P * Math.cos(robotAngle) - rightX;
+        final double v3 = -P * Math.cos(robotAngle) + rightX;
         final double v4 = -P * Math.sin(robotAngle) - rightX;
 
         motorFrontRight.setPower(v1);
