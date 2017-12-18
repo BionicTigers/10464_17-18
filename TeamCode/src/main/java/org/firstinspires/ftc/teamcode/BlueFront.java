@@ -30,7 +30,8 @@ public class BlueFront extends AutonomousBase {
     private DcMotor front;
     private Servo franny = null; //left servo
     private Servo mobert = null; //right servo
-    private Servo servo;
+    private Servo tiffany; //up/down
+    private Servo mrClean; // right/left
     private VuforiaLocalizer vuforia;
     private VuforiaTrackable relicTemplate;
     private RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -98,9 +99,7 @@ public class BlueFront extends AutonomousBase {
             case 0: //preset variables
                 waitTime = getRuntime(); //get current runTime
                 gameState = 1;
-                servo.setPosition(.9);
-                franny.setPosition(.35);
-                mobert.setPosition(.32);
+                tiffany.setPosition(.9);
                 map.setRobot(2,2);
                 break;
 
@@ -143,169 +142,106 @@ public class BlueFront extends AutonomousBase {
                 servo.setPosition(0.52);
                 break;
 
-//            case 5:
-//                map.setGoal(1, 5);
-//                //moveState =
-//                motorFrontRight.setPower(0.25);
-//                motorFrontLeft.setPower(-0.25);
-//                motorBackRight.setPower(0.25);
-//                motorBackLeft.setPower(-0.25);
-//                gameState = 6;
-//                break;
-//
-//            case 6:
-//                map.setGoal(1, 5);
-//                moveState = MoveState.FORWARD;
-//                if (map.distanceToGoal() <= .1) {
-//                    moveState = MoveState.STOP;
-//                    gameState = 7;
-//                }
-//                break;
-//
-//            case 7:
-//                while (waitTime < 25) {
-//                    top.setPower(.5);
-//                    front.setPower(.5);
-//                    break;
-//                }
-//                break;
-//                    telemetry.addData("jewelRot", jewelRot);
-//
-//                //return to original rotation to read pictograph
-//                    if(jewelRot = true){
-//
-//                        motorBackLeft.setPower(-.5);
-//                        motorFrontRight.setPower(-.5);
-//                    }
-//                    else{
-//
-//                        motorBackLeft.setPower(.5);
-//                        motorFrontRight.setPower(.5);
-//                    }
-//                    if(this.getRuntime() > 2.0) {
-//                        gameState = 6;
-//                    }
-//                    break;
-//
-//                case 6:
-//
-//                    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//                    VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-//
-//                    parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
-//
-//                    parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-//                    this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-//
-//                    VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-//                    relicTemplate = relicTrackables.get(0);
-//                    relicTemplate.setName("relicVuMarkTemplate");
-//
-//                    relicTrackables.activate();
-//
-//                    if(getRuntime() > waitTime + 2) {
-//                        gameState = 7;
-//                    }
-//
-//                    break;
-//
-//
-//                case 7:
-//
-//                    if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-//
-//                        telemetry.addData("VuMark", "%s visible", vuMark);
-//                        OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
-//                        telemetry.addData("Pose", format(pose));
-//
-//                        if (pose != null) {
-//                            VectorF trans = pose.getTranslation();
-//                            Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-//
-//                            // Extract the X, Y, and Z components of the offset of the target relative to the robot
-//                            double tX = trans.get(0);
-//                            double tY = trans.get(1);
-//                            double tZ = trans.get(2);
-//
-//                            // Extract the rotational components of the target relative to the robot
-//                            double rX = rot.firstAngle;
-//                            double rY = rot.secondAngle;
-//                            double rZ = rot.thirdAngle;
-//
-//                            telemetry.addData("tX",rX);
-//                            telemetry.addData("rX",tX);
-//                        }
-//                    }
-//                    else {
-//                        telemetry.addData("VuMark", "not visible");
-//                    }
-//                    if (getRuntime() > waitTime + 2){
-//                        gameState = 8;
-//                        startDeg = motorBackRight.getCurrentPosition();
-//                    }
-//                    break;
-//
-//                case 8: // moving robot to correct position in safe zone
-//                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-//                    heading = angles.firstAngle;
-//
-//                    if(vuMark == RelicRecoveryVuMark.RIGHT){
-//                        map.setGoal(1,5.4);
-//                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
-//                        if(map.distanceToGoal()< + .1) {
-//                            moveState = MoveState.STOP;
-//                            gameState = 9;
-//                        }
-//                    }
-//                    if(vuMark == RelicRecoveryVuMark.CENTER){
-//                        map.setGoal(1,5);
-//                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
-//                        if(map.distanceToGoal()< + .1) {
-//                            moveState = MoveState.STOP;
-//                            gameState = 9;
-//                        }
-//                    }
-//                    if(vuMark == RelicRecoveryVuMark.LEFT){
-//                        map.setGoal(1,4.6);
-//                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
-//                        if(map.distanceToGoal()< + .1) {
-//                            moveState = MoveState.STOP;
-//                            gameState = 9;
-//                        }
-//                    }
-//
-//                    break;
-//
-//
-//                case 9:
-//
-//                    front.setPower(.4);
-//                    top.setPower(.4);
-//
-//                    if(this.getRuntime() > 3.0) {
-//                        gameState = 3;
-//                    }
-//                    else {
-//                        telemetry.addData("Its not working,", "go again 4");
-//                    }
-//
-//                    break;
-//
-//        }
-//        telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
-//        telemetry.addData("State", gameState);
-//        telemetry.addData("Color value blue", sensorColor.blue());
-//        telemetry.addData("Current runtime", getRuntime());
-//        telemetry.addData("Target runtime", sTime);
-//    }
-//
-////    String format(OpenGLMatrix transformationMatrix) {
-////        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-//
-//}
-//
-//
-//
+            case 5:
+                map.setGoal(1, 5);
+                //moveState =
+                motorFrontRight.setPower(0.25);
+                motorFrontLeft.setPower(-0.25);
+                motorBackRight.setPower(0.25);
+                motorBackLeft.setPower(-0.25);
+                gameState = 6;
+                break;
+
+            case 6:
+                map.setGoal(1, 5);
+                moveState = MoveState.FORWARD;
+                if (map.distanceToGoal() <= .1) {
+                    moveState = MoveState.STOP;
+                    gameState = 7;
+                }
+                break;
+
+            case 7:
+                while (waitTime < 25) {
+                    top.setPower(.5);
+                    front.setPower(.5);
+                    break;
+                }
+                telemetry.addData("jewelRot", jewelRot);
+
+
+                //return to original rotation to read pictograph
+                    if(jewelRot = true){
+
+                        motorBackLeft.setPower(-.5);
+                        motorFrontRight.setPower(-.5);
+                    }
+                    else{
+
+                        motorBackLeft.setPower(.5);
+                        motorFrontRight.setPower(.5);
+                    }
+                    if(this.getRuntime() > 2.0) {
+                        gameState = 6;
+                    }
+                    break;
+
+
+                case 10: // moving robot to correct position in safe zone
+                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                    heading = angles.firstAngle;
+
+                    if(vuMark == RelicRecoveryVuMark.RIGHT){
+                        map.setGoal(1,5.4);
+                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
+                        if(map.distanceToGoal()< + .1) {
+                            moveState = MoveState.STOP;
+                            gameState = 9;
+                        }
+                    }
+                    if(vuMark == RelicRecoveryVuMark.CENTER){
+                        map.setGoal(1,5);
+                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
+                        if(map.distanceToGoal()< + .1) {
+                            moveState = MoveState.STOP;
+                            gameState = 9;
+                        }
+                    }
+                    if(vuMark == RelicRecoveryVuMark.LEFT){
+                        map.setGoal(1,4.6);
+                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
+                        if(map.distanceToGoal()< + .1) {
+                            moveState = MoveState.STOP;
+                            gameState = 9;
+                        }
+                    }
+
+                    break;
+
+
+                case 11:
+
+                    front.setPower(.4);
+                    top.setPower(.4);
+
+                    if(this.getRuntime() > 3.0) {
+                        gameState = 3;
+                    }
+                    else {
+                        telemetry.addData("Its not working,", "go again 4");
+                    }
+
+                    break;
+
         }
+        telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
+        telemetry.addData("State", gameState);
+        telemetry.addData("Color value blue", sensorColor.blue());
+        telemetry.addData("Current runtime", getRuntime());
+        telemetry.addData("Target runtime", sTime);
     }
+
+//    String format(OpenGLMatrix transformationMatrix) {
+//        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+
 }

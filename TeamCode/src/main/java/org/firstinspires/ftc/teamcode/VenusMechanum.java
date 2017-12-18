@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 @TeleOp(name="Venus Mechanum", group="Protobot")
@@ -29,8 +26,8 @@ public class VenusMechanum extends OpMode {
     private DcMotor evangelino; //Left
     private DcMotor wilbert; //Right
     //Hammer
-    private Servo hammer; //Dropper
-    private Servo sickle; //Flicker
+    private Servo tiffany; //Dropper
+    private Servo mrClean; //Flicker
 
 
 public void init() {
@@ -44,8 +41,8 @@ public void init() {
     mobert = hardwareMap.servo.get("mobert");
     evangelino = hardwareMap.dcMotor.get("evangilino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
-    hammer = hardwareMap.servo.get("hammer");
-    sickle = hardwareMap.servo.get("sickle"); }
+    tiffany = hardwareMap.servo.get("hammer");
+    mrClean = hardwareMap.servo.get("sickle"); }
 
 
 public void loop() {
