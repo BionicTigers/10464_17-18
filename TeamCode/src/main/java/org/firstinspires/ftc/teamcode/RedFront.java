@@ -93,8 +93,6 @@ public class RedFront extends AutonomousBase {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-
-
         switch (gameState) {
             case 0: //preset variables
                 waitTime = getRuntime(); //get current runTime
