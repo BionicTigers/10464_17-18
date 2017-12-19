@@ -55,8 +55,8 @@ public class MercuryMechanum extends OpMode {
         double rightX = gamepad1.right_stick_x;
 
         final double v1 = P * Math.sin(robotAngle) + rightX;
-        final double v2 = P * Math.cos(robotAngle) - rightX;
-        final double v3 = P * Math.cos(robotAngle) + rightX;
+        final double v2 = P * Math.cos(robotAngle) + rightX;
+        final double v3 = P * Math.cos(robotAngle) - rightX;
         final double v4 = P * Math.sin(robotAngle) - rightX;
 
         motorFrontRight.setPower(v1);
