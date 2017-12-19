@@ -97,9 +97,9 @@ public class MercuryOriented extends OpMode {
 
             if ((calibToggle & 1) != 0) {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
-                double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
-                double rightX = gamepad1.left_stick_x;
+                double P = Math.hypot(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
+                double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_x) - Math.PI / 4;
+                double rightX = gamepad1.right_stick_x;
 
 //              motorBackLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn));
 //              motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));

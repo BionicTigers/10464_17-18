@@ -6,7 +6,6 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.robotcore.external.Func;
@@ -43,7 +42,8 @@ public void init() {
     motorFrontRight = hardwareMap.dcMotor.get("frontRight");
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
-    motorBackLeft = hardwareMap.dcMotor.get("backLeft"); }
+    motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+}
 
 
 public void loop() {
