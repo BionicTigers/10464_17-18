@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 public abstract class AutonomousBase extends OpMode {
     public final double HEADING_TOLERANCE = 7; //tolerance for heading calculations
-    public final double DISTANCE_TOLERANCE = 1.0 / 12; //tolerance for heading calculations
+    public final double DISTANCE_TOLERANCE = 1.0 / 10; //tolerance for heading calculations
     public final double DEGREES_TO_FEET = 3.96 * Math.PI / 1120 / 12;
 
     //EXPLANATION:
