@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name="Venus Mechanum", group="Protobot")
+@TeleOp(name="Venus Mechanum", group="Venus")
 
 
 public class VenusMechanum extends OpMode {

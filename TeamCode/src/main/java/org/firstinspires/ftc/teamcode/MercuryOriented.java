@@ -19,7 +19,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import java.io.File;
 import java.util.Locale;
 
-@TeleOp(name="Mercury Oriented", group="Protobot")
+@TeleOp(name="Mercury Oriented", group="Mercury")
 public class MercuryOriented extends OpMode {
 
     public Orientation angles;

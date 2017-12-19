@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
-@TeleOp(name="Mercury Mechanum", group="Protobot")
+@TeleOp(name="Mercury Mechanum", group="Mercury")
 
 
 public class MercuryMechanum extends OpMode {

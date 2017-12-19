@@ -21,7 +21,7 @@ import java.io.File;
 import java.util.Locale;
 
 
-@TeleOp(name="Venus Oriented", group="Protobot")
+@TeleOp(name="Venus Oriented", group="Venus")
 
 
 public class VenusOriented extends OpMode {
