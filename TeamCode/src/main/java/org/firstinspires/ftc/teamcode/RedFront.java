@@ -133,10 +133,7 @@ public class RedFront extends AutonomousBase {
                 }
                 break;
             case 4: //stop all motors, pull servo up
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(0);
-                motorBackRight.setPower(0);
-                motorFrontRight.setPower(0);
+                moveState = MoveState.STOP;
                 servo.setPosition(0.52);
                 gameState = 5;
                 break;
@@ -145,10 +142,8 @@ public class RedFront extends AutonomousBase {
 
                 map.setGoal(11, 5);
                 //moveState =
-                motorFrontRight.setPower(0.25);
-                motorFrontLeft.setPower(-0.25);
-                motorBackRight.setPower(0.25);
-                motorBackLeft.setPower(-0.25);
+                power = .5;
+                moveState = MoveState.STRAFE_TOWARDS_GOAL;
                 gameState = 6;
                 break;
 
@@ -164,18 +159,16 @@ public class RedFront extends AutonomousBase {
                         break;
                     case (2):
                         map.setGoal(11,5);
-                        power = .35;
-                        moveState = MoveState.LEFT;
+                        moveState = MoveState.STOP;
                         break;
                     case (3):
                         map.setGoal(11,4.6);
                         power = .35;
-                        moveState = MoveState.LEFT;
+                        moveState = MoveState.RIGHT;
                         break;
                     default:
                         map.setGoal(11,5);
-                        power = .35;
-                        moveState = MoveState.LEFT;
+                        moveState = MoveState.STOP;
                         break;
                 }
                 gameState = 7;
