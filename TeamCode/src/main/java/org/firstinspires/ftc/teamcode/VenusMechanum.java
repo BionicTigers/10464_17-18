@@ -20,14 +20,14 @@ public class VenusMechanum extends OpMode {
     //Car Washer
     private DcMotor billiam;
     //Conveyor Belt
-    private Servo franny; //Left
-    private Servo mobert; //Right
+    private Servo franny = null; //Left
+    private Servo mobert = null; //Right
     //Lift
     private DcMotor evangilino; //Left
     private DcMotor wilbert; //Right
     //Hammer
-    private Servo tiffany; //Dropper
-    private Servo mrClean; //Flicker
+    private Servo tiffany = null; //Dropper
+    private Servo mrClean = null; //Flicker
 
 
 public void init() {
