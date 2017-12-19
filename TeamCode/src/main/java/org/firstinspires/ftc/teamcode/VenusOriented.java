@@ -21,7 +21,7 @@ import java.io.File;
 import java.util.Locale;
 
 
-@TeleOp(name="Venus Oriented", group="Protobot")
+@TeleOp(name="Venus Oriented", group="Venus")
 
 
 public class VenusOriented extends OpMode {
@@ -36,14 +36,14 @@ public class VenusOriented extends OpMode {
     //Car Washer
     public DcMotor billiam;
     //Conveyor Belt
-    public Servo franny; //Left
-    public Servo mobert; //Right
+    public Servo franny = null; //Left
+    public Servo mobert = null; //Right
     //Lift
     public DcMotor evangilino; //Left
     public DcMotor wilbert; //Right
     //Hammer
-    public Servo hammer; //Dropper
-    public Servo sickle; //Flicker
+    public Servo tiffany = null; //Dropper
+    public Servo mrClean = null; //Flicker
     //IMU
     BNO055IMU imu;
     public int calibToggle;
@@ -60,8 +60,8 @@ public void init() {
     mobert = hardwareMap.servo.get("mobert");
     evangilino = hardwareMap.dcMotor.get("evangilino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
-    hammer = hardwareMap.servo.get("hammer");
-    sickle = hardwareMap.servo.get("sickle");
+    tiffany = hardwareMap.servo.get("hammer");
+    mrClean = hardwareMap.servo.get("sickle");
     calibToggle = 0;
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
     parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -121,14 +121,14 @@ public void loop() {
         motorBackLeft.setPower(v8); }
 
     else {
-        double P = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
+        double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) + Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
 
-        final double v1 = -P * Math.sin(robotAngle) + rightX;
-        final double v2 = -P * Math.cos(robotAngle) - rightX;
-        final double v3 = -P * Math.cos(robotAngle) + rightX;
-        final double v4 = -P * Math.sin(robotAngle) - rightX;
+        final double v1 = -r * Math.sin(robotAngle) + rightX;
+        final double v2 = -r * Math.cos(robotAngle) - rightX;
+        final double v3 = -r * Math.cos(robotAngle) + rightX;
+        final double v4 = -r * Math.sin(robotAngle) - rightX;
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);

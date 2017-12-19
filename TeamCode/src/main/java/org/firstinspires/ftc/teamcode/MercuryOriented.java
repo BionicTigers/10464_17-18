@@ -105,10 +105,10 @@ public class MercuryOriented extends OpMode {
 //              motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
 //              motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
 //              motorFrontLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn));
-                final double v5 = P * Math.sin((robotAngle - angles.firstAngle)) - rightX;
+                final double v5 = P * Math.sin((robotAngle - angles.firstAngle)) + rightX;
                 final double v6 = P * Math.cos((robotAngle - angles.firstAngle)) - rightX;
                 final double v7 = P * Math.cos((robotAngle - angles.firstAngle)) + rightX;
-                final double v8 = P * Math.sin((robotAngle - angles.firstAngle)) + rightX;
+                final double v8 = P * Math.sin((robotAngle - angles.firstAngle)) - rightX;
 
                 motorFrontLeft.setPower(v5);//1
                 motorFrontRight.setPower(v6);//2
@@ -121,20 +121,15 @@ public class MercuryOriented extends OpMode {
             else {
 
                 double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
-                double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
-                double rightX = -gamepad1.right_stick_x;
-                double sinRAngle = Math.sin(robotAngle);
-                double cosRAngle = Math.cos(robotAngle);
+                double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
+                double rightX = gamepad1.left_stick_x;
 
-                final double v1 = (P * sinRAngle) - (P * cosRAngle) - rightX;
-                final double v2 = (P * sinRAngle) + (P * cosRAngle) + rightX;
-                final double v3 = (P * sinRAngle) + (P * cosRAngle) - rightX;
-                final double v4 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+                final double v1 = P * Math.sin(robotAngle) + rightX;
+                final double v2 = P * Math.cos(robotAngle) - rightX;
+                final double v3 = P * Math.cos(robotAngle) + rightX;
+                final double v4 = P * Math.sin(robotAngle) - rightX;
 
-                telemetry.addData("v1", v1);
-                telemetry.addData("robotangle", robotAngle);
-
-                motorFrontLeft.setPower(v1); // /max
+                motorFrontLeft.setPower(v1);
                 motorFrontRight.setPower(v2);
                 motorBackLeft.setPower(v3);
                 motorBackRight.setPower(v4);

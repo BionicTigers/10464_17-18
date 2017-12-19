@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name="Venus Mechanum", group="Protobot")
+@TeleOp(name="Venus Mechanum", group="Venus")
 
 
 public class VenusMechanum extends OpMode {
@@ -20,14 +20,14 @@ public class VenusMechanum extends OpMode {
     //Car Washer
     private DcMotor billiam;
     //Conveyor Belt
-    private Servo franny; //Left
-    private Servo mobert; //Right
+    private Servo franny = null; //Left
+    private Servo mobert = null; //Right
     //Lift
     private DcMotor evangilino; //Left
     private DcMotor wilbert; //Right
     //Hammer
-    private Servo tiffany; //Dropper
-    private Servo mrClean; //Flicker
+    private Servo tiffany = null; //Dropper
+    private Servo mrClean = null; //Flicker
 
 
 public void init() {

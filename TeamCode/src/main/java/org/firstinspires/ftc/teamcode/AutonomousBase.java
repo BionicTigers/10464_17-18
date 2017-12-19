@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 public abstract class AutonomousBase extends OpMode {
     public final double HEADING_TOLERANCE = 7; //tolerance for heading calculations
-    public final double DISTANCE_TOLERANCE = 1.0 / 12; //tolerance for heading calculations
+    public final double DISTANCE_TOLERANCE = 1.0 / 10; //tolerance for heading calculations
     public final double DEGREES_TO_FEET = 3.96 * Math.PI / 1120 / 12;
 
     //EXPLANATION:
@@ -57,7 +57,7 @@ public abstract class AutonomousBase extends OpMode {
     int gameState;
     int moveState;
 
-    double power;
+    public double power;
     double heading;
     double desiredAngle;
     boolean turnRight;
@@ -124,56 +124,56 @@ public abstract class AutonomousBase extends OpMode {
                 // Moves the bot backwards at half speed
                 power = -1; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(power);
-                    motorFrontLeft.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(power); }
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(-power); }
                 break;
             case MoveState.BACKWARD_SLOW:
                 // Moves the bot backwards at minimum speed
                 power = -.2; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(power);
-                    motorFrontLeft.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(power); }
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(-power); }
                 //servoLeftButton.setPosition(.5); // HACK
                 break;
             case MoveState.LEFT:
                 // Moves the bot left at half speed
                 power = -1; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(-power);
-                    motorFrontLeft.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(-power);    }
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(power);    }
                 break;
             case MoveState.LEFT_SLOW:
                 // Moves the bot left at half speed
                 power = -.5; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(-power);
-                    motorFrontLeft.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(-power);    }
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(power);    }
                 break;
             case MoveState.RIGHT:
                 // Moves the bot right at half speed
                 power = 1; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(power);
-                    motorFrontLeft.setPower(-power);
-                    motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(power); }
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power); }
                 break;
             case MoveState.RIGHT_SLOW:
                 // Moves the bot right at half speed
                 power = .5; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(power);
-                    motorFrontLeft.setPower(-power);
-                    motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(power); }
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power); }
                 break;
             case MoveState.STRAFE_TOWARDS_GOAL:
                 // Moves the bot towards the goal, while always pointing at desiredAngle
