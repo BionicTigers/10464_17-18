@@ -143,37 +143,37 @@ public abstract class AutonomousBase extends OpMode {
                 // Moves the bot left at half speed
                 power = -1; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(-power);
-                    motorFrontLeft.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(-power);    }
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(power);    }
                 break;
             case MoveState.LEFT_SLOW:
                 // Moves the bot left at half speed
                 power = -.5; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(-power);
-                    motorFrontLeft.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(-power);    }
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(power);    }
                 break;
             case MoveState.RIGHT:
                 // Moves the bot right at half speed
                 power = 1; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(power);
-                    motorFrontLeft.setPower(-power);
-                    motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(power); }
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power); }
                 break;
             case MoveState.RIGHT_SLOW:
                 // Moves the bot right at half speed
                 power = .5; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(power);
-                    motorFrontLeft.setPower(-power);
-                    motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(power); }
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power); }
                 break;
             case MoveState.STRAFE_TOWARDS_GOAL:
                 // Moves the bot towards the goal, while always pointing at desiredAngle
