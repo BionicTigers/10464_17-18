@@ -35,10 +35,6 @@ public class MercuryMechanum extends OpMode {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-
-        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
-        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
-
         franny = hardwareMap.servo.get("franny");
         mobert = hardwareMap.servo.get("mobert");
         top = hardwareMap.dcMotor.get("top");
@@ -54,7 +50,7 @@ public class MercuryMechanum extends OpMode {
         ////////////////
         // MAIN DRIVE //
         ////////////////
-        double P = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+        double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.right_stick_x;
 
@@ -62,8 +58,6 @@ public class MercuryMechanum extends OpMode {
         final double v2 = P * Math.cos(robotAngle) + rightX;
         final double v3 = P * Math.cos(robotAngle) - rightX;
         final double v4 = P * Math.sin(robotAngle) - rightX;
-
-        telemetry.addData("Left stick x", gamepad1.left_stick_x);
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
