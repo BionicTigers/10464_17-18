@@ -48,6 +48,10 @@ public void init() {
 
 public void loop() {
 
+    telemetry.addData("Left X", gamepad1.left_stick_x);
+    telemetry.addData("Left Y", gamepad1.left_stick_y);
+    telemetry.addData("Right X", gamepad1.right_stick_x);
+
     telemetry.update();
 
     if (gamepad1.a) {
