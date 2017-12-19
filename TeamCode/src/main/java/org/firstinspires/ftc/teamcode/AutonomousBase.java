@@ -57,7 +57,7 @@ public abstract class AutonomousBase extends OpMode {
     int gameState;
     int moveState;
 
-    double power;
+    public double power;
     double heading;
     double desiredAngle;
     boolean turnRight;
@@ -124,19 +124,19 @@ public abstract class AutonomousBase extends OpMode {
                 // Moves the bot backwards at half speed
                 power = -1; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(power);
-                    motorFrontLeft.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(power); }
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(-power); }
                 break;
             case MoveState.BACKWARD_SLOW:
                 // Moves the bot backwards at minimum speed
                 power = -.2; //power coefficient
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
-                    motorFrontRight.setPower(power);
-                    motorFrontLeft.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(power); }
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(-power); }
                 //servoLeftButton.setPosition(.5); // HACK
                 break;
             case MoveState.LEFT:
