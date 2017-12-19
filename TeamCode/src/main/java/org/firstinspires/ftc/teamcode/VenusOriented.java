@@ -42,8 +42,8 @@ public class VenusOriented extends OpMode {
     public DcMotor evangilino; //Left
     public DcMotor wilbert; //Right
     //Hammer
-    public Servo hammer = null; //Dropper
-    public Servo sickle = null; //Flicker
+    public Servo tiffany = null; //Dropper
+    public Servo mrClean = null; //Flicker
     //IMU
     BNO055IMU imu;
     public int calibToggle;
@@ -60,8 +60,8 @@ public void init() {
     mobert = hardwareMap.servo.get("mobert");
     evangilino = hardwareMap.dcMotor.get("evangilino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
-    hammer = hardwareMap.servo.get("hammer");
-    sickle = hardwareMap.servo.get("sickle");
+    tiffany = hardwareMap.servo.get("hammer");
+    mrClean = hardwareMap.servo.get("sickle");
     calibToggle = 0;
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
     parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
