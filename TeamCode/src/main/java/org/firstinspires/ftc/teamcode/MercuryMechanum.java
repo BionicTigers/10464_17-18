@@ -5,7 +5,9 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import java.lang.*;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
@@ -42,27 +44,37 @@ public class MercuryMechanum extends OpMode {
         servo = hardwareMap.servo.get("servo");
         left = 0.32;
         right = .62;
-        BNO055IMU imu; }
+        BNO055IMU imu;
+        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE); }
+
+
 
 
     public void loop() {
-
         ////////////////
         // MAIN DRIVE //
         ////////////////
-        double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
-        double rightX = gamepad1.left_stick_x;
 
-        final double v1 = r * Math.sin(robotAngle) + rightX;
-        final double v2 = r * Math.cos(robotAngle) - rightX;
-        final double v3 = r * Math.cos(robotAngle) + rightX;
-        final double v4 = r * Math.sin(robotAngle) - rightX;
+        double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
+        double rightX = -gamepad1.right_stick_x;
+        double sinRAngle = Math.sin(robotAngle);
+        double cosRAngle = Math.cos(robotAngle);
 
-        motorFrontRight.setPower(v1);
-        motorFrontLeft.setPower(v2);
-        motorBackRight.setPower(v3);
-        motorBackLeft.setPower(v4);
+        final double v1 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+        final double v2 = (P * sinRAngle) + (P * cosRAngle) + rightX;
+        final double v3 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v4 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+
+        telemetry.addData("v1", v1);
+        telemetry.addData("robotangle", robotAngle);
+
+        motorFrontLeft.setPower(v1); // /max
+        motorFrontRight.setPower(v2);
+        motorBackLeft.setPower(v3);
+        motorBackRight.setPower(v4);
+
 //        double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
 //        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
 //        double rightX = gamepad1.left_stick_x;
