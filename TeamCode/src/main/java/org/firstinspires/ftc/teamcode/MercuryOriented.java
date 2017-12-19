@@ -105,10 +105,10 @@ public class MercuryOriented extends OpMode {
 //              motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
 //              motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
 //              motorFrontLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn));
-                final double v5 = P * Math.sin((robotAngle - angles.firstAngle)) + rightX;
-                final double v6 = P * Math.cos((robotAngle - angles.firstAngle)) - rightX;
-                final double v7 = P * Math.cos((robotAngle - angles.firstAngle)) + rightX;
-                final double v8 = P * Math.sin((robotAngle - angles.firstAngle)) - rightX;
+                final double v5 = P * Math.sin((robotAngle) - angles.firstAngle + rightX);
+                final double v6 = P * Math.cos((robotAngle) - angles.firstAngle - rightX);
+                final double v7 = P * Math.cos((robotAngle) - angles.firstAngle + rightX);
+                final double v8 = P * Math.sin((robotAngle) - angles.firstAngle - rightX);
 
                 motorFrontLeft.setPower(v5);//1
                 motorFrontRight.setPower(v6);//2

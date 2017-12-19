@@ -73,7 +73,8 @@ public void loop() {
         telemetry.log().add("saved to '%s'", filename); }
 
     if (gamepad1.x) {
-        calibToggle += 1; }
+        calibToggle += 1;
+    }
 
     if ((calibToggle & 1) != 0) {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -105,7 +106,9 @@ public void loop() {
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);
-        motorBackLeft.setPower(v4); } }
+        motorBackLeft.setPower(v4);
+    }
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

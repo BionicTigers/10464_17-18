@@ -92,7 +92,7 @@ public class RedFront extends AutonomousBase {
         telemetry.addData("State", gameState);
         telemetry.addData("Color value blue", sensorColor.blue());
         telemetry.addData("Current runtime", getRuntime());
-        telemetry.addData("blue", blue);
+        telemetry.addData("Blue", blue);
 
         switch (gameState) {
             case 0: //preset variables
@@ -153,25 +153,33 @@ public class RedFront extends AutonomousBase {
                 break;
 
 
-//            case 6:
-//                int choosen = Vuforia(cameraMonitorViewId, "red", vuforia);
-//
-//                switch (choosen) {
-//                    case (1):
-//                        map.setGoal();
-//                        break;
-//                    case (2):
-//                        target = 116;
-//                        break;
-//                    case (3):
-//                        target = 130;
-//                        break;
-//                    default:
-//                        target = 99;
-//                        break;
-//                }
-//                gameState = 7;
-//                break;
+            case 6:
+                int choosen = Vuforia(cameraMonitorViewId, "Red", vuforia);
+
+                switch (choosen) {
+                    case (1):
+                        map.setGoal(11, 5.4);
+                        power = .35;
+                        moveState = MoveState.LEFT;
+                        break;
+                    case (2):
+                        map.setGoal(11,5);
+                        power = .35;
+                        moveState = MoveState.LEFT;
+                        break;
+                    case (3):
+                        map.setGoal(11,4.6);
+                        power = .35;
+                        moveState = MoveState.LEFT;
+                        break;
+                    default:
+                        map.setGoal(11,5);
+                        power = .35;
+                        moveState = MoveState.LEFT;
+                        break;
+                }
+                gameState = 7;
+                break;
 
             case 7:
                 while (waitTime < 25) {
@@ -184,8 +192,3 @@ public class RedFront extends AutonomousBase {
         }
     }
 }
-
-
-
-
-
