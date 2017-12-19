@@ -120,9 +120,9 @@ public class MercuryOriented extends OpMode {
 
             else {
 
-                double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
-                double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
-                double rightX = gamepad1.left_stick_x;
+                double P = Math.hypot(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
+                double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_x) - Math.PI / 4;
+                double rightX = gamepad1.right_stick_x;
 
                 final double v1 = P * Math.sin(robotAngle) + rightX;
                 final double v2 = P * Math.cos(robotAngle) - rightX;

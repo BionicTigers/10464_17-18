@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -36,8 +37,9 @@ public class RedFront extends AutonomousBase {
     private boolean jewelRot;
     private ColorSensor sensorColor;
     private boolean started;
-    private int target;
     private double waitTime;
+    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+    VuforiaLocalizer.Parameters vulocal = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
     BNO055IMU imu;
     private boolean blue;//true if blue detected
 
@@ -70,12 +72,16 @@ public class RedFront extends AutonomousBase {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
+        vulocal.vuforiaLicenseKey = "AUBrQCz/////AAAAGXg5njs2FEpBgEGX/o6QppZq8c+tG+wbAB+cjpPcC5bwtGmv+kD1lqGbNrlHctdvrdmTJ9Fm1OseZYM15VBaiF++ICnjCSY/IHPhjGW9TXDMAOv/Pdz/T5H86PduPVVKvdGiQ/gpE8v6HePezWRRWG6CTA21itPZfj0xDuHdqrAGGiIQXcUbCTfRAkY7HwwRfQOM1aDhmeAaOvkPPCnaA228iposAByBHmA2rkx4/SmTtN82rtOoRn3/I1PA9RxMiWHWlU67yMQW4ExpTe2eRtq7fPGCCjFeXqOl57au/rZySASURemt7pwbprumwoyqYLgK9eJ6hC2UqkJO5GFzTi3XiDNOYcaFOkP71P5NE/BB    ";
+
+        vulocal.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(vulocal);
+
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         blue = false;
-
     }
 
 
@@ -145,46 +151,41 @@ public class RedFront extends AutonomousBase {
                 motorBackLeft.setPower(-0.25);
                 gameState = 6;
                 break;
+
+
+            case 6:
+                int choosen = Vuforia(cameraMonitorViewId, "red", vuforia);
+
+                switch (choosen) {
+                    case (1):
+                        map.setGoal();
+                        break;
+                    case (2):
+                        target = 116;
+                        break;
+                    case (3):
+                        target = 130;
+                        break;
+                    default:
+                        target = 99;
+                        break;
+                }
+                gameState = 7;
+                break;
+
+            case 7:
+                while (waitTime < 25) {
+                    top.setPower(.5);
+                    front.setPower(.5);
+
+                    break;
+                }
+                break;
         }
     }
 }
 
-//            case 6:
-//                int choosen = Vuforia(cameraMonitorViewId, "blue", vuforia);
-//                target = 0;
-//
-//                switch (choosen) {
-//                    case (1):
-//                        target = 99;
-//                        break;
-//                    case (2):
-//                        target = 116;
-//                        break;
-//                    case (3):
-//                        target = 130;
-//                        break;
-//                    default:
-//                        target = 99;
-//                        break;
-//                }
-//                gameState = 7;
-//        }
-//
-//
-//        break;
-//
-//        case 7:
-//        while (waitTime < 25) {
-//            top.setPower(.5);
-//            front.setPower(.5);
-//
-//            break;
-//        }
-//        break;
-//    }
-//}
-//
-//
-//
-//
-//
+
+
+
+
