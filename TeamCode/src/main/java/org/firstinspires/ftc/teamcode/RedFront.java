@@ -34,9 +34,8 @@ public class RedFront extends AutonomousBase {
     private RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
     private int startDeg;
     private int gameState;
-    private boolean jewelRot;
+    public boolean started;
     private ColorSensor sensorColor;
-    private boolean started;
     private double waitTime;
     int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
     VuforiaLocalizer.Parameters vulocal = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -72,8 +71,7 @@ public class RedFront extends AutonomousBase {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        vulocal.vuforiaLicenseKey = "AUBrQCz/////AAAAGXg5njs2FEpBgEGX/o6QppZq8c+tG+wbAB+cjpPcC5bwtGmv+kD1lqGbNrlHctdvrdmTJ9Fm1OseZYM15VBaiF++ICnjCSY/IHPhjGW9TXDMAOv/Pdz/T5H86PduPVVKvdGiQ/gpE8v6HePezWRRWG6CTA21itPZfj0xDuHdqrAGGiIQXcUbCTfRAkY7HwwRfQOM1aDhmeAaOvkPPCnaA228iposAByBHmA2rkx4/SmTtN82rtOoRn3/I1PA9RxMiWHWlU67yMQW4ExpTe2eRtq7fPGCCjFeXqOl57au/rZySASURemt7pwbprumwoyqYLgK9eJ6hC2UqkJO5GFzTi3XiDNOYcaFOkP71P5NE/BB    ";
-
+        vulocal.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
         vulocal.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(vulocal);
 
@@ -138,20 +136,30 @@ public class RedFront extends AutonomousBase {
                 motorBackRight.setPower(0);
                 motorFrontRight.setPower(0);
                 servo.setPosition(0.52);
-                gameState = 5;
+
+                if(vuMark != RelicRecoveryVuMark.UNKNOWN){
+                    telemetry.addData("VuMark", vuMark);
+                    gameState = 6;
+                }
+                else{
+                    telemetry.addData("Vumark is not seen", 0);
+                }
+
+
+
                 break;
 
 
-            case 5:
-
-                map.setGoal(11, 5);
-                //moveState =
-                motorFrontRight.setPower(0.25);
-                motorFrontLeft.setPower(-0.25);
-                motorBackRight.setPower(0.25);
-                motorBackLeft.setPower(-0.25);
-                gameState = 6;
-                break;
+//            case 5:
+//
+//                map.setGoal(11, 5);
+//                //moveState =
+//                motorFrontRight.setPower(0.25);
+//                motorFrontLeft.setPower(-0.25);
+//                motorBackRight.setPower(0.25);
+//                motorBackLeft.setPower(-0.25);
+//                gameState = 6;
+//                break;
 
 
             case 6:

@@ -54,7 +54,7 @@ public class BlueFront extends AutonomousBase {
         front = hardwareMap.dcMotor.get("front");
         franny = hardwareMap.servo.get("franny");
         mobert = hardwareMap.servo.get("mobert");
-        servo = hardwareMap.servo.get("servo");
+        //servo = hardwareMap.servo.get("servo");
         sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
         startDeg = 0;
         gameState = 0;
@@ -139,7 +139,7 @@ public class BlueFront extends AutonomousBase {
                 motorBackLeft.setPower(0);
                 motorBackRight.setPower(0);
                 motorFrontRight.setPower(0);
-                servo.setPosition(0.52);
+                //servo.setPosition(0.52);
                 break;
 
             case 5:
