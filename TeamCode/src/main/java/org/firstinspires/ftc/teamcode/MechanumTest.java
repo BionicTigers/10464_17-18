@@ -68,15 +68,15 @@ public void loop() {
         double sinRAngle = Math.sin(robotAngle);
         double cosRAngle = Math.cos(robotAngle);
 
-        final double v1 = (P * sinRAngle) - (P * cosRAngle) - rightX;
-        final double v2 = (P * sinRAngle) + (P * cosRAngle) + rightX;
-        final double v3 = (P * sinRAngle) + (P * cosRAngle) - rightX;
-        final double v4 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+        final double v11 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+        final double v12 = (P * sinRAngle) + (P * cosRAngle) + rightX;
+        final double v13 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v14 = (P * sinRAngle) - (P * cosRAngle) + rightX;
 
-        motorFrontRight.setPower(v1);
-        motorFrontLeft.setPower(v2);
-        motorBackRight.setPower(v3);
-        motorBackLeft.setPower(v4); }
+        motorFrontRight.setPower(v11);
+        motorFrontLeft.setPower(v12);
+        motorBackRight.setPower(v13);
+        motorBackLeft.setPower(v14); }
 
     if (calibToggle == 2) {
         double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
