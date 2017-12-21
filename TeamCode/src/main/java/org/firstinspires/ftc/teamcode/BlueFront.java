@@ -28,10 +28,10 @@ public class BlueFront extends AutonomousBase {
     private DcMotor motorBackRight;
     private DcMotor top;
     private DcMotor front;
-    private Servo franny = null; //left servo
-    private Servo mobert = null; //right servo
-    private Servo tiffany; //up/down
-    private Servo mrClean; // right/left
+    Servo franny; //left servo
+    Servo mobert; //right servo
+    //private Servo tiffany; //up/down
+    //private Servo mrClean; // right/left
     private VuforiaLocalizer vuforia;
     private VuforiaTrackable relicTemplate;
     private RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -99,7 +99,7 @@ public class BlueFront extends AutonomousBase {
             case 0: //preset variables
                 waitTime = getRuntime(); //get current runTime
                 gameState = 1;
-                tiffany.setPosition(.9);
+                //tiffany.setPosition(.9);
                 map.setRobot(2,2);
                 break;
 

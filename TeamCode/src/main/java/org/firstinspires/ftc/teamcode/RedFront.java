@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -26,21 +25,19 @@ public class RedFront extends AutonomousBase {
     private DcMotor motorBackRight;
     private DcMotor top;
     private DcMotor front;
-    private Servo franny = null; //left servo
-    private Servo mobert = null; //right servo
+    private Servo franny; //left servo
+    private Servo mobert; //right servo
     private Servo servo;
     private VuforiaLocalizer vuforia;
     private VuforiaTrackable relicTemplate;
     private RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
     private int startDeg;
     private int gameState;
-    public boolean started;
     private ColorSensor sensorColor;
+    private boolean started;
     private double waitTime;
-    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-    VuforiaLocalizer.Parameters vulocal = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
     BNO055IMU imu;
-    private boolean blue;//true if blue detected
+    boolean blue;//true if blue detected
 
 
     public void init() {
@@ -71,17 +68,12 @@ public class RedFront extends AutonomousBase {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        vulocal.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
-        vulocal.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(vulocal);
-
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         blue = false;
     }
-
 
     public void loop() {
         //super.gameState();
@@ -90,7 +82,7 @@ public class RedFront extends AutonomousBase {
         telemetry.addData("State", gameState);
         telemetry.addData("Color value blue", sensorColor.blue());
         telemetry.addData("Current runtime", getRuntime());
-        telemetry.addData("Blue", blue);
+
 
         switch (gameState) {
             case 0: //preset variables
@@ -163,31 +155,32 @@ public class RedFront extends AutonomousBase {
 
 
             case 6:
-                int choosen = Vuforia(cameraMonitorViewId, "Red", vuforia);
-
-                switch (choosen) {
-                    case (1):
+                    if(vuMark == RelicRecoveryVuMark.LEFT) {
                         map.setGoal(11, 5.4);
                         power = .35;
-                        moveState = MoveState.LEFT;
-                        break;
-                    case (2):
-                        map.setGoal(11,5);
+                        moveState = MoveState.RIGHT;
+                        gameState = 7;
+                    }
+                    else if(vuMark == RelicRecoveryVuMark.CENTER) {
+                        map.setGoal(11, 5);
                         power = .35;
-                        moveState = MoveState.LEFT;
-                        break;
-                    case (3):
-                        map.setGoal(11,4.6);
+                        moveState = MoveState.RIGHT;
+                        gameState = 7;
+                    }
+                    else if(vuMark == RelicRecoveryVuMark.RIGHT) {
+                        map.setGoal(11, 4.6);
                         power = .35;
-                        moveState = MoveState.LEFT;
-                        break;
-                    default:
-                        map.setGoal(11,5);
+                        moveState = MoveState.RIGHT;
+                        gameState = 7;
+                    }
+                    else {
+                        map.setGoal(11, 5);
                         power = .35;
-                        moveState = MoveState.LEFT;
-                        break;
-                }
-                gameState = 7;
+                        moveState = MoveState.RIGHT;
+                        gameState = 7;
+                    }
+
+
                 break;
 
             case 7:
