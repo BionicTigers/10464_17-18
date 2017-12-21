@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
 @Autonomous(name = "Red Front", group = "Red")
-public class RedFront extends AutonomousBase {
+public class RedFront extends AutonomousBaseMercury {
 
     int i;
     public Orientation angles;
@@ -44,20 +44,9 @@ public class RedFront extends AutonomousBase {
 
 
     public void init() {
-        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backRight");
-        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        top = hardwareMap.dcMotor.get("top");
-        front = hardwareMap.dcMotor.get("front");
-        franny = hardwareMap.servo.get("franny");
-        mobert = hardwareMap.servo.get("mobert");
-        servo = hardwareMap.servo.get("servo");
-        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
         startDeg = 0;
         gameState = 0;
         started = false;
-        waitTime = 0;
         map.setRobot(10, 2);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -75,10 +64,6 @@ public class RedFront extends AutonomousBase {
         vulocal.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         //VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(vulocal);
 
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         blue = false;
     }
 
@@ -131,10 +116,7 @@ public class RedFront extends AutonomousBase {
                 }
                 break;
             case 4: //stop all motors, pull servo up
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(0);
-                motorBackRight.setPower(0);
-                motorFrontRight.setPower(0);
+                moveState = MoveState.STOP;
                 servo.setPosition(0.52);
 
                 if(vuMark != RelicRecoveryVuMark.UNKNOWN){
@@ -168,23 +150,19 @@ public class RedFront extends AutonomousBase {
                 switch (choosen) {
                     case (1):
                         map.setGoal(11, 5.4);
-                        power = .35;
-                        moveState = MoveState.LEFT;
+                        moveState = MoveState.LEFT_SLOW;
                         break;
                     case (2):
                         map.setGoal(11,5);
-                        power = .35;
-                        moveState = MoveState.LEFT;
+                        moveState = MoveState.LEFT_SLOW;
                         break;
                     case (3):
                         map.setGoal(11,4.6);
-                        power = .35;
-                        moveState = MoveState.LEFT;
+                        moveState = MoveState.LEFT_SLOW;
                         break;
                     default:
                         map.setGoal(11,5);
-                        power = .35;
-                        moveState = MoveState.LEFT;
+                        moveState = MoveState.LEFT_SLOW;
                         break;
                 }
                 gameState = 7;

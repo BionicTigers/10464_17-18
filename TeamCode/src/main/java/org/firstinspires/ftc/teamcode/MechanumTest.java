@@ -25,15 +25,11 @@ import java.util.Locale;
 
 public class MechanumTest extends OpMode {
 
-    public Orientation angles;
-    public Acceleration gravity;
-
     public DcMotor motorFrontRight;
     public DcMotor motorFrontLeft;
     public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
 
-    BNO055IMU imu;
     public int calibToggle;
 
 
@@ -43,147 +39,92 @@ public void init() {
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-}
+
+    calibToggle = 1; }
 
 
 public void loop() {
 
-    telemetry.addData("Left X", gamepad1.left_stick_x);
-    telemetry.addData("Left Y", gamepad1.left_stick_y);
-    telemetry.addData("Right X", gamepad1.right_stick_x);
+    telemetry.addData("Calib Toggle", calibToggle);
 
     telemetry.update();
 
     if (gamepad1.a) {
-        // Get the calibration data
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        imu.initialize(parameters);
-
-        BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
-        String filename = "BNO055IMUCalibration.json";
-        File file = AppUtil.getInstance().getSettingsFile(filename);
-        ReadWriteFile.writeFile(file, calibrationData.serialize());
-        telemetry.log().add("saved to '%s'", filename); }
+        calibToggle = 1; }
 
     if (gamepad1.x) {
-        calibToggle += 1; }
+        calibToggle = 2; }
 
-    if ((calibToggle & 1) != 0) {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        double P = Math.hypot(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
-        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_x) - Math.PI / 4;
-        double rightX = gamepad1.right_stick_x;
+    if (gamepad1.y) {
+        calibToggle = 3; }
 
-        final double v5 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
-        final double v6 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
-        final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
-        final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
+    if (gamepad1.b) {
+        calibToggle = 4; }
 
-        motorFrontRight.setPower(v5);
-        motorFrontLeft.setPower(v6);
-        motorBackRight.setPower(v7);
-        motorBackLeft.setPower(v8); }
+    if (calibToggle == 1) {
+        double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
+        double robotAngle = -(Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x));
+        double rightX = -gamepad1.right_stick_x;
+        double sinRAngle = Math.sin(robotAngle);
+        double cosRAngle = Math.cos(robotAngle);
 
-    else {
-        double P = -(Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y));
-        double robotAngle = -(Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y)) - Math.PI / 4;
-        double rightX = gamepad1.left_stick_x;
-
-        final double v1 = P * Math.sin(robotAngle) + rightX;
-        final double v2 = P * Math.cos(robotAngle) + rightX;
-        final double v3 = P * Math.cos(robotAngle) - rightX;
-        final double v4 = P * Math.sin(robotAngle) - rightX;
+        final double v1 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+        final double v2 = (P * sinRAngle) + (P * cosRAngle) + rightX;
+        final double v3 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v4 = (P * sinRAngle) - (P * cosRAngle) + rightX;
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);
-        motorBackLeft.setPower(v4);
-    }
-}
+        motorBackLeft.setPower(v4); }
 
+    if (calibToggle == 2) {
+        double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
+        double robotAngle = -(Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x));
+        double rightX = -gamepad1.right_stick_x;
+        double sinRAngle = Math.sin(robotAngle);
+        double cosRAngle = Math.cos(robotAngle);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+        final double v21 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+        final double v22 = (P * sinRAngle) + (P * cosRAngle) + rightX;
+        final double v23 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v24 = (P * sinRAngle) - (P * cosRAngle) + rightX;
 
-    private String composeTelemetry() {
-        // At the beginning of each telemetry update, grab a bunch of data
-        // from the IMU that we will then display in separate lines.
-        telemetry.addAction(new Runnable() {
-            @Override
-            public void run() {
-                // Acquiring the angles is relatively expensive; we don't want
-                // to do that in each of the three items that need that info, as that's
-                // three times the necessary expense.
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                gravity = imu.getGravity();
-            }
-        });
+        motorFrontRight.setPower(v21);
+        motorFrontLeft.setPower(v22);
+        motorBackRight.setPower(v23);
+        motorBackLeft.setPower(v24); }
 
-        telemetry.addLine()
-                .addData("status", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return imu.getSystemStatus().toShortString();
-                    }
-                })
-                .addData("calib", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return imu.getCalibrationStatus().toString();
-                    }
-                });
+    if (calibToggle == 3) {
+        double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
+        double robotAngle = -(Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x));
+        double rightX = -gamepad1.right_stick_x;
+        double sinRAngle = Math.sin(robotAngle);
+        double cosRAngle = Math.cos(robotAngle);
 
-        telemetry.addLine()
-                .addData("heading", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return formatAngle(angles.angleUnit, angles.firstAngle);
-                    }
-                })
-                .addData("roll", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return formatAngle(angles.angleUnit, angles.secondAngle);
-                    }
-                })
-                .addData("pitch", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return formatAngle(angles.angleUnit, angles.thirdAngle);
-                    }
-                });
+        final double v31 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+        final double v32 = (P * sinRAngle) + (P * cosRAngle) + rightX;
+        final double v33 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v34 = (P * sinRAngle) - (P * cosRAngle) + rightX;
 
-        telemetry.addLine()
-                .addData("grvty", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return gravity.toString();
-                    }
-                })
-                .addData("mag", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return String.format(Locale.getDefault(), "%.3f",
-                                Math.sqrt(gravity.xAccel * gravity.xAccel
-                                        + gravity.yAccel * gravity.yAccel
-                                        + gravity.zAccel * gravity.zAccel));
-                    }
-                });
-        return formatAngle(angles.angleUnit, angles.firstAngle);
-    }
+        motorFrontRight.setPower(v31);
+        motorFrontLeft.setPower(v32);
+        motorBackRight.setPower(v33);
+        motorBackLeft.setPower(v34); }
 
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
+    if (calibToggle == 4) {
+        double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
+        double robotAngle = -(Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x));
+        double rightX = -gamepad1.right_stick_x;
+        double sinRAngle = Math.sin(robotAngle);
+        double cosRAngle = Math.cos(robotAngle);
 
-    String formatDegrees(double degrees) {
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    } }
+        final double v41 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+        final double v42 = (P * sinRAngle) + (P * cosRAngle) + rightX;
+        final double v43 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v44 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+
+        motorFrontRight.setPower(v41);
+        motorFrontLeft.setPower(v42);
+        motorBackRight.setPower(v43);
+        motorBackLeft.setPower(v44); } } }
