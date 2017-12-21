@@ -31,7 +31,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.io.File;
 
-public abstract class AutonomousBase extends OpMode {
+public abstract class AutonomousBaseVenus extends OpMode {
     public final double HEADING_TOLERANCE = 7; //tolerance for heading calculations
     public final double DISTANCE_TOLERANCE = 1.0 / 10; //tolerance for heading calculations
     public final double DEGREES_TO_FEET = 3.96 * Math.PI / 1120 / 12;
