@@ -141,6 +141,7 @@ public class RedFront extends AutonomousBase {
                 gameState = 5;
                 break;
 
+
             case 5:
 
                 map.setGoal(11, 5);
