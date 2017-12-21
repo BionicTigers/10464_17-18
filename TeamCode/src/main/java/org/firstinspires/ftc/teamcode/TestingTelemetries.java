@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 @Autonomous(name="Testing Telemetries", group="Red")
 
 
-public class TestingTelemetries extends AutonomousBase {
+public class TestingTelemetries extends AutonomousBaseMercury {
 
     int i;
     public Orientation angles;

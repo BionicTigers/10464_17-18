@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import static com.sun.tools.javac.util.Constants.format;
 
 @Autonomous(name = "VuforiaOnly")
-public class VuforiaOnly extends AutonomousBase {
+public class VuforiaOnly extends AutonomousBaseMercury {
 
 
     int i;
