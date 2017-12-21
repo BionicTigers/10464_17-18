@@ -44,6 +44,17 @@ public class RedFront extends AutonomousBaseMercury {
 
 
     public void init() {
+        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+        motorBackRight = hardwareMap.dcMotor.get("backRight");
+        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        top = hardwareMap.dcMotor.get("top");
+        front = hardwareMap.dcMotor.get("front");
+        franny = hardwareMap.servo.get("franny");
+        mobert = hardwareMap.servo.get("mobert");
+        servo = hardwareMap.servo.get("servo");
+        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
+        waitTime = 0;
         startDeg = 0;
         gameState = 0;
         started = false;
