@@ -49,16 +49,16 @@ public void loop() {
 
     telemetry.update();
 
-    if (gamepad1.a) {
+    if (gamepad1.y) {
         calibToggle = 1; }
 
-    if (gamepad1.x) {
+    if (gamepad1.b) {
         calibToggle = 2; }
 
-    if (gamepad1.y) {
+    if (gamepad1.a) {
         calibToggle = 3; }
 
-    if (gamepad1.b) {
+    if (gamepad1.x) {
         calibToggle = 4; }
 
     if (calibToggle == 1) {
@@ -86,9 +86,9 @@ public void loop() {
         double cosRAngle = Math.cos(robotAngle);
 
         final double v21 = (P * sinRAngle) - (P * cosRAngle) - rightX;
-        final double v22 = (P * sinRAngle) + (P * cosRAngle) + rightX;
+        final double v22 = -((P * sinRAngle) + (P * cosRAngle) + rightX);
         final double v23 = (P * sinRAngle) + (P * cosRAngle) - rightX;
-        final double v24 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+        final double v24 = -((P * sinRAngle) - (P * cosRAngle) + rightX);
 
         motorFrontRight.setPower(v21);
         motorFrontLeft.setPower(v22);
@@ -102,10 +102,10 @@ public void loop() {
         double sinRAngle = Math.sin(robotAngle);
         double cosRAngle = Math.cos(robotAngle);
 
-        final double v31 = (P * sinRAngle) - (P * cosRAngle) - rightX;
-        final double v32 = (P * sinRAngle) + (P * cosRAngle) + rightX;
-        final double v33 = (P * sinRAngle) + (P * cosRAngle) - rightX;
-        final double v34 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+        final double v31 = -((P * sinRAngle) - (P * cosRAngle) - rightX);
+        final double v32 = -((P * sinRAngle) + (P * cosRAngle) + rightX);
+        final double v33 = -((P * sinRAngle) + (P * cosRAngle) - rightX);
+        final double v34 = -((P * sinRAngle) - (P * cosRAngle) + rightX);
 
         motorFrontRight.setPower(v31);
         motorFrontLeft.setPower(v32);
@@ -119,9 +119,9 @@ public void loop() {
         double sinRAngle = Math.sin(robotAngle);
         double cosRAngle = Math.cos(robotAngle);
 
-        final double v41 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+        final double v41 = -((P * sinRAngle) - (P * cosRAngle) - rightX);
         final double v42 = (P * sinRAngle) + (P * cosRAngle) + rightX;
-        final double v43 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v43 = -((P * sinRAngle) + (P * cosRAngle) - rightX);
         final double v44 = (P * sinRAngle) - (P * cosRAngle) + rightX;
 
         motorFrontRight.setPower(v41);

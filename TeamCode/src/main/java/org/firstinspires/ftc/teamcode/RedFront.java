@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
 @Autonomous(name = "Red Front", group = "Red")
-public class RedFront extends AutonomousBase {
+public class RedFront extends AutonomousBaseMercury {
 
     int i;
     public Orientation angles;
