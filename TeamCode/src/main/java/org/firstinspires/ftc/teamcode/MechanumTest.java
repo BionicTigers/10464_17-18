@@ -73,20 +73,18 @@ public void loop() {
         telemetry.log().add("saved to '%s'", filename); }
 
     if (gamepad1.x) {
-        calibToggle += 1;
-    }
+        calibToggle += 1; }
 
     if ((calibToggle & 1) != 0) {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double H = (angles.firstAngle * Math.PI) / 180;
-        double rightX = gamepad1.left_stick_x;
-        double P = -(Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y));
-        double robotAngle = -(Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y)) - Math.PI / 4;
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        double P = Math.hypot(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_x) - Math.PI / 4;
+        double rightX = gamepad1.right_stick_x;
 
-        final double v5 = P * Math.sin(robotAngle) + rightX - H;
-        final double v6 = P * Math.cos(robotAngle) + rightX - H;
-        final double v7 = P * Math.cos(robotAngle) - rightX - H;
-        final double v8 = P * Math.sin(robotAngle) - rightX - H;
+        final double v5 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
+        final double v6 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
+        final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
+        final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
 
         motorFrontRight.setPower(v5);
         motorFrontLeft.setPower(v6);
