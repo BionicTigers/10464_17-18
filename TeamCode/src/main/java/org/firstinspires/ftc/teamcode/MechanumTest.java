@@ -26,6 +26,9 @@ public void init() {
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
 
+    motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+    motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+
     calibToggle = 1;
 }
 
