@@ -26,7 +26,8 @@ public void init() {
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
 
-    calibToggle = 1; }
+    calibToggle = 1;
+}
 
 
 public void loop() {
@@ -36,16 +37,20 @@ public void loop() {
     telemetry.update();
 
     if (gamepad1.y) {
-        calibToggle = 1; }
+        calibToggle = 1;
+    }
 
     if (gamepad1.b) {
-        calibToggle = 2; }
+        calibToggle = 2;
+    }
 
     if (gamepad1.a) {
-        calibToggle = 3; }
+        calibToggle = 3;
+    }
 
     if (gamepad1.x) {
-        calibToggle = 4; }
+        calibToggle = 4;
+    }
 
     if (calibToggle == 1) {
         double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
@@ -62,7 +67,8 @@ public void loop() {
         motorFrontRight.setPower(v11);
         motorFrontLeft.setPower(v12);
         motorBackRight.setPower(v13);
-        motorBackLeft.setPower(v14); }
+        motorBackLeft.setPower(v14);
+    }
 
     if (calibToggle == 2) {
         double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
@@ -79,7 +85,8 @@ public void loop() {
         motorFrontRight.setPower(v21);
         motorFrontLeft.setPower(v22);
         motorBackRight.setPower(v23);
-        motorBackLeft.setPower(v24); }
+        motorBackLeft.setPower(v24);
+    }
 
     if (calibToggle == 3) {
         double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
@@ -96,7 +103,8 @@ public void loop() {
         motorFrontRight.setPower(v31);
         motorFrontLeft.setPower(v32);
         motorBackRight.setPower(v33);
-        motorBackLeft.setPower(v34); }
+        motorBackLeft.setPower(v34);
+    }
 
     if (calibToggle == 4) {
         double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
@@ -113,4 +121,7 @@ public void loop() {
         motorFrontRight.setPower(v41);
         motorFrontLeft.setPower(v42);
         motorBackRight.setPower(v43);
-        motorBackLeft.setPower(v44); } } }
+        motorBackLeft.setPower(v44);
+        }
+    }
+}
