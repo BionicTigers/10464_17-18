@@ -87,8 +87,8 @@ public void loop() {
 
         final double v21 = (P * sinRAngle) - (P * cosRAngle) - rightX;
         final double v22 = -((P * sinRAngle) + (P * cosRAngle) + rightX);
-        final double v23 = (P * sinRAngle) + (P * cosRAngle) - rightX;
-        final double v24 = -((P * sinRAngle) - (P * cosRAngle) + rightX);
+        final double v23 = -((P * sinRAngle) + (P * cosRAngle) - rightX);
+        final double v24 = (P * sinRAngle) - (P * cosRAngle) + rightX;
 
         motorFrontRight.setPower(v21);
         motorFrontLeft.setPower(v22);
@@ -121,8 +121,8 @@ public void loop() {
 
         final double v41 = -((P * sinRAngle) - (P * cosRAngle) - rightX);
         final double v42 = (P * sinRAngle) + (P * cosRAngle) + rightX;
-        final double v43 = -((P * sinRAngle) + (P * cosRAngle) - rightX);
-        final double v44 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+        final double v43 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v44 = -((P * sinRAngle) - (P * cosRAngle) + rightX);
 
         motorFrontRight.setPower(v41);
         motorFrontLeft.setPower(v42);
