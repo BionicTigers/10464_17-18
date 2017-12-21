@@ -114,17 +114,13 @@ public class RedFront extends AutonomousBase {
 
                 if (sensorColor.blue() < 1) { //red
                     motorFrontLeft.setPower(-.5);
-                    motorBackLeft.setPower(-.5);
-                    motorFrontRight.setPower(.5);
-                    motorBackRight.setPower(.5);
+                    motorBackRight.setPower(-.55);
                     gameState = 3;
                     blue = false;
 
                 } else {
-                    motorFrontLeft.setPower(.5);
-                    motorBackLeft.setPower(.5);
-                    motorFrontRight.setPower(-.5);
-                    motorBackRight.setPower(-.5);
+                    motorFrontLeft.setPower(.55);
+                    motorBackRight.setPower(.5);
                     gameState = 3;
                     blue = true;
                 }
@@ -142,9 +138,19 @@ public class RedFront extends AutonomousBase {
                 motorBackRight.setPower(0);
                 motorFrontRight.setPower(0);
                 servo.setPosition(0.52);
-                gameState = 6;
+                gameState = 5;
                 break;
 
+            case 5:
+
+                map.setGoal(11, 5);
+                //moveState =
+                motorFrontRight.setPower(0.25);
+                motorFrontLeft.setPower(-0.25);
+                motorBackRight.setPower(0.25);
+                motorBackLeft.setPower(-0.25);
+                gameState = 6;
+                break;
 
 
             case 6:
@@ -186,3 +192,8 @@ public class RedFront extends AutonomousBase {
         }
     }
 }
+
+
+
+
+
