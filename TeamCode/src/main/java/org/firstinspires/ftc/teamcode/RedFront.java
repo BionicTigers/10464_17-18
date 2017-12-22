@@ -45,24 +45,17 @@ public class RedFront extends OpMode {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-
         front = hardwareMap.dcMotor.get("front");
         top = hardwareMap.dcMotor.get("top");
         servo = hardwareMap.servo.get("servo");
-        franny = hardwareMap.servo.get("franny");
-        mobert = hardwareMap.servo.get("mobert");
-
         gameState = 0;
         moveState = 0;
-        waitTime = 0;
-
-        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
 
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
 
@@ -83,7 +76,6 @@ public class RedFront extends OpMode {
                 servo.setPosition(.9);
                 franny.setPosition(.35);
                 mobert.setPosition(.32);
-                telemetry.addData("Color value blue", sensorColor.blue());
 
                 break;
 
@@ -93,22 +85,20 @@ public class RedFront extends OpMode {
                 }
                 break;
             case 2: //detect color sensor and choose direction
-//                waitTime = getRuntime(); //get current runTime
-//
-//                if (sensorColor.blue() < 1) { //red
-//                    motorFrontLeft.setPower(.5);
-//                    motorBackRight.setPower(-.55);
-//                    gameState = 3;
-//
-//                } else {
-//                    motorFrontLeft.setPower(-.55);
-//                    motorBackRight.setPower(.5);
-//                    gameState = 3;
-//                }
-//
-//                break;
-                gameState = 3;
-            break;
+                waitTime = getRuntime(); //get current runTime
+
+                if (sensorColor.blue() < 1) { //red
+                    motorFrontLeft.setPower(-.5);
+                    motorBackRight.setPower(-.55);
+                    gameState = 3;
+
+                } else {
+                    motorFrontLeft.setPower(.55);
+                    motorBackRight.setPower(.5);
+                    gameState = 3;
+                }
+
+                break;
 
             case 3://delay to allow turn
                 if (getRuntime() > waitTime + 2.0) {
