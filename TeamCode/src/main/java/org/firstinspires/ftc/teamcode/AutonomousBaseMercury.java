@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -132,10 +133,10 @@ public abstract class AutonomousBaseMercury extends OpMode {
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
 
-        I2cAddr colorAddrLeft = I2cAddr.create8bit(0x3C);
-        I2cAddr colorAddrRight = I2cAddr.create8bit(0x4C);
-        // sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
-        // sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
+        //I2cAddr colorAddrLeft = I2cAddr.create8bit(0x3C);
+        //I2cAddr colorAddrRight = I2cAddr.create8bit(0x4C);
+        //sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
+        //sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
