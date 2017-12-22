@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
 
-@TeleOp(name="Red Front", group="Red")
+@Autonomous(name="Red Front", group="Red")
 
 
 public class RedFront extends OpMode {
@@ -44,6 +44,10 @@ public class RedFront extends OpMode {
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         front = hardwareMap.dcMotor.get("front");
         top = hardwareMap.dcMotor.get("top");
+        servo = hardwareMap.servo.get("servo");
+        gameState = 0;
+        moveState = 0;
+
 
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
@@ -52,12 +56,7 @@ public class RedFront extends OpMode {
 
 
     public void loop() {
-        //super.gameState();
-
-        telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
-        telemetry.addData("State", gameState);
-        telemetry.addData("Color value blue", sensorColor.blue());
-        telemetry.addData("Current runtime", getRuntime());
+         //super.gameState();
 
 
         switch (gameState) {
