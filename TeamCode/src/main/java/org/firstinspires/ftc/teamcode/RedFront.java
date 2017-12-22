@@ -20,6 +20,8 @@ public class RedFront extends OpMode {
     public DcMotor motorFrontLeft;
     public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
+    public DcMotor top;
+    public DcMotor front;
     public int gameState;
     public ColorSensor sensorColor;
     public double waitTime;
@@ -28,6 +30,8 @@ public class RedFront extends OpMode {
     public Servo franny;
     public VuforiaTrackable relicTemplate;
     public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+    public int moveState;
+
 
 
 
@@ -38,9 +42,12 @@ public class RedFront extends OpMode {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        front = hardwareMap.dcMotor.get("front");
+        top = hardwareMap.dcMotor.get("top");
 
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+
     }
 
 
@@ -121,43 +128,40 @@ public class RedFront extends OpMode {
 //                break;
 
 
-//            case 6:
-//                    if(vuMark == RelicRecoveryVuMark.LEFT) {
-//                        map.setGoal(11, 5.4);
-//                        power = .35;
-//                        moveState = AutonomousBaseMercury.MoveState.RIGHT;
-//                        gameState = 7;
-//                    }
-//                    else if(vuMark == RelicRecoveryVuMark.CENTER) {
-//                        map.setGoal(11, 5);
-//                        power = .35;
-//                        moveState = MoveState.RIGHT;
-//                        gameState = 7;
-//                    }
-//                    else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-//                        map.setGoal(11, 4.6);
-//                        power = .35;
-//                        moveState = MoveState.RIGHT;
-//                        gameState = 7;
-//                    }
-//                    else {
-//                        map.setGoal(11, 5);
-//                        power = .35;
-//                        moveState = MoveState.RIGHT;
-//                        gameState = 7;
-//                    }
-//
-//
-//                break;
-//
-//            case 7:
-//                while (waitTime < 25) {
-//                    top.setPower(.5);
-//                    front.setPower(.5);
-//
-//                    break;
-//                }
-//                break;
+            case 6:
+                    if(vuMark == RelicRecoveryVuMark.LEFT) {
+
+                        Map.setGoal(11, 5.4);
+                        moveState = AutonomousBaseMercury.MoveState.RIGHT;
+                        gameState = 7;
+                    }
+                    else if(vuMark == RelicRecoveryVuMark.CENTER) {
+                        Map.setGoal(11, 5);
+                        moveState = AutonomousBaseMercury.MoveState.RIGHT;
+                        gameState = 7;
+                    }
+                    else if(vuMark == RelicRecoveryVuMark.RIGHT) {
+                        Map.setGoal(11, 4.6);
+                        moveState = AutonomousBaseMercury.MoveState.RIGHT;
+                        gameState = 7;
+                    }
+                    else {
+                        Map.setGoal(11, 5);
+                        moveState = AutonomousBaseMercury.MoveState.RIGHT;
+                        gameState = 7;
+                    }
+
+
+                break;
+
+            case 7:
+                while (waitTime < 25) {
+                    top.setPower(.5);
+                    front.setPower(.5);
+
+                    break;
+                }
+                break;
         }
     }
 }
