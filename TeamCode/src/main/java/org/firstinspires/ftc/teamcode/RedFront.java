@@ -1,79 +1,48 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
-@Autonomous(name = "Red Front", group = "Red")
-public class RedFront extends AutonomousBaseMercury {
 
-    int i;
-    public Orientation angles;
-    private OpenGLMatrix lastLocation;
-    private DcMotor motorFrontRight;
-    private DcMotor motorBackLeft;
-    private DcMotor motorFrontLeft;
-    private DcMotor motorBackRight;
-    private DcMotor top;
-    private DcMotor front;
-    private Servo franny; //left servo
-    private Servo mobert; //right servo
-    private Servo servo;
-    private VuforiaLocalizer vuforia;
-    private VuforiaTrackable relicTemplate;
-    private RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-    private int startDeg;
-    private int gameState;
-    private ColorSensor sensorColor;
-    private boolean started;
-    private double waitTime;
-    BNO055IMU imu;
-    boolean blue;//true if blue detected
+@TeleOp(name="Red Front", group="Red")
+
+
+public class RedFront extends OpMode {
+
+    public DcMotor motorFrontRight;
+    public DcMotor motorFrontLeft;
+    public DcMotor motorBackLeft;
+    public DcMotor motorBackRight;
+    public int gameState;
+    public ColorSensor sensorColor;
+    public double waitTime;
+    public Servo servo;
+    public Servo mobert;
+    public Servo franny;
+    public VuforiaTrackable relicTemplate;
+    public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+
 
 
     public void init() {
+
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        top = hardwareMap.dcMotor.get("top");
-        front = hardwareMap.dcMotor.get("front");
-        franny = hardwareMap.servo.get("franny");
-        mobert = hardwareMap.servo.get("mobert");
-        servo = hardwareMap.servo.get("servo");
-        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
-        startDeg = 0;
-        gameState = 0;
-        started = false;
-        waitTime = 0;
-        map.setRobot(10, 2);
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
 
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        blue = false;
+        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
     }
+
 
     public void loop() {
         //super.gameState();
@@ -106,13 +75,11 @@ public class RedFront extends AutonomousBaseMercury {
                     motorFrontLeft.setPower(-.5);
                     motorBackRight.setPower(-.55);
                     gameState = 3;
-                    blue = false;
 
                 } else {
                     motorFrontLeft.setPower(.55);
                     motorBackRight.setPower(.5);
                     gameState = 3;
-                    blue = true;
                 }
 
                 break;
@@ -154,43 +121,43 @@ public class RedFront extends AutonomousBaseMercury {
 //                break;
 
 
-            case 6:
-                    if(vuMark == RelicRecoveryVuMark.LEFT) {
-                        map.setGoal(11, 5.4);
-                        power = .35;
-                        moveState = MoveState.RIGHT;
-                        gameState = 7;
-                    }
-                    else if(vuMark == RelicRecoveryVuMark.CENTER) {
-                        map.setGoal(11, 5);
-                        power = .35;
-                        moveState = MoveState.RIGHT;
-                        gameState = 7;
-                    }
-                    else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-                        map.setGoal(11, 4.6);
-                        power = .35;
-                        moveState = MoveState.RIGHT;
-                        gameState = 7;
-                    }
-                    else {
-                        map.setGoal(11, 5);
-                        power = .35;
-                        moveState = MoveState.RIGHT;
-                        gameState = 7;
-                    }
-
-
-                break;
-
-            case 7:
-                while (waitTime < 25) {
-                    top.setPower(.5);
-                    front.setPower(.5);
-
-                    break;
-                }
-                break;
+//            case 6:
+//                    if(vuMark == RelicRecoveryVuMark.LEFT) {
+//                        map.setGoal(11, 5.4);
+//                        power = .35;
+//                        moveState = AutonomousBaseMercury.MoveState.RIGHT;
+//                        gameState = 7;
+//                    }
+//                    else if(vuMark == RelicRecoveryVuMark.CENTER) {
+//                        map.setGoal(11, 5);
+//                        power = .35;
+//                        moveState = MoveState.RIGHT;
+//                        gameState = 7;
+//                    }
+//                    else if(vuMark == RelicRecoveryVuMark.RIGHT) {
+//                        map.setGoal(11, 4.6);
+//                        power = .35;
+//                        moveState = MoveState.RIGHT;
+//                        gameState = 7;
+//                    }
+//                    else {
+//                        map.setGoal(11, 5);
+//                        power = .35;
+//                        moveState = MoveState.RIGHT;
+//                        gameState = 7;
+//                    }
+//
+//
+//                break;
+//
+//            case 7:
+//                while (waitTime < 25) {
+//                    top.setPower(.5);
+//                    front.setPower(.5);
+//
+//                    break;
+//                }
+//                break;
         }
     }
 }

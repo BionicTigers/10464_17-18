@@ -60,47 +60,47 @@ public abstract class AutonomousBaseMercury extends OpMode {
     }
 
     int i;
-    private OpenGLMatrix lastLocation;
-    private DcMotor motorFrontRight;
-    private DcMotor motorBackLeft;
-    private DcMotor motorFrontLeft;
-    private DcMotor motorBackRight;
-    private DcMotor top;
-    private DcMotor front;
-    private Servo franny = null; //left servo
-    private Servo mobert = null; //right servo
-    private Servo servo;
-    private VuforiaLocalizer vuforia;
-    private VuforiaTrackable relicTemplate;
-    private RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-    private int startDeg;
+    public OpenGLMatrix lastLocation;
+    public DcMotor motorFrontRight;
+    public DcMotor motorBackLeft;
+    public DcMotor motorFrontLeft;
+    public DcMotor motorBackRight;
+    public DcMotor top;
+    public DcMotor front;
+    public Servo franny = null; //left servo
+    public Servo mobert = null; //right servo
+    public Servo servo;
+    public VuforiaLocalizer vuforia;
+    public VuforiaTrackable relicTemplate;
+    public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+    public int startDeg;
     public boolean started;
-    private ColorSensor sensorColor;
-    private double waitTime;
-    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-    VuforiaLocalizer.Parameters vulocal = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-    BNO055IMU imu;
-    private boolean blue;//true if blue detected
+    public ColorSensor sensorColor;
+    public double waitTime;
+    public int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+    public VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+    public BNO055IMU imu;
+    public boolean blue;//true if blue detected
 
     //We stateful now
     int gameState;
-    int moveState;
+   public int moveState;
 
-    double power;
-    public Orientation angles;
-    public Acceleration gravity;
-    double heading;
-    double desiredAngle;
-    boolean turnRight;
-    int cDistF, lDistF, dDistF; //Forward distance variables
-    int cDistS, lDistS, dDistS; //Sideways distance variables
-    int cDistW, lDistW, dDistW; //Sideways distance variables
-    double sTime; //Shooting timer
-    double pTime; //Button presser timer
-    double tDiff;
-    ElapsedTime runtime = new ElapsedTime();
+   public double power;
+   public Orientation angles;
+   public Acceleration gravity;
+   public double heading;
+   public double desiredAngle;
+   public boolean turnRight;
+   public int cDistF, lDistF, dDistF; //Forward distance variables
+   public int cDistS, lDistS, dDistS; //Sideways distance variables
+   public int cDistW, lDistW, dDistW; //Sideways distance variables
+   public double sTime; //Shooting timer
+   public double pTime; //Button presser timer
+   public double tDiff;
+   public ElapsedTime runtime = new ElapsedTime();
 
-    int startPos = 6;
+   public int startPos = 6;
     Map map = new Map(startPos); //this map object will allow for easy manipulations.
 
     final double SCALE_FACTOR = 255;
