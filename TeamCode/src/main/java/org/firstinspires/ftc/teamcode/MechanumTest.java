@@ -26,6 +26,9 @@ public void init() {
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
 
+    motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+    motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+
     calibToggle = 1;
 }
 
@@ -40,7 +43,7 @@ public void loop() {
         calibToggle = 1;
     }
 
-    if (gamepad1.b) {
+    if (gamepad1.x) {
         calibToggle = 2;
     }
 
@@ -48,13 +51,13 @@ public void loop() {
         calibToggle = 3;
     }
 
-    if (gamepad1.x) {
+    if (gamepad1.b) {
         calibToggle = 4;
     }
 
     if (calibToggle == 1) {
-        double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
-        double robotAngle = -(Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x));
+        double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
         double rightX = -gamepad1.right_stick_x;
         double sinRAngle = Math.sin(robotAngle);
         double cosRAngle = Math.cos(robotAngle);
@@ -71,8 +74,8 @@ public void loop() {
     }
 
     if (calibToggle == 2) {
-        double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
-        double robotAngle = -(Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x));
+        double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
         double rightX = -gamepad1.right_stick_x;
         double sinRAngle = Math.sin(robotAngle);
         double cosRAngle = Math.cos(robotAngle);
@@ -89,8 +92,8 @@ public void loop() {
     }
 
     if (calibToggle == 3) {
-        double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
-        double robotAngle = -(Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x));
+        double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
         double rightX = -gamepad1.right_stick_x;
         double sinRAngle = Math.sin(robotAngle);
         double cosRAngle = Math.cos(robotAngle);
@@ -107,8 +110,8 @@ public void loop() {
     }
 
     if (calibToggle == 4) {
-        double P = -(Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y));
-        double robotAngle = -(Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x));
+        double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
         double rightX = -gamepad1.right_stick_x;
         double sinRAngle = Math.sin(robotAngle);
         double cosRAngle = Math.cos(robotAngle);
