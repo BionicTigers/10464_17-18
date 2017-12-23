@@ -7,7 +7,8 @@ package org.firstinspires.ftc.teamcode;
 public class Map {
     static double goalX;
     static double goalY;
-    double robotX, robotY;
+    static double robotX;
+    static double robotY;
 
     public Map(double startPos){ //pass in Team color
         robotX = startPos;
@@ -19,7 +20,7 @@ public class Map {
         goalY = y;
     }
     
-    public void setRobot(double x, double y){
+    public static void setRobot(double x, double y){
         robotX = x;
         robotY = y;
     }

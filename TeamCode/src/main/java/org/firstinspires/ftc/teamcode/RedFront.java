@@ -53,6 +53,8 @@ public class RedFront extends OpMode {
         moveState = 0;
         waitTime = 0;
 
+        Map.setRobot(10,2);
+
         sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
 
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);

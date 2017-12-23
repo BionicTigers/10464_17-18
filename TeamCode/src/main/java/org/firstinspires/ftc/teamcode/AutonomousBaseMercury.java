@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.ReadWriteFile;
@@ -120,11 +118,6 @@ public abstract class AutonomousBaseMercury extends OpMode {
         sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
         waitTime = 0;
 
-//        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -175,6 +168,7 @@ public abstract class AutonomousBaseMercury extends OpMode {
                 motorBackLeft.setPower(0);
                 motorBackRight.setPower(0);
                 break;
+
             case MoveState.FORWARD:
                 // Moves the bot forward at half speed
                 power = .50; //power coefficient
@@ -185,6 +179,7 @@ public abstract class AutonomousBaseMercury extends OpMode {
                     motorBackRight.setPower(power);
                 }
                 break;
+
             case MoveState.BACKWARD:
                 // Moves the bot backwards at half speed
                 power = .50; //power coefficient
