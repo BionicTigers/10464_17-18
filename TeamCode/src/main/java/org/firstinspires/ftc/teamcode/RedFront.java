@@ -22,14 +22,17 @@ public class RedFront extends OpMode {
     public DcMotor motorFrontLeft;
     public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
-    public DcMotor top;
-    public DcMotor front;
-    public int gameState;
-    public ColorSensor sensorColor;
+
+    public DcMotor top; //top conveyor belt
+    public DcMotor front; //front conveyor belt
+    public ColorSensor sensorColor; //color sensor
+    public Servo servo; //drop down color sensor
+    public Servo mobert; //right servo pick up arm
+    public Servo franny; //let servo pick up arm
+
     public double waitTime;
-    public Servo servo;
-    public Servo mobert;
-    public Servo franny;
+    public int gameState;
+
     public VuforiaTrackable relicTemplate;
     public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
     public int moveState;
