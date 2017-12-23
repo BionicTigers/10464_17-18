@@ -74,8 +74,9 @@ public class MercuryOriented extends OpMode {
 
         if (gamepad1.a) {
             // Get the calibration data
+
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-            parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+            parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
             parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
             parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
             parameters.loggingEnabled = true;
@@ -99,22 +100,14 @@ public class MercuryOriented extends OpMode {
 
             if ((calibToggle & 1) != 0) {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-                double P = Math.hypot(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
-                double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_x) - Math.PI / 4;
-                double rightX = gamepad1.right_stick_x;
+                double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+                double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
+                double rightX = -gamepad1.right_stick_x;
 
-//              motorBackLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) - turn));
-//              motorBackRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
-//              motorFrontRight.setPower((rightY * Math.cos(H) + rightX * Math.sin(H)) - (rightY * Math.sin(H) + rightX * Math.cos(H)));
-//              motorFrontLeft.setPower(-((rightY * Math.cos(H) + rightX * Math.sin(H)) + (rightY * Math.sin(H) + rightX * Math.cos(H)) + turn));
-//                final double v5 = P * Math.sin((robotAngle) - angles.firstAngle + rightX);
-//                final double v6 = P * Math.cos((robotAngle) - angles.firstAngle - rightX);
-//                final double v7 = P * Math.cos((robotAngle) - angles.firstAngle + rightX);
-//                final double v8 = P * Math.sin((robotAngle) - angles.firstAngle - rightX);
-                final double v5 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
-                final double v6 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
-                final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
-                final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX/4;
+                final double v5 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) - rightX;
+                final double v6 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) + rightX;
+                final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) - rightX;
+                final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX;
 
                 motorFrontLeft.setPower(v5);//1
                 motorFrontRight.setPower(v6);//2
@@ -126,10 +119,9 @@ public class MercuryOriented extends OpMode {
                 telemetry.addData("rightX", rightX);
                 telemetry.addData("v5", v5);
                 telemetry.addData("v6", v6);
-                telemetry.addData("angles", angles);
+                // telemetry.addData("angles", angles);
                 telemetry.addData("angles.firstAngle", angles.firstAngle);
 
-//
             }
 
 

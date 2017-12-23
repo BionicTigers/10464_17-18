@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -12,27 +15,52 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
-@Autonomous(name = "VuforiaOnly")
+@Autonomous(name = "VuforiaOnly", group="Vuforia" )
+//public class VuforiaOnly extends AutonomousBaseMercury {
+
 public class VuforiaOnly extends AutonomousBaseMercury {
 
-    public Orientation angles;
     public DcMotor motorFrontRight;
-    public DcMotor motorBackLeft;
     public DcMotor motorFrontLeft;
+    public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
+    public DcMotor top;
+    public DcMotor front;
+    public int gameState;
+    public ColorSensor sensorColor;
+    public double waitTime;
+    public Servo servo;
+    public Servo mobert;
+    public Servo franny;
     public VuforiaTrackable relicTemplate;
     public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+    public int moveState;
 
     VuforiaLocalizer vuforia;
+
+
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+
+        front = hardwareMap.dcMotor.get("front");
+        top = hardwareMap.dcMotor.get("top");
+        servo = hardwareMap.servo.get("servo");
+
         gameState = 0;
-        waitTime = getRuntime();
-        map.setRobot(10, 2);
+        moveState = 0;
+        waitTime = 0;
+
+        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
+
+        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+
+        franny = hardwareMap.servo.get("franny");
+        mobert = hardwareMap.servo.get("mobert");
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -60,7 +88,7 @@ public class VuforiaOnly extends AutonomousBaseMercury {
 
             case 1: // moving robot to correct position in safe zone
                 //This case needs to be after we knock over the correct jewel
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
                 heading = angles.firstAngle;
 
                 if(vuMark == RelicRecoveryVuMark.LEFT) {
