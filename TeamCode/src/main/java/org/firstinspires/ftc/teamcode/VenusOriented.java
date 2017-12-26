@@ -101,24 +101,31 @@ public void loop() {
         telemetry.log().add("saved to '%s'", filename); }
 
     if (gamepad1.x) {
-        calibToggle += 1; }
+        calibToggle = 1; }
 
     if ((calibToggle & 1) != 0) {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double H = (angles.firstAngle * Math.PI) / 180;
-        double rightX = gamepad1.left_stick_x;
-        double P = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
+        double rightX = -gamepad1.right_stick_x;
 
-        final double v5 = P * Math.sin(robotAngle) + rightX - H;
-        final double v6 = P * Math.cos(robotAngle) - rightX - H;
-        final double v7 = P * Math.cos(robotAngle) + rightX - H;
-        final double v8 = P * Math.sin(robotAngle) - rightX - H;
+        final double v5 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) - rightX;
+        final double v6 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) + rightX;
+        final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) - rightX;
+        final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX;
 
-        motorFrontRight.setPower(v5);
-        motorFrontLeft.setPower(v6);
-        motorBackRight.setPower(v7);
-        motorBackLeft.setPower(v8); }
+        motorFrontLeft.setPower(v5);//1
+        motorFrontRight.setPower(v6);//2
+        motorBackLeft.setPower(v7);//3
+        motorBackRight.setPower(v8);//4
+
+        telemetry.addData("robotAngle", robotAngle);
+        telemetry.addData("P", P);
+        telemetry.addData("rightX", rightX);
+        telemetry.addData("v5", v5);
+        telemetry.addData("v6", v6);
+        // telemetry.addData("angles", angles);
+        telemetry.addData("angles.firstAngle", angles.firstAngle); }
 
     else {
         double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);

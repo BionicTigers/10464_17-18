@@ -136,14 +136,6 @@ public class MercuryOriented extends OpMode {
                 final double v2 = (P * sinRAngle) + (P * cosRAngle) + rightX;
                 final double v3 = (P * sinRAngle) + (P * cosRAngle) - rightX;
                 final double v4 = (P * sinRAngle) - (P * cosRAngle) + rightX;
-
-                telemetry.addData("v1", v1);
-                telemetry.addData("robotangle", robotAngle);
-
-                motorFrontLeft.setPower(v1); // /max
-                motorFrontRight.setPower(v2);
-                motorBackLeft.setPower(v3);
-                motorBackRight.setPower(v4);
             }
 
             if (gamepad2.left_bumper) {
