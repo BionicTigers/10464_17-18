@@ -103,7 +103,10 @@ public void loop() {
     if (gamepad1.x) {
         calibToggle = 1; }
 
-    if ((calibToggle & 1) != 0) {
+    if (gamepad1.b) {
+         calibToggle = 0; }
+
+    if (calibToggle == 1) {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
@@ -127,7 +130,7 @@ public void loop() {
         // telemetry.addData("angles", angles);
         telemetry.addData("angles.firstAngle", angles.firstAngle); }
 
-    else {
+    else if (calibToggle == 0){
         double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) + Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
