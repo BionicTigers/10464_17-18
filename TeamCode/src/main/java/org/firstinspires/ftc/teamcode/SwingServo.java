@@ -8,22 +8,15 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
-/**
- * Created by joannareese on 12/23/17.
- */
 
 @Autonomous(name="SwingServo", group="Red")
-public class SwingServo extends AutonomousBaseMercury {
+public class SwingServo extends AutonomousBaseMercury{
 
     int i;
     public Orientation angles;
-    private OpenGLMatrix lastLocation;
+    //private OpenGLMatrix lastLocation;
 
     private DcMotor motorFrontRight;
     private DcMotor motorBackLeft;
@@ -35,16 +28,11 @@ public class SwingServo extends AutonomousBaseMercury {
     private ColorSensor roger; //right color sensor
     private ColorSensor leo; //left color sensor
 
-    private int startDeg;
-    private boolean jewelRot;
-    private boolean started;
     BNO055IMU imu;
     private boolean blue;//true if blue detected
 
     private double waitTime;
     private int gameState;
-
-
 
 
     public void init() {
@@ -55,23 +43,20 @@ public class SwingServo extends AutonomousBaseMercury {
 
         eddie = hardwareMap.servo.get("eddie"); //drop down servo
         clark = hardwareMap.servo.get("clark"); //swing servo
-        roger = hardwareMap.get(ColorSensor.class, "roger"); //right color sensor
-        leo = hardwareMap.get(ColorSensor.class, "leo"); //left color sensor
+        roger = hardwareMap.colorSensor.get( "roger"); //right color sensor
+        leo = hardwareMap.colorSensor.get("leo"); //left color sensor
 
         startDeg = 0;
         gameState = 0;
-        started = false;
-
-        waitTime = 0;
+        waitTime = getRuntime();
 
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        blue = false;
-
-
     }
+
+
     public void loop() {
         //super.gameState();
 
@@ -92,12 +77,10 @@ public class SwingServo extends AutonomousBaseMercury {
                 if (roger.blue() < leo.blue()) {
                     eddie.setPosition(0.25);
                     gameState = 3;
-                    blue = true;
                 }
                 else{
                     eddie.setPosition(0.75);
                     gameState = 3;
-                    blue = false;
                 }
                 break;
             case 3://delay to allow turn
@@ -111,9 +94,10 @@ public class SwingServo extends AutonomousBaseMercury {
 
         }
         telemetry.addData("State", gameState);
-        telemetry.addData("Color value blue", sensorColor.blue());
+        telemetry.addData("Color value blue", roger.blue());
+        telemetry.addData("Color value blue2", leo.blue());
         telemetry.addData("Current runtime", getRuntime());
-        telemetry.addData("blue", blue);
+
     }
 
 
