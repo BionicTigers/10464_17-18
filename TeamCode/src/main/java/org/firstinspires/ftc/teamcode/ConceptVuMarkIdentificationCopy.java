@@ -57,6 +57,7 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
     int moveState;
+    private int i;
     public DcMotor motorFrontRight = hardwareMap.dcMotor.get("frontRight");
     public DcMotor motorBackLeft = hardwareMap.dcMotor.get("backLeft");
     public DcMotor motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
@@ -71,6 +72,8 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
     @Override public void runOpMode() {
 
         Map.setRobot(10,2);
+        i = 0;
+        telemetry.addData("i = ", i);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -87,6 +90,8 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
         waitForStart();
 
         relicTrackables.activate();
+        i = 1;
+        telemetry.addData("i = ", i);
 
         while (opModeIsActive()) {
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -96,6 +101,9 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
 
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
                 telemetry.addData("Pose", format(pose));
+
+                i = 2;
+                telemetry.addData("i = ", i);
 
                 if (pose != null) {
                     VectorF trans = pose.getTranslation();
@@ -113,26 +121,36 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                 }
             } else {
                 telemetry.addData("vuMark", "is not visible");
+                i = 3;
+                telemetry.addData("i = ", i);
             }
 
             if (vuMark == RelicRecoveryVuMark.RIGHT) {
                 Map.setGoal(1, 5.4);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
+                i = 4;
+                telemetry.addData("i = ", i);
 
             }
             else if (vuMark == RelicRecoveryVuMark.CENTER) {
                 Map.setGoal(1, 5);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
+                i = 4;
+                telemetry.addData("i = ", i);
 
             }
             else if (vuMark == RelicRecoveryVuMark.LEFT) {
                 Map.setGoal(1, 4.6);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
+                i = 4;
+                telemetry.addData("i = ", i);
 
             }
             else{
                 Map.setGoal(1, 5);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
+                i = 5;
+                telemetry.addData("i = ", i);
 
             }
 
