@@ -62,9 +62,10 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
     public DcMotor motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     public DcMotor motorBackRight = hardwareMap.dcMotor.get("backRight");
 
-    public Orientation angles;
-    public BNO055IMU imu;
-    public double heading;
+    public BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
+    public Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    public double heading = angles.firstAngle;
+
 
 
     @Override public void runOpMode() {
@@ -114,21 +115,23 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                 telemetry.addData("vuMark", "is not visible");
             }
 
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            heading = angles.firstAngle;
-
             if (vuMark == RelicRecoveryVuMark.RIGHT) {
                 Map.setGoal(1, 5.4);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
 
             }
-            if (vuMark == RelicRecoveryVuMark.CENTER) {
+            else if (vuMark == RelicRecoveryVuMark.CENTER) {
                 Map.setGoal(1, 5);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
 
             }
-            if (vuMark == RelicRecoveryVuMark.LEFT) {
+            else if (vuMark == RelicRecoveryVuMark.LEFT) {
                 Map.setGoal(1, 4.6);
+                moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
+
+            }
+            else{
+                Map.setGoal(1, 5);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
 
             }
