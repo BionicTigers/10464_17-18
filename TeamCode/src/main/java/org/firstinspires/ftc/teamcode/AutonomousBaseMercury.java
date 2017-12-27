@@ -430,42 +430,43 @@ public abstract class AutonomousBaseMercury extends OpMode {
 
                 relicTrackables.activate();
                 runtime.reset();
-                while (opModeIsActive() && (choosen == 0) && (runtime.seconds() < 3)) {
-                    RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-                    if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                        if (side == "red") {
-                            switch (vuMark) {
-                                case LEFT:
-                                    choosen = 3;
-                                    break;
-                                case CENTER:
-                                    choosen = 2;
-                                    break;
-                                case RIGHT:
-                                    choosen = 1;
-                                    break;
-                            }
-                        } else {
-                            switch (vuMark) {
-                                case LEFT:
-                                    choosen = 1;
-                                    break;
-                                case CENTER:
-                                    choosen = 2;
-                                    break;
-                                case RIGHT:
-                                    choosen = 3;
-                                    break;
-                            }
+                //while (opModeIsActive() && (choosen == 0) && (runtime.seconds() < 3)) {
+                RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+                if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                    if (side == "red") {
+                        switch (vuMark) {
+                            case LEFT:
+                                choosen = 3;
+                                break;
+                            case CENTER:
+                                choosen = 2;
+                                break;
+                            case RIGHT:
+                                choosen = 1;
+                                break;
+                        }
+                    } else {
+                        switch (vuMark) {
+                            case LEFT:
+                                choosen = 1;
+                                break;
+                            case CENTER:
+                                choosen = 2;
+                                break;
+                            case RIGHT:
+                                choosen = 3;
+                                break;
                         }
                     }
                 }
             } catch (Exception e) {
-                choosen = 0;
+                return 2;
             }
-
-            return choosen;
+//            } catch (Exception e) {
+//                choosen = 0;
+//            }
+//
+            return 0;
         }
-
     }
 }
