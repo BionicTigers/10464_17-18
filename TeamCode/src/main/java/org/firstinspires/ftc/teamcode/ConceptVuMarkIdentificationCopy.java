@@ -96,6 +96,24 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
         while (opModeIsActive()) {
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
+            int choosen = AutonomousBaseMercury.Vuforia.Vuforia(cameraMonitorViewId, "blue", vuforia);
+            Map.setRobot(10,2);
+
+            switch (choosen) {
+                case (1):
+                    Map.setGoal(11, 5.4);
+                    break;
+                case (2):
+                    Map.setGoal(11, 5);
+                    break;
+                case (3):
+                    Map.setGoal(11, 4.6);
+                    break;
+                default:
+                    Map.setGoal(11, 5);
+                    break;
+            }
+
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                 telemetry.addData("VuMark", "%s visible", vuMark);
 
@@ -124,34 +142,6 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                 telemetry.addData("vuMark", "is not visible");
                 i = 3;
                 telemetry.addData("i = ", i);
-                }
-
-            if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                Map.setGoal(1, 5.4);
-                moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
-                i = 4;
-                telemetry.addData("i = ", i);
-                }
-            else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                Map.setGoal(1, 5);
-                moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
-                i = 4;
-                telemetry.addData("i = ", i);
-
-                }
-            else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                Map.setGoal(1, 4.6);
-                moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
-                i = 4;
-                telemetry.addData("i = ", i);
-
-                }
-            else{
-                Map.setGoal(1, 5);
-                moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
-                i = 5;
-                telemetry.addData("i = ", i);
-
                 }
 
             telemetry.update();
