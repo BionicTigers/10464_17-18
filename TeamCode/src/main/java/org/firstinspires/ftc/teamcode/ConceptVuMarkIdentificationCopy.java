@@ -28,8 +28,10 @@
  */
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -55,6 +57,14 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
     int moveState;
+    public DcMotor motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+    public DcMotor motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+    public DcMotor motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+    public DcMotor motorBackRight = hardwareMap.dcMotor.get("backRight");
+
+    public Orientation angles;
+    public BNO055IMU imu;
+    public double heading;
 
 
     @Override public void runOpMode() {
@@ -79,10 +89,11 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
 
         while (opModeIsActive()) {
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                 telemetry.addData("VuMark", "%s visible", vuMark);
 
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
                 telemetry.addData("Pose", format(pose));
 
                 if (pose != null) {
@@ -99,11 +110,27 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
                 }
+            } else {
+                telemetry.addData("vuMark", "is not visible");
             }
 
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            heading = angles.firstAngle;
 
-            else {
-                telemetry.addData("VuMark", "not visible");
+            if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                Map.setGoal(1, 5.4);
+                moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
+
+            }
+            if (vuMark == RelicRecoveryVuMark.CENTER) {
+                Map.setGoal(1, 5);
+                moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
+
+            }
+            if (vuMark == RelicRecoveryVuMark.LEFT) {
+                Map.setGoal(1, 4.6);
+                moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
+
             }
 
             telemetry.update();
@@ -111,6 +138,7 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
         }
 
     }
+
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
