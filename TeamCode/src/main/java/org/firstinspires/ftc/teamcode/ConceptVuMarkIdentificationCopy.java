@@ -118,47 +118,47 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                     double rX = rot.firstAngle;
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
+                    }
                 }
-            } else {
+                else {
                 telemetry.addData("vuMark", "is not visible");
                 i = 3;
                 telemetry.addData("i = ", i);
-            }
+                }
 
             if (vuMark == RelicRecoveryVuMark.RIGHT) {
                 Map.setGoal(1, 5.4);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
                 i = 4;
                 telemetry.addData("i = ", i);
-
-            }
+                }
             else if (vuMark == RelicRecoveryVuMark.CENTER) {
                 Map.setGoal(1, 5);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
                 i = 4;
                 telemetry.addData("i = ", i);
 
-            }
+                }
             else if (vuMark == RelicRecoveryVuMark.LEFT) {
                 Map.setGoal(1, 4.6);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
                 i = 4;
                 telemetry.addData("i = ", i);
 
-            }
+                }
             else{
                 Map.setGoal(1, 5);
                 moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
                 i = 5;
                 telemetry.addData("i = ", i);
 
-            }
+                }
 
             telemetry.update();
 
-        }
+            }
 
-    }
+        }
 
 
     String format(OpenGLMatrix transformationMatrix) {
