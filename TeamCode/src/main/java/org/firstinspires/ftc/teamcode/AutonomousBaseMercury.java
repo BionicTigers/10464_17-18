@@ -68,7 +68,7 @@ public abstract class AutonomousBaseMercury extends OpMode {
     public DcMotor front;
     public Servo franny = null; //left servo
     public Servo mobert = null; //right servo
-    public Servo servo;
+    public Servo servo; //drop down arm
     public VuforiaLocalizer vuforia;
     public VuforiaTrackable relicTemplate;
     public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
