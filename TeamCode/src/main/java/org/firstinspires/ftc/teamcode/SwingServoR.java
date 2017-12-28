@@ -79,7 +79,7 @@ public class SwingServoR extends OpMode{
                 break;
 
             case 4: //stop all motors, pull servo up
-                clark.setPosition(0.5);
+                clark.setPosition(0.6);
                 break;
         }
     }
