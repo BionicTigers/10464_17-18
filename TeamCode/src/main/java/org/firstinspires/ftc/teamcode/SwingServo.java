@@ -15,22 +15,22 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class SwingServo extends OpMode{
 
     int i;
-    private Servo eddie; //drop down servo (for color sensor)
-    private Servo clark; //swing servo (for color sensor)
+    private Servo clark; //drop down servo (for color sensor)
+    private Servo eddie; //swing servo (for color sensor)
     private ColorSensor roger; //right color sensor
     private ColorSensor leo; //left color sensor
-
+    private boolean blue;
     private double waitTime;
     private int gameState;
 
 
     public void init() {
 
-        eddie = hardwareMap.servo.get("eddie"); //drop down servo
-        clark = hardwareMap.servo.get("clark"); //swing servo
+        eddie = hardwareMap.servo.get("eddie"); //swing servo
+        clark = hardwareMap.servo.get("clark"); //drop down servo
         roger = hardwareMap.colorSensor.get( "roger"); //right color sensor
         leo = hardwareMap.colorSensor.get("leo"); //left color sensor
-
+        blue = false;
         gameState = 0;
         waitTime = 0;
     }
@@ -53,17 +53,19 @@ public class SwingServo extends OpMode{
                 break;
             case 2: //detect color sensor and choose direction
                 waitTime = getRuntime(); //get current runTime
-                if (leo.blue()> 0) {
+                if (leo.blue() < roger.blue()) {
                     eddie.setPosition(0.25);
                     waitTime = getRuntime();
-                    eddie.setPosition(0.5);
+                    //eddie.setPosition(0.5);
                     gameState = 3;
+                    blue = true;
                 }
                 else{
                     eddie.setPosition(0.75);
                     waitTime = getRuntime();
-                    eddie.setPosition(0.5);
+                    //eddie.setPosition(0.5);
                     gameState = 3;
+                    blue = false;
                 }
                 break;
             case 3://delay to allow turn
@@ -77,8 +79,10 @@ public class SwingServo extends OpMode{
 
         }
         telemetry.addData("State", gameState);
-        telemetry.addData("Color value blue2", leo.blue());
+        telemetry.addData("Color value blueLEO", leo.blue());
+        telemetry.addData("Color value blueROGER", roger.blue());
         telemetry.addData("Current runtime", getRuntime());
+        telemetry.addData("blue", blue);
 
     }
 

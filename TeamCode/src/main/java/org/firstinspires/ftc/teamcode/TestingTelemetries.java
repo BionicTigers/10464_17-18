@@ -37,11 +37,12 @@ public class TestingTelemetries extends AutonomousBaseMercury {
     private int gameState;
     private boolean jewelRot;
     private ColorSensor sensorColor;
+    private Servo eddie;
     private boolean started;
     private double waitTime;
     private double heading;
     BNO055IMU imu;
-    private boolean blue;//true if blue detected
+    private boolean blue;//true if blue d
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -58,17 +59,18 @@ public class TestingTelemetries extends AutonomousBaseMercury {
         gameState = 0;
         started = false;
         waitTime = 0;
+        eddie = hardwareMap.servo.get("eddie");
 
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); }
+        motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 
     public void loop() {
-        telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
-        telemetry.addData("Blueness", sensorColor.blue());
+        eddie.setPosition(0.75);
+        blue = true;
         telemetry.addData("Blue?", blue);
-        if (sensorColor.blue() > 3) {
-            blue = true; }
-        else {
-            blue = false; } } }
+
+    }
+}
