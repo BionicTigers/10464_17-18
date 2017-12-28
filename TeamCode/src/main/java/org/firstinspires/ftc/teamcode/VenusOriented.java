@@ -26,42 +26,52 @@ import java.util.Locale;
 
 public class VenusOriented extends OpMode {
 
-    public Orientation angles;
-    public Acceleration gravity;
-    //Drivetrain
+    //DRIVETRAIN\\
     public DcMotor motorFrontRight;
     public DcMotor motorFrontLeft;
     public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
-    //Car Washer
+    //CAR WASHER\\
     public DcMotor billiam;
-    //Conveyor Belt
+    //CONVEYOR BELT\\
     public Servo franny = null; //Left
     public Servo mobert = null; //Right
-    //Lift
-    public DcMotor evangilino; //Left
+    //LIFT\\
+    public DcMotor evangelino; //Left
     public DcMotor wilbert; //Right
-    //Hammer
-    public Servo tiffany = null; //Dropper
-    public Servo mrClean = null; //Flicker
-    //IMU
+    //HAMMER\\
+    public Servo eddie = null; //Flicker
+    public Servo clark = null; //Dropper
+    //RELIC\\
+    public DcMotor georgery = null;
+    //IMU\\
     BNO055IMU imu;
     public int calibToggle;
+    public Orientation angles;
+    public Acceleration gravity;
 
 
 public void init() {
 
+    //DRIVETRAIN\\
     motorFrontRight = hardwareMap.dcMotor.get("frontRight");
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+    //CAR WASHER\\
     billiam = hardwareMap.dcMotor.get("billiam");
+    //CONVEYOR BELT\\
     franny = hardwareMap.servo.get("franny");
     mobert = hardwareMap.servo.get("mobert");
-    evangilino = hardwareMap.dcMotor.get("evangilino");
+    //LIFT\\
+    evangelino = hardwareMap.dcMotor.get("evangelino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
-    tiffany = hardwareMap.servo.get("hammer");
-    mrClean = hardwareMap.servo.get("sickle");
+    //HAMMER\\
+    eddie = hardwareMap.servo.get("eddie");
+    clark = hardwareMap.servo.get("clark");
+    //RELIC\\
+    georgery = hardwareMap.dcMotor.get("georgery");
+    //IMU\\
     calibToggle = 0;
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
     parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -78,11 +88,11 @@ public void loop() {
 
     telemetry.update();
 
-    /////////////////////////////
-    // ORIENTATION CALIBRATION //
-    /////////////////////////////
+    ///////////////
+    // GAMEPAD 1 //
+    ///////////////
 
-    if (gamepad1.a) {
+    if (gamepad1.a) { //orientation calibration
         // Get the calibration data
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -100,13 +110,13 @@ public void loop() {
         ReadWriteFile.writeFile(file, calibrationData.serialize());
         telemetry.log().add("saved to '%s'", filename); }
 
-    if (gamepad1.x) {
+    if (gamepad1.x) { //toggle on
         calibToggle = 1; }
 
-    if (gamepad1.b) {
+    if (gamepad1.b) { //toggle off
          calibToggle = 0; }
 
-    if (calibToggle == 1) {
+    if (calibToggle == 1) { //when toggled we are oriented with this math
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
@@ -122,29 +132,34 @@ public void loop() {
         motorBackLeft.setPower(v7);//3
         motorBackRight.setPower(v8);//4
 
+        //some telemetry for testing purposes
         telemetry.addData("robotAngle", robotAngle);
         telemetry.addData("P", P);
         telemetry.addData("rightX", rightX);
         telemetry.addData("v5", v5);
         telemetry.addData("v6", v6);
-        // telemetry.addData("angles", angles);
         telemetry.addData("angles.firstAngle", angles.firstAngle); }
 
-    else if (calibToggle == 0){
-        double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) + Math.PI / 4;
-        double rightX = gamepad1.left_stick_x;
+    else if (calibToggle == 0){ //regular drive
+        double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
+        double rightX = -gamepad1.right_stick_x;
+        double sinRAngle = Math.sin(robotAngle);
+        double cosRAngle = Math.cos(robotAngle);
 
-        final double v1 = -r * Math.sin(robotAngle) + rightX;
-        final double v2 = -r * Math.cos(robotAngle) - rightX;
-        final double v3 = -r * Math.cos(robotAngle) + rightX;
-        final double v4 = -r * Math.sin(robotAngle) - rightX;
+        final double v1 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+        final double v2 = (P * sinRAngle) + (P * cosRAngle) + rightX;
+        final double v3 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v4 = (P * sinRAngle) - (P * cosRAngle) + rightX;
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4); }
 
+    ///////////////
+    // GAMEPAD 2 //
+    ///////////////
 
 }
 
