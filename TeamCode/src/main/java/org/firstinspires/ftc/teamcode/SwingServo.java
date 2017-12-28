@@ -37,7 +37,11 @@ public class SwingServo extends OpMode{
 
 
     public void loop() {
-        //super.gameState();
+
+        telemetry.addData("gameState", gameState);
+        telemetry.addData("leo blue", leo.blue());
+        telemetry.addData("roger blue", roger.blue());
+        telemetry.addData("runtime", getRuntime());
 
         switch(gameState) {
             case 0: //preset variables
@@ -54,13 +58,13 @@ public class SwingServo extends OpMode{
 
             case 2: //detect color sensor and choose direction
                 if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.25);
+                    eddie.setPosition(0.4);
                     //eddie.setPosition(0.5);
                     gameState = 3;
                     blue = true;
                 }
                 else{
-                    eddie.setPosition(0.75);
+                    eddie.setPosition(0.6);
                     //eddie.setPosition(0.5);
                     gameState = 3;
                     blue = false;
@@ -78,16 +82,5 @@ public class SwingServo extends OpMode{
                 clark.setPosition(0.5);
                 break;
         }
-
-        telemetry.addData("State", gameState);
-        telemetry.addData("Color value blueLEO", leo.blue());
-        telemetry.addData("Color value blueROGER", roger.blue());
-        telemetry.addData("Current runtime", getRuntime());
-        telemetry.addData("blue", blue);
-
     }
-
-
 }
-
-
