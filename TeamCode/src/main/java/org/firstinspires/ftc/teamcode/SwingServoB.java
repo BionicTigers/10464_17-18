@@ -52,7 +52,7 @@ public class SwingServoB extends OpMode{
                 break;
 
             case 1://delay to allow servo to drop
-                if(getRuntime() > waitTime + 2.0) {
+                if (getRuntime() > waitTime + 2.0) {
                     gameState = 2;
                 }
                 break;
@@ -64,11 +64,13 @@ public class SwingServoB extends OpMode{
                     gameState = 3;
                     blue = true;
                 }
-                else{
+                else if (leo.blue() > roger.blue()) {
                     eddie.setPosition(0.6);
                     //eddie.setPosition(0.5);
                     gameState = 3;
                     blue = false;
+                } else {
+                    gameState = 3;
                 }
                 waitTime = getRuntime(); //get current runTime
                 break;

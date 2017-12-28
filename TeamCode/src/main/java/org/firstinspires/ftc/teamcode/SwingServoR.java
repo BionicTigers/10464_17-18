@@ -63,10 +63,12 @@ public class SwingServoR extends OpMode{
                     gameState = 3;
                     blue = true;
                 }
-                else{
+                else if (leo.blue() > roger.blue()){
                     eddie.setPosition(0.4);
                     gameState = 3;
                     blue = false;
+                } else {
+                    gameState = 3;
                 }
                 waitTime = getRuntime(); //get current runTime
                 break;
