@@ -41,29 +41,26 @@ public class SwingServo extends OpMode{
 
         switch(gameState) {
             case 0: //preset variables
-                waitTime = getRuntime(); //get current runTime
                 clark.setPosition(1.15);
                 gameState = 1;
                 break;
 
             case 1://delay to allow servo to drop
+                waitTime = getRuntime(); //get current runTime
                 if(getRuntime() > waitTime + 2) {
                     gameState = 2;
                 }
                 break;
 
             case 2: //detect color sensor and choose direction
-                waitTime = getRuntime(); //get current runTime
                 if (leo.blue() < roger.blue()) {
                     eddie.setPosition(0.25);
-                    waitTime = getRuntime();
                     //eddie.setPosition(0.5);
                     gameState = 3;
                     blue = true;
                 }
                 else{
                     eddie.setPosition(0.75);
-                    waitTime = getRuntime();
                     //eddie.setPosition(0.5);
                     gameState = 3;
                     blue = false;
@@ -71,6 +68,7 @@ public class SwingServo extends OpMode{
                 break;
 
             case 3://delay to allow turn
+                waitTime = getRuntime(); //get current runTime
                 if(getRuntime() > waitTime + 2.0) {
                     gameState = 4;
                 }
