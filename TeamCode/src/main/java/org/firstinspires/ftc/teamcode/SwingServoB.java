@@ -84,11 +84,13 @@ public class SwingServoB extends OpMode{
                 waitTime = getRuntime();
                 gameState = 5;
                 break;
+
             case 5://delay to allow turn
                 if(getRuntime() > waitTime + 1.0) {
                     gameState = 6;
                 }
                 break;
+
             case 6:
                 clark.setPosition(0.6);
                 break;
