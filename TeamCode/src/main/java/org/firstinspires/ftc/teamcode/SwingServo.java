@@ -51,6 +51,7 @@ public class SwingServo extends OpMode{
                     gameState = 2;
                 }
                 break;
+
             case 2: //detect color sensor and choose direction
                 waitTime = getRuntime(); //get current runTime
                 if (leo.blue() < roger.blue()) {
@@ -68,16 +69,18 @@ public class SwingServo extends OpMode{
                     blue = false;
                 }
                 break;
+
             case 3://delay to allow turn
                 if(getRuntime() > waitTime + 2.0) {
                     gameState = 4;
                 }
                 break;
+
             case 4: //stop all motors, pull servo up
                 clark.setPosition(0.5);
                 break;
-
         }
+
         telemetry.addData("State", gameState);
         telemetry.addData("Color value blueLEO", leo.blue());
         telemetry.addData("Color value blueROGER", roger.blue());
