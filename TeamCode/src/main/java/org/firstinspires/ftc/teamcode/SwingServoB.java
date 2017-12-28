@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
-@Autonomous(name="SwingServo", group="Red")
-public class SwingServo extends OpMode{
+@Autonomous(name="SwingServoB", group="Blue")
+public class SwingServoB extends OpMode{
 
     int i;
     private Servo clark; //drop down servo (for color sensor)
