@@ -60,13 +60,11 @@ public class SwingServoR extends OpMode{
             case 2: //detect color sensor and choose direction
                 if (leo.blue() < roger.blue()) {
                     eddie.setPosition(0.6);
-                    //eddie.setPosition(0.5);
                     gameState = 3;
                     blue = true;
                 }
                 else{
                     eddie.setPosition(0.4);
-                    //eddie.setPosition(0.5);
                     gameState = 3;
                     blue = false;
                 }
@@ -80,6 +78,16 @@ public class SwingServoR extends OpMode{
                 break;
 
             case 4: //stop all motors, pull servo up
+                eddie.setPosition(0.5);
+                waitTime = getRuntime();
+                gameState = 5;
+                break;
+            case 5://delay to allow turn
+                if(getRuntime() > waitTime + 1.0) {
+                    gameState = 6;
+                }
+                break;
+            case 6:
                 clark.setPosition(0.6);
                 break;
         }

@@ -80,7 +80,17 @@ public class SwingServoB extends OpMode{
                 break;
 
             case 4: //stop all motors, pull servo up
-                clark.setPosition(0.5);
+                eddie.setPosition(0.5);
+                waitTime = getRuntime();
+                gameState = 5;
+                break;
+            case 5://delay to allow turn
+                if(getRuntime() > waitTime + 1.0) {
+                    gameState = 6;
+                }
+                break;
+            case 6:
+                clark.setPosition(0.6);
                 break;
         }
     }
