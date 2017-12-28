@@ -74,7 +74,7 @@ public class SwingServoB extends OpMode{
                 break;
 
             case 3://delay to allow turn
-                if(getRuntime() > waitTime + 2.0) {
+                if(getRuntime() > waitTime + 1.0) {
                     gameState = 4;
                 }
                 break;
