@@ -47,11 +47,11 @@ public class SwingServo extends OpMode{
             case 0: //preset variables
                 clark.setPosition(1.15);
                 gameState = 1;
+                waitTime = getRuntime(); //get current runTime
                 break;
 
             case 1://delay to allow servo to drop
-                waitTime = getRuntime(); //get current runTime
-                if(getRuntime() > waitTime + 2) {
+                if(getRuntime() > waitTime + 2.0) {
                     gameState = 2;
                 }
                 break;
@@ -69,10 +69,10 @@ public class SwingServo extends OpMode{
                     gameState = 3;
                     blue = false;
                 }
+                waitTime = getRuntime(); //get current runTime
                 break;
 
             case 3://delay to allow turn
-                waitTime = getRuntime(); //get current runTime
                 if(getRuntime() > waitTime + 2.0) {
                     gameState = 4;
                 }
