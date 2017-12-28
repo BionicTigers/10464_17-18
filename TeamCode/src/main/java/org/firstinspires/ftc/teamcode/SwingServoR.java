@@ -1,99 +1,83 @@
 package org.firstinspires.ftc.teamcode;
 
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 @Autonomous(name="SwingServoR", group="Red")
 public class SwingServoR extends OpMode{
 
     int i;
-    private Servo clark; //drop down servo (for color sensor)
-    private Servo eddie; //swing servo (for color sensor)
+    private Servo eddie; //drop down servo (for color sensor)
+    private Servo clark; //swing servo (for color sensor)
     private ColorSensor roger; //right color sensor
     private ColorSensor leo; //left color sensor
-    private boolean blue;
+
     private double waitTime;
     private int gameState;
 
 
     public void init() {
 
-        eddie = hardwareMap.servo.get("eddie"); //swing servo
-        clark = hardwareMap.servo.get("clark"); //drop down servo
+        eddie = hardwareMap.servo.get("eddie"); //drop down servo
+        clark = hardwareMap.servo.get("clark"); //swing servo
         roger = hardwareMap.colorSensor.get( "roger"); //right color sensor
         leo = hardwareMap.colorSensor.get("leo"); //left color sensor
-        blue = false;
+
         gameState = 0;
         waitTime = 0;
     }
 
 
     public void loop() {
-
-        telemetry.addData("gameState", gameState);
-        telemetry.addData("leo blue", leo.blue());
-        telemetry.addData("roger blue", roger.blue());
-        telemetry.addData("runtime", getRuntime());
+        //super.gameState();
 
         switch(gameState) {
             case 0: //preset variables
+                waitTime = getRuntime(); //get current runTime
                 clark.setPosition(1.15);
                 gameState = 1;
-                waitTime = getRuntime(); //get current runTime
                 break;
 
             case 1://delay to allow servo to drop
-                if(getRuntime() > waitTime + 2.0) {
+                if(getRuntime() > waitTime + 2) {
                     gameState = 2;
                 }
                 break;
-
             case 2: //detect color sensor and choose direction
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.6);
-                    gameState = 3;
-                    blue = true;
-                }
-                else if (leo.blue() > roger.blue()){
-                    eddie.setPosition(0.4);
-                    gameState = 3;
-                    blue = false;
-                } else {
-                    gameState = 3;
-                }
                 waitTime = getRuntime(); //get current runTime
+                if (leo.blue()> 0) {
+                    eddie.setPosition(0.25);
+                    waitTime = getRuntime();
+                    eddie.setPosition(0.5);
+                    gameState = 3;
+                }
+                else{
+                    eddie.setPosition(0.75);
+                    waitTime = getRuntime();
+                    eddie.setPosition(0.5);
+                    gameState = 3;
+                }
                 break;
-
             case 3://delay to allow turn
-                if(getRuntime() > waitTime + 1.0) {
+                if(getRuntime() > waitTime + 2.0) {
                     gameState = 4;
                 }
                 break;
-
             case 4: //stop all motors, pull servo up
-                eddie.setPosition(0.5);
-                waitTime = getRuntime();
-                gameState = 5;
+                clark.setPosition(0.5);
                 break;
 
-            case 5://delay to allow turn
-                if(getRuntime() > waitTime + 1.0) {
-                    gameState = 6;
-                }
-                break;
-
-            case 6:
-                clark.setPosition(0.6);
-                break;
         }
+        telemetry.addData("State", gameState);
+        telemetry.addData("Color value blue2", leo.blue());
+        telemetry.addData("Current runtime", getRuntime());
+
     }
+
+
 }
+
+

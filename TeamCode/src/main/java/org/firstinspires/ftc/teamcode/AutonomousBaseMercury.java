@@ -68,7 +68,7 @@ public abstract class AutonomousBaseMercury extends OpMode {
     public DcMotor front;
     public Servo franny = null; //left servo
     public Servo mobert = null; //right servo
-    public Servo servo; //drop down arm
+    public Servo servo;
     public VuforiaLocalizer vuforia;
     public VuforiaTrackable relicTemplate;
     public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -83,23 +83,23 @@ public abstract class AutonomousBaseMercury extends OpMode {
 
     //We stateful now
     int gameState;
-    public int moveState;
+   public int moveState;
 
-    public double power;
-    public Orientation angles;
-    public Acceleration gravity;
-    public double heading;
-    public double desiredAngle;
-    public boolean turnRight;
-    public int cDistF, lDistF, dDistF; //Forward distance variables
-    public int cDistS, lDistS, dDistS; //Sideways distance variables
-    public int cDistW, lDistW, dDistW; //Sideways distance variables
-    public double sTime; //Shooting timer
-    public double pTime; //Button presser timer
-    public double tDiff;
-    public static ElapsedTime runtime = new ElapsedTime();
+   public double power;
+   public Orientation angles;
+   public Acceleration gravity;
+   public double heading;
+   public double desiredAngle;
+   public boolean turnRight;
+   public int cDistF, lDistF, dDistF; //Forward distance variables
+   public int cDistS, lDistS, dDistS; //Sideways distance variables
+   public int cDistW, lDistW, dDistW; //Sideways distance variables
+   public double sTime; //Shooting timer
+   public double pTime; //Button presser timer
+   public double tDiff;
+   public ElapsedTime runtime = new ElapsedTime();
 
-    public int startPos = 6;
+   public int startPos = 6;
     Map map = new Map(startPos); //this map object will allow for easy manipulations.
 
     final double SCALE_FACTOR = 255;
@@ -415,58 +415,122 @@ public abstract class AutonomousBaseMercury extends OpMode {
         return Math.abs(heading - map.angleToGoalRev()) < HEADING_TOLERANCE || (heading > 360 - HEADING_TOLERANCE && map.angleToGoalRev() < HEADING_TOLERANCE || (heading < HEADING_TOLERANCE && map.angleToGoalRev() > 360 - HEADING_TOLERANCE));
     }
 
-    public abstract static class Vuforia extends LinearOpMode {
+    public double actualRuntime() {
+        return getRuntime() - tDiff;
+    }
 
+    public class ConceptVuMarkIdentification extends LinearOpMode {
 
-        static int Vuforia(int cameraMonitorViewId, String side, VuforiaLocalizer vuforia) {
+        public static final String TAG = "Vuforia VuMark";
 
-            int choosen = 0;
+        OpenGLMatrix lastLocation = null;
 
-            try {
+        /**
+         * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
+         * localization engine.
+         */
+        VuforiaLocalizer vuforia;
 
-                VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
-                VuforiaTrackable relicTemplate = relicTrackables.get(0);
-                relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        @Override
+        public void runOpMode() {
 
-                relicTrackables.activate();
-                runtime.reset();
-                //while (opModeIsActive() && (choosen == 0) && (runtime.seconds() < 3)) {
+        /*
+         * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
+         * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
+         */
+            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+            // OR...  Do Not Activate the Camera Monitor View, to save power
+            // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        /*
+         * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
+         * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
+         * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
+         * web site at https://developer.vuforia.com/license-manager.
+         *
+         * Vuforia license keys are always 380 characters long, and look as if they contain mostly
+         * random data. As an example, here is a example of a fragment of a valid key:
+         *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
+         * Once you've obtained a license key, copy the string from the Vuforia web site
+         * and paste it in to your code onthe next line, between the double quotes.
+         */
+            parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
+
+        /*
+         * We also indicate which camera on the RC that we wish to use.
+         * Here we chose the back (HiRes) camera (for greater range), but
+         * for a competition robot, the front camera might be more convenient.
+         */
+            parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+            this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+            /**
+             * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
+             * in this data set: all three of the VuMarks in the game were created from this one template,
+             * but differ in their instance id information.
+             * @see VuMarkInstanceId
+             */
+            VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+            VuforiaTrackable relicTemplate = relicTrackables.get(0);
+            relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
+            telemetry.addData(">", "Press Play to start");
+            telemetry.update();
+            waitForStart();
+
+            relicTrackables.activate();
+
+            while (opModeIsActive()) {
+
+                /**
+                 * See if any of the instances of {@link relicTemplate} are currently visible.
+                 * {@link RelicRecoveryVuMark} is an enum which can have the following values:
+                 * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
+                 * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
+                 */
                 RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
                 if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                    if (side == "red") {
-                        switch (vuMark) {
-                            case LEFT:
-                                choosen = 3;
-                                break;
-                            case CENTER:
-                                choosen = 2;
-                                break;
-                            case RIGHT:
-                                choosen = 1;
-                                break;
-                        }
-                    } else {
-                        switch (vuMark) {
-                            case LEFT:
-                                choosen = 1;
-                                break;
-                            case CENTER:
-                                choosen = 2;
-                                break;
-                            case RIGHT:
-                                choosen = 3;
-                                break;
-                        }
+
+                /* Found an instance of the template. In the actual game, you will probably
+                 * loop until this condition occurs, then move on to act accordingly depending
+                 * on which VuMark was visible. */
+                    telemetry.addData("VuMark", "%s visible", vuMark);
+
+                /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
+                 * it is perhaps unlikely that you will actually need to act on this pose information, but
+                 * we illustrate it nevertheless, for completeness. */
+                    OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+                    telemetry.addData("Pose", format(pose));
+
+                /* We further illustrate how to decompose the pose into useful rotational and
+                 * translational components */
+                    if (pose != null) {
+                        VectorF trans = pose.getTranslation();
+                        Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
+                        // Extract the X, Y, and Z components of the offset of the target relative to the robot
+                        double tX = trans.get(0);
+                        double tY = trans.get(1);
+                        double tZ = trans.get(2);
+
+                        // Extract the rotational components of the target relative to the robot
+                        double rX = rot.firstAngle;
+                        double rY = rot.secondAngle;
+                        double rZ = rot.thirdAngle;
                     }
+                } else {
+                    telemetry.addData("VuMark", "not visible");
                 }
-            } catch (Exception e) {
-                return 2;
+
+
+                telemetry.update();
             }
-//            } catch (Exception e) {
-//                choosen = 0;
-//            }
-//
-            return 0;
+        }
+
+        String format(OpenGLMatrix transformationMatrix) {
+            return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
         }
     }
 }

@@ -62,5 +62,4 @@ public class Map {
         return ((angleToGoal() + 180) % 360);
     }
 
-
 }
