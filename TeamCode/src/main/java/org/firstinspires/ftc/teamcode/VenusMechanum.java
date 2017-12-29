@@ -46,6 +46,11 @@ public void init() {
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+
+    motorFrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    motorFrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     //CAR WASHER\\
     billiam = hardwareMap.dcMotor.get("billiam");
     //CONVEYOR BELT\\
@@ -117,33 +122,33 @@ public void loop() {
         mobert.setPosition(beltRotation); }
 
     if (gamepad2.a) {
-        evangelino.setTargetPosition(0);
-        wilbert.setTargetPosition(0);
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(0);
+        wilbert.setTargetPosition(0);
         evangelino.setPower(0.75);
         wilbert.setPower(0.75); }
 
     if (gamepad2.x) {
-        evangelino.setTargetPosition(22);
-        wilbert.setTargetPosition(22);
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(22);
+        wilbert.setTargetPosition(22);
         evangelino.setPower(0.75);
         wilbert.setPower(0.75); }
 
     if (gamepad2.b) {
-        evangelino.setTargetPosition(44);
-        wilbert.setTargetPosition(44);
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(22);
+        wilbert.setTargetPosition(22);
         evangelino.setPower(0.75);
         wilbert.setPower(0.75); }
 
     if (gamepad2.y) {
-        evangelino.setTargetPosition(66);
-        wilbert.setTargetPosition(66);
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(66);
+        wilbert.setTargetPosition(66);
         evangelino.setPower(0.75);
         wilbert.setPower(0.75); } } }
