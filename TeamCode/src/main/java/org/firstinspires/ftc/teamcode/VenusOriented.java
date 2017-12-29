@@ -49,6 +49,8 @@ public class VenusOriented extends OpMode {
     public int calibToggle;
     public Orientation angles;
     public Acceleration gravity;
+    //VARIABLES\\
+    public double beltRotation;
 
 
 public void init() {
@@ -58,6 +60,11 @@ public void init() {
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+
+    motorFrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    motorFrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     //CAR WASHER\\
     billiam = hardwareMap.dcMotor.get("billiam");
     //CONVEYOR BELT\\
@@ -66,6 +73,11 @@ public void init() {
     //LIFT\\
     evangelino = hardwareMap.dcMotor.get("evangelino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
+
+    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
     //HAMMER\\
     eddie = hardwareMap.servo.get("eddie");
     clark = hardwareMap.servo.get("clark");
@@ -81,7 +93,8 @@ public void init() {
     parameters.loggingTag = "IMU";
     parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
     imu = hardwareMap.get(BNO055IMU.class, "imu");
-    imu.initialize(parameters); }
+    imu.initialize(parameters);
+    beltRotation = 0; }
 
 
 public void loop() {
@@ -157,11 +170,64 @@ public void loop() {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4); }
 
+    if (gamepad1.dpad_up) {
+        eddie.setPosition(0.5);
+        clark.setPosition(0.6); }
+
     ///////////////
     // GAMEPAD 2 //
     ///////////////
+    if (gamepad2.right_bumper) {
+        billiam.setPower(0.75); }
+    else if (gamepad2.left_bumper) {
+        billiam.setPower(-0.75); }
+    else {
+        billiam.setPower(0.00); }
 
-}
+    if (gamepad2.right_trigger > .7) {
+        beltRotation += .01;
+        franny.setPosition(beltRotation);
+        mobert.setPosition(beltRotation); }
+    else if (gamepad2.left_trigger > .7) {
+        beltRotation -= .01;
+        franny.setPosition(beltRotation);
+        mobert.setPosition(beltRotation); }
+    else {
+        beltRotation += 0;
+        franny.setPosition(beltRotation);
+        mobert.setPosition(beltRotation); }
+
+    if (gamepad2.a) {
+        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(0);
+        wilbert.setTargetPosition(0);
+        evangelino.setPower(0.75);
+        wilbert.setPower(0.75); }
+
+    if (gamepad2.x) {
+        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(22);
+        wilbert.setTargetPosition(22);
+        evangelino.setPower(0.75);
+        wilbert.setPower(0.75); }
+
+    if (gamepad2.b) {
+        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(22);
+        wilbert.setTargetPosition(22);
+        evangelino.setPower(0.75);
+        wilbert.setPower(0.75); }
+
+    if (gamepad2.y) {
+        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(66);
+        wilbert.setTargetPosition(66);
+        evangelino.setPower(0.75);
+        wilbert.setPower(0.75); } }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

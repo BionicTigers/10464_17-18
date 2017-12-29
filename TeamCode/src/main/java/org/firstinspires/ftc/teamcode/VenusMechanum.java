@@ -47,14 +47,10 @@ public void init() {
     motorBackRight = hardwareMap.dcMotor.get("backRight");
     motorBackLeft = hardwareMap.dcMotor.get("backLeft");
 
-    motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
-    motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
-    motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
-    motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+    motorFrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    motorFrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     //CAR WASHER\\
     billiam = hardwareMap.dcMotor.get("billiam");
     //CONVEYOR BELT\\
@@ -63,13 +59,18 @@ public void init() {
     //LIFT\\
     evangelino = hardwareMap.dcMotor.get("evangelino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
+
+    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
     //HAMMER\\
     eddie = hardwareMap.servo.get("eddie");
     clark = hardwareMap.servo.get("clark");
     //RELIC\\
     georgery = hardwareMap.dcMotor.get("georgery");
     //VARIABLES\\
-    beltRotation = 0; }
+    beltRotation = 0.0; }
 
 
 public void loop() {
@@ -93,17 +94,21 @@ public void loop() {
     motorBackRight.setPower(v3);
     motorBackLeft.setPower(v4);
 
+    if (gamepad1.dpad_up) {
+        eddie.setPosition(0.5);
+        clark.setPosition(0.6); }
+
     ///////////////
     // GAMEPAD 2 //
     ///////////////
-    if (gamepad2.right_bumper){
+    if (gamepad2.right_bumper) {
         billiam.setPower(0.75); }
     else if (gamepad2.left_bumper) {
         billiam.setPower(-0.75); }
     else {
         billiam.setPower(0.00); }
 
-    if (gamepad2.right_trigger > .7){
+    if (gamepad2.right_trigger > .7) {
         beltRotation += .01;
         franny.setPosition(beltRotation);
         mobert.setPosition(beltRotation); }
@@ -117,39 +122,33 @@ public void loop() {
         mobert.setPosition(beltRotation); }
 
     if (gamepad2.a) {
-        evangelino.setTargetPosition(0);
-        wilbert.setTargetPosition(0);
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(0);
+        wilbert.setTargetPosition(0);
         evangelino.setPower(0.75);
         wilbert.setPower(0.75); }
 
     if (gamepad2.x) {
-        evangelino.setTargetPosition(22);
-        wilbert.setTargetPosition(22);
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(22);
+        wilbert.setTargetPosition(22);
         evangelino.setPower(0.75);
         wilbert.setPower(0.75); }
 
     if (gamepad2.b) {
-        evangelino.setTargetPosition(44);
-        wilbert.setTargetPosition(44);
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(22);
+        wilbert.setTargetPosition(22);
         evangelino.setPower(0.75);
         wilbert.setPower(0.75); }
 
     if (gamepad2.y) {
-        evangelino.setTargetPosition(66);
-        wilbert.setTargetPosition(66);
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(66);
+        wilbert.setTargetPosition(66);
         evangelino.setPower(0.75);
-        wilbert.setPower(0.75); }
-
-
-
-
-
-} }
+        wilbert.setPower(0.75); } } }
