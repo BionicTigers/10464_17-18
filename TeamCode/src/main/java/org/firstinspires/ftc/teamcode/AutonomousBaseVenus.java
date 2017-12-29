@@ -67,7 +67,7 @@ public abstract class AutonomousBaseVenus extends OpMode {
     // Servo servo;
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
-    BNO055IMU imu;
+    static BNO055IMU imu;
 
     //We stateful now
     int gameState;
@@ -352,6 +352,20 @@ public abstract class AutonomousBaseVenus extends OpMode {
             tDiff = getRuntime();
         }
     }
+
+    public static void calibrateIMU() {
+        BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
+
+        // Save the calibration data to a file. You can choose whatever file
+        // name you wish here, but you'll want to indicate the same file name
+        // when you initialize the IMU in an opmode in which it is used. If you
+        // have more than one IMU on your robot, you'll of course want to use
+        // different configuration file names for each.
+        String filename = "AdafruitIMUCalibration.json";
+        File file = AppUtil.getInstance().getSettingsFile(filename);
+        ReadWriteFile.writeFile(file, calibrationData.serialize());
+    }
+
 
     public void telemetry() {
         telemetry.addData("angle to goal ", map.angleToGoal());

@@ -78,7 +78,7 @@ public abstract class AutonomousBaseMercury extends OpMode {
     public double waitTime;
     public int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
     public VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-    public BNO055IMU imu;
+    public static BNO055IMU imu;
     public boolean blue;//true if blue detected
 
     //We stateful now
@@ -118,8 +118,8 @@ public abstract class AutonomousBaseMercury extends OpMode {
         sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
         waitTime = 0;
 
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -374,6 +374,21 @@ public abstract class AutonomousBaseMercury extends OpMode {
         }
     }
 
+    public static void calibrateIMU() {
+        BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
+
+        // Save the calibration data to a file. You can choose whatever file
+        // name you wish here, but you'll want to indicate the same file name
+        // when you initialize the IMU in an opmode in which it is used. If you
+        // have more than one IMU on your robot, you'll of course want to use
+        // different configuration file names for each.
+        String filename = "AdafruitIMUCalibration.json";
+        File file = AppUtil.getInstance().getSettingsFile(filename);
+        ReadWriteFile.writeFile(file, calibrationData.serialize());
+}
+
+
+
     public void telemetry() {
         telemetry.addData("angle to goal ", map.angleToGoal());
         telemetry.addData("Runtime ", getRuntime());
@@ -398,6 +413,9 @@ public abstract class AutonomousBaseMercury extends OpMode {
         moveState();
         telemetry();
     }
+
+
+
 
     public boolean linedUp() {
         return Math.abs(heading - map.angleToGoal()) < HEADING_TOLERANCE || (heading > 360 - HEADING_TOLERANCE && map.angleToGoal() < HEADING_TOLERANCE || (heading < HEADING_TOLERANCE && map.angleToGoal() > 360 - HEADING_TOLERANCE));

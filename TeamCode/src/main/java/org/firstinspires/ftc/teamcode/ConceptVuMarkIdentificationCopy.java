@@ -83,6 +83,7 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
     public int moveState = 0;
+    public double time = getRuntime();
 
     @Override public void runOpMode() {
 
@@ -114,6 +115,7 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
         relicTrackables.activate();
 
         while (opModeIsActive()) {
+
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             Map.setRobot(10,2);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
@@ -122,38 +124,59 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                 //telemetry.addData("Pose",format(pose));
 
                 // both left motors need to be reversed. Here that is done manually
-//                if(vuMark == RelicRecoveryVuMark.LEFT) {
-//                    Map.setGoal(11, 5.4);
-//
+                if(vuMark == RelicRecoveryVuMark.LEFT) {
+                    Map.setGoal(11, 5.4);
+
+                    motorFrontRight.setPower(-.5);
+                    motorFrontLeft.setPower(-.5);
+                    motorBackLeft.setPower(.5);
+                    motorBackRight.setPower(.5);
+
+                    if (time > getRuntime() + 2){
+                        motorFrontRight.setPower(0);
+                        motorFrontLeft.setPower(0);
+                        motorBackLeft.setPower(0);
+                        motorBackRight.setPower(0);
+                    }
+                }
+                else if(vuMark == RelicRecoveryVuMark.CENTER) {
+                    Map.setGoal(11, 5);
+
+                    motorFrontRight.setPower(-.5);
+                    motorFrontLeft.setPower(-.5);
+                    motorBackLeft.setPower(.5);
+                    motorBackRight.setPower(.5);
+                }
+                else if(vuMark == RelicRecoveryVuMark.RIGHT) {
+
+                    int position = motorFrontRight.getCurrentPosition();
+                    telemetry.addData("frontright", position);
+
+                    int position2 = motorBackLeft.getCurrentPosition();
+                    telemetry.addData("backleft", position2);
+
+                    Map.setRobot(10,2);
+                    Map.setGoal(11, 4.6);
+
+                    moveState = AutonomousBaseMercury.MoveState.LEFT;
+
+                    motorFrontRight.setPower(-.5);
+                    motorFrontLeft.setPower(-.5);
+                    motorBackLeft.setPower(.5);
+                    motorBackRight.setPower(.5);
+
+
+                }
+                else {
+                    Map.setGoal(11, 5);
+
+                    moveState = AutonomousBaseMercury.MoveState.LEFT;
+
 //                    motorFrontRight.setPower(-.5);
 //                    motorFrontLeft.setPower(-.5);
 //                    motorBackLeft.setPower(.5);
 //                    motorBackRight.setPower(.5);
-//                }
-//                else if(vuMark == RelicRecoveryVuMark.CENTER) {
-//                    Map.setGoal(11, 5);
-//
-//                    motorFrontRight.setPower(-.5);
-//                    motorFrontLeft.setPower(-.5);
-//                    motorBackLeft.setPower(.5);
-//                    motorBackRight.setPower(.5);
-//                }
-//                else if(vuMark == RelicRecoveryVuMark.RIGHT) {
-//                    Map.setGoal(11, 4.6);
-//
-//                    motorFrontRight.setPower(.25);
-//                    motorFrontLeft.setPower(.25);
-//                    motorBackLeft.setPower(.25);
-//                    motorBackRight.setPower(.25);
-//                }
-//                else {
-//                    Map.setGoal(11, 5);
-//
-//                    motorFrontRight.setPower(.25);
-//                    motorFrontLeft.setPower(.25);
-//                    motorBackLeft.setPower(.25);
-//                    motorBackRight.setPower(.25);
-//                }
+                }
 
                 if (pose != null) {
                     VectorF trans = pose.getTranslation();
