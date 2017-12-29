@@ -85,6 +85,7 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
     public int moveState = 0;
     public double time = getRuntime();
 
+
     @Override public void runOpMode() {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -107,7 +108,14 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
         DcMotor motorBackRight;
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         BNO055IMU imu = (BNO055IMU) hardwareMap.get("imu");
-
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
         //telemetry.addData(">", "Press Play to start");
         //telemetry.update();
         waitForStart();
@@ -127,55 +135,106 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                 if(vuMark == RelicRecoveryVuMark.LEFT) {
                     Map.setGoal(11, 5.4);
 
+                    int frontRight = motorFrontRight.getCurrentPosition();
+                    telemetry.addData("frontright", frontRight);
+
+                    int backLeft = motorBackLeft.getCurrentPosition();
+                    telemetry.addData("backleft", backLeft);
+
                     motorFrontRight.setPower(-.5);
                     motorFrontLeft.setPower(-.5);
                     motorBackLeft.setPower(.5);
                     motorBackRight.setPower(.5);
+//
+                    if (frontRight == 212) {
+                        motorFrontRight.setPower(0);
+                        motorFrontLeft.setPower(0);
+                        motorBackLeft.setPower(0);
+                        motorBackRight.setPower(0);
+                    } else {
 
-                    if (time > getRuntime() + 2){
+                    }
+                }
+
+                else if(vuMark == RelicRecoveryVuMark.CENTER) {
+                    Map.setGoal(11, 5);
+
+                    int    frontRight = motorFrontRight.getCurrentPosition();
+                    telemetry.addData("frontright", frontRight);
+                      int  backLeft = motorBackLeft.getCurrentPosition();
+                    telemetry.addData("backleft", backLeft);
+
+                    Map.setRobot(10,2);
+                    Map.setGoal(11, 4.6);
+
+                    motorFrontRight.setPower(-.5);
+                    motorFrontLeft.setPower(-.5);
+                    motorBackLeft.setPower(.5);
+                    motorBackRight.setPower(.5);
+//
+                    if (frontRight == 212){
                         motorFrontRight.setPower(0);
                         motorFrontLeft.setPower(0);
                         motorBackLeft.setPower(0);
                         motorBackRight.setPower(0);
                     }
-                }
-                else if(vuMark == RelicRecoveryVuMark.CENTER) {
-                    Map.setGoal(11, 5);
+                    else{
 
-                    motorFrontRight.setPower(-.5);
-                    motorFrontLeft.setPower(-.5);
-                    motorBackLeft.setPower(.5);
-                    motorBackRight.setPower(.5);
+                    }
+
                 }
                 else if(vuMark == RelicRecoveryVuMark.RIGHT) {
 
-                    int position = motorFrontRight.getCurrentPosition();
-                    telemetry.addData("frontright", position);
+                    int    frontRight = motorFrontRight.getCurrentPosition();
+                    telemetry.addData("frontright", frontRight);
 
-                    int position2 = motorBackLeft.getCurrentPosition();
-                    telemetry.addData("backleft", position2);
+                    int    backLeft = motorBackLeft.getCurrentPosition();
+                    telemetry.addData("backleft", backLeft);
 
                     Map.setRobot(10,2);
                     Map.setGoal(11, 4.6);
 
-                    moveState = AutonomousBaseMercury.MoveState.LEFT;
-
                     motorFrontRight.setPower(-.5);
                     motorFrontLeft.setPower(-.5);
                     motorBackLeft.setPower(.5);
                     motorBackRight.setPower(.5);
-
+//
+                    if (frontRight == 212){
+                        motorFrontRight.setPower(0);
+                        motorFrontLeft.setPower(0);
+                        motorBackLeft.setPower(0);
+                        motorBackRight.setPower(0);
+                    }
+                    else {
+                    }
 
                 }
                 else {
                     Map.setGoal(11, 5);
+                        int frontRight = motorFrontRight.getCurrentPosition();
+                        telemetry.addData("frontright", frontRight);
 
-                    moveState = AutonomousBaseMercury.MoveState.LEFT;
+                        int backLeft = motorBackLeft.getCurrentPosition();
+                        telemetry.addData("backleft", backLeft);
 
-//                    motorFrontRight.setPower(-.5);
-//                    motorFrontLeft.setPower(-.5);
-//                    motorBackLeft.setPower(.5);
-//                    motorBackRight.setPower(.5);
+                        Map.setRobot(10,2);
+                        Map.setGoal(11, 4.6);
+
+                        motorFrontRight.setPower(-.5);
+                        motorFrontLeft.setPower(-.5);
+                        motorBackLeft.setPower(.5);
+                        motorBackRight.setPower(.5);
+//
+                        if (frontRight == 212){
+                            motorFrontRight.setPower(0);
+                            motorFrontLeft.setPower(0);
+                            motorBackLeft.setPower(0);
+                            motorBackRight.setPower(0);
+                        }
+                        else {
+                        }
+
+
                 }
 
                 if (pose != null) {
@@ -197,8 +256,7 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                     telemetry.addData("rotx", rX);
                     telemetry.addData("roty", rY);
                     telemetry.addData("rotx", rZ);
-                }
-            }
+                }}
 
 
             else {
