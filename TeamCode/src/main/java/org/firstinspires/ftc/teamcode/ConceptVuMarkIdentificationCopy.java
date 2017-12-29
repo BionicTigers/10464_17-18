@@ -151,7 +151,8 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                         motorFrontLeft.setPower(0);
                         motorBackLeft.setPower(0);
                         motorBackRight.setPower(0);
-                    } else {
+                    }
+                    else {
 
                     }
                 }
