@@ -24,9 +24,8 @@ public class VenusMechanum extends OpMode {
     public DcMotor motorBackRight;
     //CAR WASHER\\
     public DcMotor billiam;
-    //CONVEYOR BELT\\
-    public Servo franny = null; //Left
-    public Servo mobert = null; //Right
+    //GLYPH FLIPPER\\
+    public Servo hamilton = null;
     //LIFT\\
     public DcMotor evangelino; //Left
     public DcMotor wilbert; //Right
@@ -34,7 +33,10 @@ public class VenusMechanum extends OpMode {
     public Servo eddie = null; //Flicker
     public Servo clark = null; //Dropper
     //RELIC\\
-    public DcMotor georgery = null;
+    public DcMotor georgery;
+    public Servo brandy = null; //Elbow
+    public Servo franny = null; //Left Finger
+    public Servo mobert = null; //Right Finger
     //VARIABLES\\
     public double beltRotation;
 
@@ -53,9 +55,8 @@ public void init() {
     motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     //CAR WASHER\\
     billiam = hardwareMap.dcMotor.get("billiam");
-    //CONVEYOR BELT\\
-    franny = hardwareMap.servo.get("franny");
-    mobert = hardwareMap.servo.get("mobert");
+    //GLYPH FLIPPER\\
+    hamilton = hardwareMap.servo.get("hamilton");
     //LIFT\\
     evangelino = hardwareMap.dcMotor.get("evangelino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
@@ -69,6 +70,9 @@ public void init() {
     clark = hardwareMap.servo.get("clark");
     //RELIC\\
     georgery = hardwareMap.dcMotor.get("georgery");
+    brandy = hardwareMap.servo.get("brandy");
+    franny = hardwareMap.servo.get("franny");
+    mobert = hardwareMap.servo.get("mobert");
     //VARIABLES\\
     beltRotation = 0.0; }
 

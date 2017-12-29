@@ -126,8 +126,8 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             Map.setRobot(10,2);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                telemetry.addData("VuMark", "%s visible", vuMark);
+            //if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                //telemetry.addData("VuMark", "%s visible", vuMark);
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
                 //telemetry.addData("Pose",format(pose));
 
@@ -165,7 +165,6 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                       int  backLeft = motorBackLeft.getCurrentPosition();
                     telemetry.addData("backleft", backLeft);
 
-                    Map.setRobot(10,2);
                     Map.setGoal(11, 4.6);
 
                     motorFrontRight.setPower(-.5);
@@ -192,7 +191,6 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                     int    backLeft = motorBackLeft.getCurrentPosition();
                     telemetry.addData("backleft", backLeft);
 
-                    Map.setRobot(10,2);
                     Map.setGoal(11, 4.6);
 
                     motorFrontRight.setPower(-.5);
@@ -218,7 +216,6 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                         int backLeft = motorBackLeft.getCurrentPosition();
                         telemetry.addData("backleft", backLeft);
 
-                        Map.setRobot(10,2);
                         Map.setGoal(11, 4.6);
 
                         motorFrontRight.setPower(-.5);
@@ -257,7 +254,7 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                     telemetry.addData("rotx", rX);
                     telemetry.addData("roty", rY);
                     telemetry.addData("rotx", rZ);
-                }}
+                }//}
 
 
             else {
