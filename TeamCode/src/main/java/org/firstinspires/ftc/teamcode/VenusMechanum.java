@@ -38,7 +38,7 @@ public class VenusMechanum extends OpMode {
     public Servo franny = null; //Left Finger
     public Servo mobert = null; //Right Finger
     //VARIABLES\\
-    public double beltRotation;
+    public double elbowPos;
 
 
 public void init() {
@@ -74,7 +74,7 @@ public void init() {
     franny = hardwareMap.servo.get("franny");
     mobert = hardwareMap.servo.get("mobert");
     //VARIABLES\\
-    beltRotation = 0.0; }
+    elbowPos = 0.00; }
 
 
 public void loop() {
@@ -98,9 +98,31 @@ public void loop() {
     motorBackRight.setPower(v3);
     motorBackLeft.setPower(v4);
 
-    if (gamepad1.dpad_up) {
+    if (gamepad1.y) {
         eddie.setPosition(0.5);
         clark.setPosition(0.6); }
+
+    if (gamepad1.dpad_up) {
+        georgery.setPower(0.75); }
+    else if (gamepad1.dpad_down) {
+        georgery.setPower(-0.75); }
+    else {
+        georgery.setPower(0.0); }
+
+    if (gamepad1.right_bumper) {
+            elbowPos += .01;
+        brandy.setPosition(elbowPos); }
+
+    else if (gamepad1.left_bumper) {
+            elbowPos -= .01;
+        brandy.setPosition(elbowPos); }
+
+    if (gamepad1.right_trigger > .7) {
+        franny.setPosition(0.00);
+        mobert.setPosition(0.00); }
+    else if (gamepad1.left_trigger > .7) {
+        franny.setPosition(1.00);
+        mobert.setPosition(1.00); }
 
     ///////////////
     // GAMEPAD 2 //
