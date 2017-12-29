@@ -33,7 +33,7 @@ public class VenusMechanum extends OpMode {
     public Servo eddie = null; //Flicker
     public Servo clark = null; //Dropper
     //RELIC\\
-    public DcMotor georgery;
+    public DcMotor georgery; //Extender
     public Servo brandy = null; //Elbow
     public Servo franny = null; //Left Finger
     public Servo mobert = null; //Right Finger
@@ -113,17 +113,9 @@ public void loop() {
         billiam.setPower(0.00); }
 
     if (gamepad2.right_trigger > .7) {
-        beltRotation += .01;
-        franny.setPosition(beltRotation);
-        mobert.setPosition(beltRotation); }
+        hamilton.setPosition(0.6); }
     else if (gamepad2.left_trigger > .7) {
-        beltRotation -= .01;
-        franny.setPosition(beltRotation);
-        mobert.setPosition(beltRotation); }
-    else {
-        beltRotation += 0;
-        franny.setPosition(beltRotation);
-        mobert.setPosition(beltRotation); }
+        hamilton.setPosition(0.0); }
 
     if (gamepad2.a) {
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
