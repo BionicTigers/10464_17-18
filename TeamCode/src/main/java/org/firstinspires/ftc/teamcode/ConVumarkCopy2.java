@@ -20,27 +20,28 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @Autonomous(name="Vuforia", group ="Concept")
 
 public class ConVumarkCopy2 extends AutonomousBaseMercury {
-public static final String TAG = "Vuforia VuMark Sample";
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
-    public int moveState = 0;
+    int moveState = 0;
     DcMotor motorBackRight;
     DcMotor motorFrontRight;
     DcMotor motorBackLeft;
     DcMotor motorFrontLeft;
     BNO055IMU imu;
+    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+    VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+    VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+
 
     public void init() {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        relicTemplate.setName("relicVuMarkTemplate");
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
@@ -55,10 +56,8 @@ public static final String TAG = "Vuforia VuMark Sample";
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //telemetry.addData(">", "Press Play to start");
-        //telemetry.update();
 
-        relicTrackables.activate();
+        //relicTrackables.activate();
     }
     public void loop() {
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
