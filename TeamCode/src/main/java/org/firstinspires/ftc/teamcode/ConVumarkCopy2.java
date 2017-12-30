@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -16,14 +17,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+@Autonomous(name="Vuforia", group ="Concept")
 
-public class ConvumarkCopy2 extends AutonomousBaseMercury {
-    public static final String TAG = "Vuforia VuMark Sample";
+public class ConVumarkCopy2 extends AutonomousBaseMercury {
+public static final String TAG = "Vuforia VuMark Sample";
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
     public int moveState = 0;
-    public double time = getRuntime();
+    DcMotor motorBackRight;
+    DcMotor motorFrontRight;
+    DcMotor motorBackLeft;
+    DcMotor motorFrontLeft;
+    BNO055IMU imu;
 
     public void init() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -36,16 +42,11 @@ public class ConvumarkCopy2 extends AutonomousBaseMercury {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-
-        DcMotor motorFrontLeft;
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        DcMotor motorBackLeft;
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        DcMotor motorFrontRight;
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        DcMotor motorBackRight;
         motorBackRight = hardwareMap.dcMotor.get("backRight");
-        BNO055IMU imu = (BNO055IMU) hardwareMap.get("imu");
+        imu = (BNO055IMU) hardwareMap.get("imu");
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -59,7 +60,7 @@ public class ConvumarkCopy2 extends AutonomousBaseMercury {
 
         relicTrackables.activate();
     }
-    public void GameState() {
+    public void loop() {
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
         Map.setRobot(10, 2);
         //if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
@@ -185,20 +186,15 @@ public class ConvumarkCopy2 extends AutonomousBaseMercury {
             double rZ = rot.thirdAngle;
 
             telemetry.addData("pos", imu.getPosition());
-
-
-        }//}
-
-
+        }
         else {
             telemetry.addData("VuMark", "not visible");
         }
 
         telemetry.update();
     }
-
             String format(OpenGLMatrix transformationMatrix) {
-            return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+                return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
             }
 
 }

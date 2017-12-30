@@ -83,8 +83,6 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
     public int moveState = 0;
-    public double time = getRuntime();
-
 
     @Override public void runOpMode() {
 
