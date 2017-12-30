@@ -14,7 +14,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @Autonomous(name="Vuforia", group ="Concept")
@@ -40,8 +39,8 @@ public class ConVumarkCopy2 extends AutonomousBaseMercury {
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate");
+        //VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        //relicTemplate.setName("relicVuMarkTemplate");
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
