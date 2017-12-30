@@ -89,7 +89,7 @@ public void init() {
     mobert = hardwareMap.servo.get("mobert");
     //IMU\\
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-    parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+    parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
     parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
     parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
     parameters.loggingEnabled = true;
@@ -113,7 +113,7 @@ public void loop() {
     if (gamepad1.a) { //orientation calibration
         // Get the calibration data
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled = true;
@@ -261,7 +261,7 @@ public void loop() {
                 // Acquiring the angles is relatively expensive; we don't want
                 // to do that in each of the three items that need that info, as that's
                 // three times the necessary expense.
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
                 gravity = imu.getGravity();
             }
         });
@@ -320,9 +320,9 @@ public void loop() {
     }
 
     String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
+        return formatRadians(AngleUnit.RADIANS.fromUnit(angleUnit, angle));
     }
 
-    String formatDegrees(double degrees) {
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
+    String formatRadians(double radians) {
+        return String.format(Locale.getDefault(), "%.1f", AngleUnit.RADIANS.normalize(radians));
     } }
