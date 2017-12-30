@@ -160,9 +160,9 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                 else if(vuMark == RelicRecoveryVuMark.CENTER) {
                     Map.setGoal(11, 5);
 
-                    int    frontRight = motorFrontRight.getCurrentPosition();
+                    int frontRight = motorFrontRight.getCurrentPosition();
                     telemetry.addData("frontright", frontRight);
-                      int  backLeft = motorBackLeft.getCurrentPosition();
+                    int backLeft = motorBackLeft.getCurrentPosition();
                     telemetry.addData("backleft", backLeft);
 
                     Map.setGoal(11, 4.6);
@@ -185,10 +185,10 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                 }
                 else if(vuMark == RelicRecoveryVuMark.RIGHT) {
 
-                    int    frontRight = motorFrontRight.getCurrentPosition();
+                    int frontRight = motorFrontRight.getCurrentPosition();
                     telemetry.addData("frontright", frontRight);
 
-                    int    backLeft = motorBackLeft.getCurrentPosition();
+                    int backLeft = motorBackLeft.getCurrentPosition();
                     telemetry.addData("backleft", backLeft);
 
                     Map.setGoal(11, 4.6);

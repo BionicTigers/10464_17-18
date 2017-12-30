@@ -33,9 +33,8 @@ public class VenusOriented extends OpMode {
     public DcMotor motorBackRight;
     //CAR WASHER\\
     public DcMotor billiam;
-    //CONVEYOR BELT\\
-    public Servo franny = null; //Left
-    public Servo mobert = null; //Right
+    //GLYPH FLIPPER\\
+    public Servo hamilton = null;
     //LIFT\\
     public DcMotor evangelino; //Left
     public DcMotor wilbert; //Right
@@ -43,19 +42,22 @@ public class VenusOriented extends OpMode {
     public Servo eddie = null; //Flicker
     public Servo clark = null; //Dropper
     //RELIC\\
-    public DcMotor georgery = null;
+    public DcMotor georgery; //Extender
+    public Servo brandy = null; //Elbow
+    public Servo franny = null; //Left Finger
+    public Servo mobert = null; //Right Finger
     //IMU\\
     BNO055IMU imu;
-    public int calibToggle;
     public Orientation angles;
     public Acceleration gravity;
     //VARIABLES\\
-    public double beltRotation;
+    public int calibToggle;
+    public double elbowPos;
 
 
 public void init() {
 
-    //DRIVETRAIN\\
+    ///DRIVETRAIN\\
     motorFrontRight = hardwareMap.dcMotor.get("frontRight");
     motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
     motorBackRight = hardwareMap.dcMotor.get("backRight");
@@ -67,9 +69,8 @@ public void init() {
     motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     //CAR WASHER\\
     billiam = hardwareMap.dcMotor.get("billiam");
-    //CONVEYOR BELT\\
-    franny = hardwareMap.servo.get("franny");
-    mobert = hardwareMap.servo.get("mobert");
+    //GLYPH FLIPPER\\
+    hamilton = hardwareMap.servo.get("hamilton");
     //LIFT\\
     evangelino = hardwareMap.dcMotor.get("evangelino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
@@ -83,8 +84,10 @@ public void init() {
     clark = hardwareMap.servo.get("clark");
     //RELIC\\
     georgery = hardwareMap.dcMotor.get("georgery");
+    brandy = hardwareMap.servo.get("brandy");
+    franny = hardwareMap.servo.get("franny");
+    mobert = hardwareMap.servo.get("mobert");
     //IMU\\
-    calibToggle = 0;
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
     parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
     parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -94,7 +97,9 @@ public void init() {
     parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
     imu = hardwareMap.get(BNO055IMU.class, "imu");
     imu.initialize(parameters);
-    beltRotation = 0; }
+    //VARIABLES\\
+    calibToggle = 0;
+    elbowPos = 0.00; }
 
 
 public void loop() {
@@ -170,9 +175,31 @@ public void loop() {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4); }
 
-    if (gamepad1.dpad_up) {
+    if (gamepad1.y) {
         eddie.setPosition(0.5);
         clark.setPosition(0.6); }
+
+    if (gamepad1.dpad_up) {
+        georgery.setPower(0.75); }
+    else if (gamepad1.dpad_down) {
+        georgery.setPower(-0.75); }
+    else {
+        georgery.setPower(0.0); }
+
+    if (gamepad1.right_bumper) {
+        elbowPos += .01;
+        brandy.setPosition(elbowPos); }
+
+    else if (gamepad1.left_bumper) {
+        elbowPos -= .01;
+        brandy.setPosition(elbowPos); }
+
+    if (gamepad1.right_trigger > .7) {
+        franny.setPosition(0.00);
+        mobert.setPosition(0.00); }
+    else if (gamepad1.left_trigger > .7) {
+        franny.setPosition(1.00);
+        mobert.setPosition(1.00); }
 
     ///////////////
     // GAMEPAD 2 //
@@ -185,17 +212,9 @@ public void loop() {
         billiam.setPower(0.00); }
 
     if (gamepad2.right_trigger > .7) {
-        beltRotation += .01;
-        franny.setPosition(beltRotation);
-        mobert.setPosition(beltRotation); }
+        hamilton.setPosition(0.6); }
     else if (gamepad2.left_trigger > .7) {
-        beltRotation -= .01;
-        franny.setPosition(beltRotation);
-        mobert.setPosition(beltRotation); }
-    else {
-        beltRotation += 0;
-        franny.setPosition(beltRotation);
-        mobert.setPosition(beltRotation); }
+        hamilton.setPosition(0.0); }
 
     if (gamepad2.a) {
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
