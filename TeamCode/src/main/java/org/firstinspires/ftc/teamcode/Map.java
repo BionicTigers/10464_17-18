@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode;
-
 /**
  * Controls all map logic for autonomous
  */
@@ -12,7 +11,7 @@ public class Map {
 
     public Map(double startPos){ //pass in Team color
         robotX = startPos;
-        robotY = 10.25;
+        robotY = 2;
     }
 
     public static void setGoal(double x, double y){
@@ -41,19 +40,19 @@ public class Map {
         return ((int)(robotY*1000))/1000.0;
     }
 
-    public double angleToGoal(){
+    public static double angleToGoal(){
         double dX = goalX-robotX;
         double dY = goalY-robotY;
         return (((Math.atan2(dY, dX) * 180) / Math.PI) + 450) % 360;
     }
 
-    public double distanceToGoal(){
+    public static double distanceToGoal(){
         double dX = goalX-robotX;
         double dY = goalY-robotY;
         return Math.sqrt(dX * dX + dY * dY); //return length of hypotenuse
     }
 
-    public void moveRobot(double feet,double heading) {
+    public static void moveRobot(double feet,double heading) {
         robotX -= feet * Math.cos(Math.toRadians((heading + 450) % 360));
         robotY -= feet * Math.sin(Math.toRadians((heading + 450) % 360));
     }

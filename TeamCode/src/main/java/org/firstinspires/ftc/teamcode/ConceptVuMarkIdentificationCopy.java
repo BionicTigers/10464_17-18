@@ -83,8 +83,6 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
     public int moveState = 0;
-    public double time = getRuntime();
-
 
     @Override public void runOpMode() {
 
@@ -167,20 +165,22 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
 
                     Map.setGoal(11, 4.6);
 
-                    motorFrontRight.setPower(-.5);
-                    motorFrontLeft.setPower(-.5);
-                    motorBackLeft.setPower(.5);
-                    motorBackRight.setPower(.5);
-//
-                    if (frontRight == 212){
-                        motorFrontRight.setPower(0);
-                        motorFrontLeft.setPower(0);
-                        motorBackLeft.setPower(0);
-                        motorBackRight.setPower(0);
-                    }
-                    else{
+                    moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
 
-                    }
+//                    motorFrontRight.setPower(-.5);
+//                    motorFrontLeft.setPower(-.5);
+//                    motorBackLeft.setPower(.5);
+//                    motorBackRight.setPower(.5);
+//
+//                    if (frontRight == 212){
+//                        motorFrontRight.setPower(0);
+//                        motorFrontLeft.setPower(0);
+//                        motorBackLeft.setPower(0);
+//                        motorBackRight.setPower(0);
+//                    }
+//                    else{
+//
+//                    }
 
                 }
                 else if(vuMark == RelicRecoveryVuMark.RIGHT) {
@@ -193,19 +193,21 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
 
                     Map.setGoal(11, 4.6);
 
-                    motorFrontRight.setPower(-.5);
-                    motorFrontLeft.setPower(-.5);
-                    motorBackLeft.setPower(.5);
-                    motorBackRight.setPower(.5);
-//
-                    if (frontRight == 212){
-                        motorFrontRight.setPower(0);
-                        motorFrontLeft.setPower(0);
-                        motorBackLeft.setPower(0);
-                        motorBackRight.setPower(0);
-                    }
-                    else {
-                    }
+                    moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
+
+//                    motorFrontRight.setPower(-.5);
+//                    motorFrontLeft.setPower(-.5);
+//                    motorBackLeft.setPower(.5);
+//                    motorBackRight.setPower(.5);
+////
+//                    if (frontRight == 212){
+//                        motorFrontRight.setPower(0);
+//                        motorFrontLeft.setPower(0);
+//                        motorBackLeft.setPower(0);
+//                        motorBackRight.setPower(0);
+//                    }
+//                    else {
+//                    }
 
                 }
                 else {
@@ -218,19 +220,19 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
 
                         Map.setGoal(11, 4.6);
 
-                        motorFrontRight.setPower(-.5);
-                        motorFrontLeft.setPower(-.5);
-                        motorBackLeft.setPower(.5);
-                        motorBackRight.setPower(.5);
-//
-                        if (frontRight == 212){
-                            motorFrontRight.setPower(0);
-                            motorFrontLeft.setPower(0);
-                            motorBackLeft.setPower(0);
-                            motorBackRight.setPower(0);
-                        }
-                        else {
-                        }
+//                        motorFrontRight.setPower(-.5);
+//                        motorFrontLeft.setPower(-.5);
+//                        motorBackLeft.setPower(.5);
+//                        motorBackRight.setPower(.5);
+////
+//                        if (frontRight == 212){
+//                            motorFrontRight.setPower(0);
+//                            motorFrontLeft.setPower(0);
+//                            motorBackLeft.setPower(0);
+//                            motorBackRight.setPower(0);
+//                        }
+//                        else {
+//                        }
 
 
                 }
@@ -243,17 +245,17 @@ public class ConceptVuMarkIdentificationCopy extends LinearOpMode {
                     double tX = trans.get(0);
                     double tY = trans.get(1);
                     double tZ = trans.get(2);
-                    telemetry.addData("x",tX);
-                    telemetry.addData("y",tY);
-                    telemetry.addData("z",tZ);
 
                     // Extract the rotational components of the target relative to the robot
                     double rX = rot.firstAngle;
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
-                    telemetry.addData("rotx", rX);
-                    telemetry.addData("roty", rY);
-                    telemetry.addData("rotx", rZ);
+
+                    telemetry.addData("pos", imu.getPosition());
+
+
+
+
                 }//}
 
 

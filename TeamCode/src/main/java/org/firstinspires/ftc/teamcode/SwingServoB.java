@@ -46,7 +46,7 @@ public class SwingServoB extends OpMode{
 
         switch(gameState) {
             case 0: //preset variables
-                clark.setPosition(1.15);
+                clark.setPosition(0.9);
                 gameState = 1;
                 waitTime = getRuntime(); //get current runTime
                 break;
@@ -99,5 +99,3 @@ public class SwingServoB extends OpMode{
         }
     }
 }
-
-//emily
