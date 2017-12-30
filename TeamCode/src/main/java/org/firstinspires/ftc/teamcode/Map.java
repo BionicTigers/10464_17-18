@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode;
-
 /**
  * Controls all map logic for autonomous
  */
@@ -41,13 +40,13 @@ public class Map {
         return ((int)(robotY*1000))/1000.0;
     }
 
-    public double angleToGoal(){
+    public static double angleToGoal(){
         double dX = goalX-robotX;
         double dY = goalY-robotY;
         return (((Math.atan2(dY, dX) * 180) / Math.PI) + 450) % 360;
     }
 
-    public double distanceToGoal(){
+    public static double distanceToGoal(){
         double dX = goalX-robotX;
         double dY = goalY-robotY;
         return Math.sqrt(dX * dX + dY * dY); //return length of hypotenuse
