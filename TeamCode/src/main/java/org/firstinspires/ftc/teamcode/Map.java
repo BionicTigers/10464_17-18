@@ -12,7 +12,7 @@ public class Map {
 
     public Map(double startPos){ //pass in Team color
         robotX = startPos;
-        robotY = 10.25;
+        robotY = 2;
     }
 
     public static void setGoal(double x, double y){
@@ -53,7 +53,7 @@ public class Map {
         return Math.sqrt(dX * dX + dY * dY); //return length of hypotenuse
     }
 
-    public void moveRobot(double feet,double heading) {
+    public static void moveRobot(double feet,double heading) {
         robotX -= feet * Math.cos(Math.toRadians((heading + 450) % 360));
         robotY -= feet * Math.sin(Math.toRadians((heading + 450) % 360));
     }
