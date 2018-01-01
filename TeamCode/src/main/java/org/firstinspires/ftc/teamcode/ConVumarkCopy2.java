@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -14,11 +14,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
 @Autonomous(name="Vuforia", group ="Concept")
 
-public class ConVumarkCopy2 extends AutonomousBaseMercury {
+public abstract class ConVumarkCopy2 extends OpMode {
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
@@ -28,19 +30,20 @@ public class ConVumarkCopy2 extends AutonomousBaseMercury {
     DcMotor motorBackLeft;
     DcMotor motorFrontLeft;
     BNO055IMU imu;
+
+
+    VuforiaTrackable relicTemplate;
     int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
     VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
     VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-
 
     public void init() {
 
         parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
-        //VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        //relicTemplate.setName("relicVuMarkTemplate");
+        relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate");
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
@@ -58,7 +61,8 @@ public class ConVumarkCopy2 extends AutonomousBaseMercury {
 
         //relicTrackables.activate();
     }
-    public void loop() {
+    public void gameState() {
+
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
         Map.setRobot(10, 2);
         //if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
@@ -76,47 +80,23 @@ public class ConVumarkCopy2 extends AutonomousBaseMercury {
             int backLeft = motorBackLeft.getCurrentPosition();
             telemetry.addData("backleft", backLeft);
 
-            motorFrontRight.setPower(-.5);
-            motorFrontLeft.setPower(-.5);
-            motorBackLeft.setPower(.5);
-            motorBackRight.setPower(.5);
-//
-            if (frontRight == 212) {
-                motorFrontRight.setPower(0);
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(0);
-                motorBackRight.setPower(0);
-            } else {
+            moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
 
-            }
-        } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+        }
+        else if (vuMark == RelicRecoveryVuMark.CENTER) {
             Map.setGoal(11, 5);
 
             int frontRight = motorFrontRight.getCurrentPosition();
             telemetry.addData("frontright", frontRight);
+
             int backLeft = motorBackLeft.getCurrentPosition();
             telemetry.addData("backleft", backLeft);
-
-            Map.setGoal(11, 4.6);
-
             moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
 
-//                    motorFrontRight.setPower(-.5);
-//                    motorFrontLeft.setPower(-.5);
-//                    motorBackLeft.setPower(.5);
-//                    motorBackRight.setPower(.5);
-//
-//                    if (frontRight == 212){
-//                        motorFrontRight.setPower(0);
-//                        motorFrontLeft.setPower(0);
-//                        motorBackLeft.setPower(0);
-//                        motorBackRight.setPower(0);
-//                    }
-//                    else{
-//
-//                    }
 
         } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+
+            Map.setGoal(11,4.6);
 
             int frontRight = motorFrontRight.getCurrentPosition();
             telemetry.addData("frontright", frontRight);
@@ -124,23 +104,8 @@ public class ConVumarkCopy2 extends AutonomousBaseMercury {
             int backLeft = motorBackLeft.getCurrentPosition();
             telemetry.addData("backleft", backLeft);
 
-            Map.setGoal(11, 4.6);
-
             moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
 
-//                    motorFrontRight.setPower(-.5);
-//                    motorFrontLeft.setPower(-.5);
-//                    motorBackLeft.setPower(.5);
-//                    motorBackRight.setPower(.5);
-////
-//                    if (frontRight == 212){
-//                        motorFrontRight.setPower(0);
-//                        motorFrontLeft.setPower(0);
-//                        motorBackLeft.setPower(0);
-//                        motorBackRight.setPower(0);
-//                    }
-//                    else {
-//                    }
 
         } else {
             Map.setGoal(11, 5);
@@ -149,24 +114,7 @@ public class ConVumarkCopy2 extends AutonomousBaseMercury {
 
             int backLeft = motorBackLeft.getCurrentPosition();
             telemetry.addData("backleft", backLeft);
-
-            Map.setGoal(11, 4.6);
-
-//                        motorFrontRight.setPower(-.5);
-//                        motorFrontLeft.setPower(-.5);
-//                        motorBackLeft.setPower(.5);
-//                        motorBackRight.setPower(.5);
-////
-//                        if (frontRight == 212){
-//                            motorFrontRight.setPower(0);
-//                            motorFrontLeft.setPower(0);
-//                            motorBackLeft.setPower(0);
-//                            motorBackRight.setPower(0);
-//                        }
-//                        else {
-//                        }
-
-
+            moveState = AutonomousBaseMercury.MoveState.STRAFE_TOWARDS_GOAL;
         }
 
         if (pose != null) {
@@ -193,6 +141,6 @@ public class ConVumarkCopy2 extends AutonomousBaseMercury {
     }
             String format(OpenGLMatrix transformationMatrix) {
                 return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-            }
+    }
 
 }

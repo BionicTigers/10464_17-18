@@ -72,8 +72,6 @@ public abstract class AutonomousBaseMercury extends OpMode {
     public VuforiaLocalizer vuforia;
     public VuforiaTrackable relicTemplate;
     public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-    public int startDeg;
-    public boolean started;
     public ColorSensor sensorColor;
     public double waitTime;
     public int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -94,8 +92,7 @@ public abstract class AutonomousBaseMercury extends OpMode {
    public int cDistF, lDistF, dDistF; //Forward distance variables
    public int cDistS, lDistS, dDistS; //Sideways distance variables
    public int cDistW, lDistW, dDistW; //Sideways distance variables
-   public double sTime; //Shooting timer
-   public double pTime; //Button presser timer
+   public double sTime;
    public double tDiff;
    public ElapsedTime runtime = new ElapsedTime();
 
@@ -117,6 +114,12 @@ public abstract class AutonomousBaseMercury extends OpMode {
         servo = hardwareMap.servo.get("servo");
         sensorColor = hardwareMap.get(ColorSensor.class, "sensorColor");
         waitTime = 0;
+
+        cDistW = 0;
+        lDistW = 0;
+        dDistW = 0;
+        sTime = 0;
+        tDiff = 0;
 
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
