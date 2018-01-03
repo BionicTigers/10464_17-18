@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-@Autonomous(name="Vuforia", group ="Concept")
+@Autonomous(name="Vuforia211", group ="Concept")
 
 public abstract class ConVumarkCopy2 extends OpMode {
 
@@ -58,10 +58,12 @@ public abstract class ConVumarkCopy2 extends OpMode {
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        //relicTrackables.activate();
+        relicTrackables.activate();
     }
-    public void gameState() {
+    public void loop() {
 
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
         Map.setRobot(10, 2);
