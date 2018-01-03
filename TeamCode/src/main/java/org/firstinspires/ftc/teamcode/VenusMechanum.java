@@ -23,20 +23,20 @@ public class VenusMechanum extends OpMode {
     public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
     //CAR WASHER\\
-    public DcMotor billiam;
+//    public DcMotor billiam;
     //GLYPH FLIPPER\\
     public Servo hamilton = null;
     //LIFT\\
-    public DcMotor evangelino; //Left
-    public DcMotor wilbert; //Right
+//    public DcMotor evangelino; //Left
+//    public DcMotor wilbert; //Right
     //HAMMER\\
     public Servo eddie = null; //Flicker
     public Servo clark = null; //Dropper
     //RELIC\\
-    public DcMotor georgery; //Extender
-    public Servo brandy = null; //Elbow
-    public Servo franny = null; //Left Finger
-    public Servo mobert = null; //Right Finger
+//    public DcMotor georgery; //Extender
+//    public Servo brandy = null; //Elbow
+//    public Servo franny = null; //Left Finger
+//    public Servo mobert = null; //Right Finger
     //VARIABLES\\
     public double elbowPos;
 
@@ -54,27 +54,31 @@ public void init() {
     motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     //CAR WASHER\\
-    billiam = hardwareMap.dcMotor.get("billiam");
+//    billiam = hardwareMap.dcMotor.get("billiam");
     //GLYPH FLIPPER\\
     hamilton = hardwareMap.servo.get("hamilton");
     //LIFT\\
-    evangelino = hardwareMap.dcMotor.get("evangelino");
-    wilbert = hardwareMap.dcMotor.get("wilbert");
-
-    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
-    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+//    evangelino = hardwareMap.dcMotor.get("evangelino");
+//    wilbert = hardwareMap.dcMotor.get("wilbert");
+//
+//    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//    evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+//    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
     //HAMMER\\
     eddie = hardwareMap.servo.get("eddie");
     clark = hardwareMap.servo.get("clark");
     //RELIC\\
-    georgery = hardwareMap.dcMotor.get("georgery");
-    brandy = hardwareMap.servo.get("brandy");
-    franny = hardwareMap.servo.get("franny");
-    mobert = hardwareMap.servo.get("mobert");
+//    georgery = hardwareMap.dcMotor.get("georgery");
+//    brandy = hardwareMap.servo.get("brandy");
+//    franny = hardwareMap.servo.get("franny");
+//    mobert = hardwareMap.servo.get("mobert");
     //VARIABLES\\
-    elbowPos = 0.00; }
+    elbowPos = 0.00;
+
+    motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+    motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+}
 
 
 public void loop() {
@@ -88,10 +92,10 @@ public void loop() {
     double sinRAngle = Math.sin(robotAngle);
     double cosRAngle = Math.cos(robotAngle);
 
-    final double v1 = (P * sinRAngle) - (P * cosRAngle) - rightX;
-    final double v2 = (P * sinRAngle) + (P * cosRAngle) + rightX;
-    final double v3 = (P * sinRAngle) + (P * cosRAngle) - rightX;
-    final double v4 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+    final double v1 = (P * sinRAngle) + (P * cosRAngle) + rightX;
+    final double v2 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+    final double v3 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+    final double v4 = (P * sinRAngle) + (P * cosRAngle) - rightX;
 
     motorFrontRight.setPower(v1);
     motorFrontLeft.setPower(v2);
@@ -102,71 +106,73 @@ public void loop() {
         eddie.setPosition(0.5);
         clark.setPosition(0.6); }
 
-    if (gamepad1.dpad_up) {
-        georgery.setPower(0.75); }
-    else if (gamepad1.dpad_down) {
-        georgery.setPower(-0.75); }
-    else {
-        georgery.setPower(0.0); }
-
-    if (gamepad1.right_bumper) {
-            elbowPos += .01;
-        brandy.setPosition(elbowPos); }
-
-    else if (gamepad1.left_bumper) {
-            elbowPos -= .01;
-        brandy.setPosition(elbowPos); }
-
-    if (gamepad1.right_trigger > .7) {
-        franny.setPosition(0.00);
-        mobert.setPosition(0.00); }
-    else if (gamepad1.left_trigger > .7) {
-        franny.setPosition(1.00);
-        mobert.setPosition(1.00); }
+//    if (gamepad1.dpad_up) {
+//        georgery.setPower(0.75); }
+//    else if (gamepad1.dpad_down) {
+//        georgery.setPower(-0.75); }
+//    else {
+//        georgery.setPower(0.0); }
+//
+//    if (gamepad1.right_bumper) {
+//            elbowPos += .01;
+//        brandy.setPosition(elbowPos); }
+//
+//    else if (gamepad1.left_bumper) {
+//            elbowPos -= .01;
+//        brandy.setPosition(elbowPos); }
+//
+//    if (gamepad1.right_trigger > .7) {
+//        franny.setPosition(0.00);
+//        mobert.setPosition(0.00); }
+//    else if (gamepad1.left_trigger > .7) {
+//        franny.setPosition(1.00);
+//        mobert.setPosition(1.00); }
 
     ///////////////
     // GAMEPAD 2 //
     ///////////////
-    if (gamepad2.right_bumper) {
-        billiam.setPower(0.75); }
-    else if (gamepad2.left_bumper) {
-        billiam.setPower(-0.75); }
-    else {
-        billiam.setPower(0.00); }
+//    if (gamepad2.right_bumper) {
+//        billiam.setPower(0.75); }
+//    else if (gamepad2.left_bumper) {
+//        billiam.setPower(-0.75); }
+//    else {
+//        billiam.setPower(0.00); }
 
     if (gamepad2.right_trigger > .7) {
         hamilton.setPosition(0.6); }
     else if (gamepad2.left_trigger > .7) {
-        hamilton.setPosition(0.0); }
+        hamilton.setPosition(0.0); } } }
 
-    if (gamepad2.a) {
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setTargetPosition(0);
-        wilbert.setTargetPosition(0);
-        evangelino.setPower(0.75);
-        wilbert.setPower(0.75); }
 
-    if (gamepad2.x) {
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setTargetPosition(22);
-        wilbert.setTargetPosition(22);
-        evangelino.setPower(0.75);
-        wilbert.setPower(0.75); }
+//    if (gamepad2.a) {
+//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        evangelino.setTargetPosition(0);
+//        wilbert.setTargetPosition(0);
+//        evangelino.setPower(0.75);
+//        wilbert.setPower(0.75); }
+//
+//    if (gamepad2.x) {
+//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        evangelino.setTargetPosition(22);
+//        wilbert.setTargetPosition(22);
+//        evangelino.setPower(0.75);
+//        wilbert.setPower(0.75); }
+//
+//    if (gamepad2.b) {
+//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        evangelino.setTargetPosition(22);
+//        wilbert.setTargetPosition(22);
+//        evangelino.setPower(0.75);
+//        wilbert.setPower(0.75); }
+//
+//    if (gamepad2.y) {
+//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        evangelino.setTargetPosition(66);
+//        wilbert.setTargetPosition(66);
+//        evangelino.setPower(0.75);
+//        wilbert.setPower(0.75); } } }
 
-    if (gamepad2.b) {
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setTargetPosition(22);
-        wilbert.setTargetPosition(22);
-        evangelino.setPower(0.75);
-        wilbert.setPower(0.75); }
-
-    if (gamepad2.y) {
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setTargetPosition(66);
-        wilbert.setTargetPosition(66);
-        evangelino.setPower(0.75);
-        wilbert.setPower(0.75); } } }
