@@ -152,10 +152,10 @@ public void loop() {
         final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) - rightX;
         final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX;
 
-        motorFrontLeft.setPower(v5*.75);//1
-        motorFrontRight.setPower(v6*.75);//2
-        motorBackLeft.setPower(v7*.75);//3
-        motorBackRight.setPower(v8*.75);//4
+        motorFrontLeft.setPower(v5);//1
+        motorFrontRight.setPower(v6);//2
+        motorBackLeft.setPower(v7);//3
+        motorBackRight.setPower(v8);//4
 
         //some telemetry for testing purposes
         telemetry.addData("robotAngle", robotAngle);
@@ -177,10 +177,10 @@ public void loop() {
         final double v3 = (P * sinRAngle) - (P * cosRAngle) + rightX;
         final double v4 = (P * sinRAngle) + (P * cosRAngle) - rightX;
 
-        motorFrontRight.setPower(v1*.75);
-        motorFrontLeft.setPower(v2*.75);
-        motorBackRight.setPower(v3*.75);
-        motorBackLeft.setPower(v4*.75);
+        motorFrontRight.setPower(v1);
+        motorFrontLeft.setPower(v2);
+        motorBackRight.setPower(v3);
+        motorBackLeft.setPower(v4);
     }
 
     if (gamepad1.y) {
@@ -214,18 +214,20 @@ public void loop() {
     // GAMEPAD 2 //
     ///////////////
     if (gamepad2.right_bumper) {
-        billiam.setPower(0.75); }
-    else if (gamepad2.left_bumper) {
         billiam.setPower(-0.75); }
+    else if (gamepad2.right_trigger >.7) {
+        billiam.setPower(0.75); }
     else {
         billiam.setPower(0.00); }
 
-    if (gamepad2.right_trigger > .7) {
-        hamilton.setPosition(1);
-    } else if (gamepad2.left_trigger > .7) {
-        hamilton.setPosition(0.6);
-    }
-}
+    if (gamepad2.left_trigger > .7) {
+        hamilton.setPosition(0.6); }
+    else if (gamepad2.left_bumper) {
+        hamilton.setPosition(1); } }
+
+
+
+
 
 //    if (gamepad2.a) {
 //        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);

@@ -23,15 +23,15 @@ public class VenusMechanum extends OpMode {
     public DcMotor motorBackLeft;
     public DcMotor motorBackRight;
     //CAR WASHER\\
-//    public DcMotor billiam;
+    public DcMotor billiam;
     //GLYPH FLIPPER\\
     public Servo hamilton = null;
     //LIFT\\
 //    public DcMotor evangelino; //Left
 //    public DcMotor wilbert; //Right
     //HAMMER\\
-    public Servo eddie = null; //Flicker
-    public Servo clark = null; //Dropper
+    //public Servo eddie = null; //Flicker
+    //public Servo clark = null; //Dropper
     //RELIC\\
 //    public DcMotor georgery; //Extender
 //    public Servo brandy = null; //Elbow
@@ -54,7 +54,7 @@ public void init() {
     motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     //CAR WASHER\\
-//    billiam = hardwareMap.dcMotor.get("billiam");
+    billiam = hardwareMap.dcMotor.get("billiam");
     //GLYPH FLIPPER\\
     hamilton = hardwareMap.servo.get("hamilton");
     //LIFT\\
@@ -66,8 +66,8 @@ public void init() {
 //    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
     //HAMMER\\
-    eddie = hardwareMap.servo.get("eddie");
-    clark = hardwareMap.servo.get("clark");
+    //eddie = hardwareMap.servo.get("eddie");
+    //clark = hardwareMap.servo.get("clark");
     //RELIC\\
 //    georgery = hardwareMap.dcMotor.get("georgery");
 //    brandy = hardwareMap.servo.get("brandy");
@@ -103,8 +103,8 @@ public void loop() {
     motorBackLeft.setPower(v4);
 
     if (gamepad1.y) {
-        eddie.setPosition(0.5);
-        clark.setPosition(0.6); }
+        //eddie.setPosition(0.5);
+        //clark.setPosition(0.6); }
 
 //    if (gamepad1.dpad_up) {
 //        georgery.setPower(0.75); }
@@ -131,17 +131,17 @@ public void loop() {
     ///////////////
     // GAMEPAD 2 //
     ///////////////
-//    if (gamepad2.right_bumper) {
-//        billiam.setPower(0.75); }
-//    else if (gamepad2.left_bumper) {
-//        billiam.setPower(-0.75); }
-//    else {
-//        billiam.setPower(0.00); }
+    if (gamepad2.right_bumper) {
+        billiam.setPower(0.75); }
+    else if (gamepad2.right_trigger >.7) {
+        billiam.setPower(-0.75); }
+    else {
+        billiam.setPower(0.00); }
 
-    if (gamepad2.right_trigger > .7) {
+    if (gamepad2.left_trigger > .7) {
         hamilton.setPosition(0.6); }
-    else if (gamepad2.left_trigger > .7) {
-        hamilton.setPosition(0.0); } } }
+    else if (gamepad2.left_bumper) {
+        hamilton.setPosition(0.0); } } } }
 
 
 //    if (gamepad2.a) {
