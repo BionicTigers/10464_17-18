@@ -30,13 +30,12 @@
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="AutoEncoderDrive", group="Pushbot")
-@Disabled
+@Autonomous(name="AutoEncoderDrive", group="Auto")
+
 public class AutoEncoderDrive extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -60,7 +59,6 @@ public class AutoEncoderDrive extends LinearOpMode {
 //    public double timeoutS;
 
 
-    @Override
     public void runOpMode() {
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
