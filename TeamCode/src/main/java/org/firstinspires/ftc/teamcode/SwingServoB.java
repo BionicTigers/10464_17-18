@@ -59,13 +59,13 @@ public class SwingServoB extends OpMode{
 
             case 2: //detect color sensor and choose direction
                 if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.4);
+                    eddie.setPosition(0.45);
                     //eddie.setPosition(0.5);
                     gameState = 3;
                     blue = true;
                 }
                 else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.6);
+                    eddie.setPosition(0.55);
                     //eddie.setPosition(0.5);
                     gameState = 3;
                     blue = false;
