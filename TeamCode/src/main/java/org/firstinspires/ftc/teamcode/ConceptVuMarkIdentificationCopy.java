@@ -59,7 +59,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.PushbotAutoDriveByEncoder_Linear;
+import org.firstinspires.ftc.robotcontroller.external.samples.AutoEncoderDrive;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -76,7 +76,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name="Vuforia Test", group ="Concept")
 
-public class ConceptVuMarkIdentificationCopy extends PushbotAutoDriveByEncoder_Linear {
+public class ConceptVuMarkIdentificationCopy extends AutoEncoderDrive {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -144,72 +144,26 @@ public class ConceptVuMarkIdentificationCopy extends PushbotAutoDriveByEncoder_L
                 switch (vuMark) {
                     case RIGHT:
 
-                        encoderDrive(DRIVE_SPEED, 27, 27, 4.0);
-
-                        fLTarget = motorFrontLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-                        bRTarget = motorBackRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-                        motorFrontLeft.setTargetPosition(fLTarget);
-                        motorBackRight.setTargetPosition(bLTarget);
-
-                        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                        motorFrontRight.setPower(Math.abs(speed));
-                        motorBackLeft.setPower(Math.abs(speed));
-
+                        encoderDrive(DRIVE_SPEED, -28.5, -28.5, -28.5,-28.5,2.0);
 
                         break;
 
                     case CENTER:
-                        telemetry.addData("imu pos", imu.getPosition().x);
-
-                        motorFrontRight.setPower(.5);
-                        motorFrontLeft.setPower(-.5);
-                        motorBackRight.setPower(-.5);
-                        motorBackLeft.setPower(.5);
-
-                        if (imu.getPosition().x > 500) {
-                            motorFrontRight.setPower(0);
-                            motorFrontLeft.setPower(0);
-                            motorBackRight.setPower(0);
-                            motorBackLeft.setPower(0);
-                        }
+                        encoderDrive(DRIVE_SPEED, -28.5, -28.5, -28.5,-28.5,2.0);
 
                         break;
 
+
                     case LEFT:
 
-                        telemetry.addData("imu pos", imu.getPosition().x);
-
-                        motorFrontRight.setPower(.5);
-                        motorFrontLeft.setPower(-.5);
-                        motorBackRight.setPower(-.5);
-                        motorBackLeft.setPower(.5);
-
-                        if (imu.getPosition().x > 680) {
-                            motorFrontRight.setPower(0);
-                            motorFrontLeft.setPower(0);
-                            motorBackRight.setPower(0);
-                            motorBackLeft.setPower(0);
-                        }
+                        encoderDrive(DRIVE_SPEED, -28.5, -28.5, -28.5,-28.5,2.0);
 
                         break;
 
                     default:
 
-                        telemetry.addData("imu pos", imu.getPosition().x);
+                        encoderDrive(DRIVE_SPEED, -35.5, -35.5, -35.5,-35.5,2.0);
 
-                        motorFrontRight.setPower(.5);
-                        motorFrontLeft.setPower(-.5);
-                        motorBackRight.setPower(-.5);
-                        motorBackLeft.setPower(.5);
-
-                        if (imu.getPosition().x > 500) {
-                            motorFrontRight.setPower(0);
-                            motorFrontLeft.setPower(0);
-                            motorBackRight.setPower(0);
-                            motorBackLeft.setPower(0);
-                        }
 
                         break;
                 }

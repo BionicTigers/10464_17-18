@@ -92,7 +92,7 @@ public abstract class AutonomousBaseMercury extends OpMode {
    public int cDistF, lDistF, dDistF; //Forward distance variables
    public int cDistS, lDistS, dDistS; //Sideways distance variables
    public int cDistW, lDistW, dDistW; //Sideways distance variables
-   public double sTime;
+   public double sTime; //Shooting timer
    public double tDiff;
    public ElapsedTime runtime = new ElapsedTime();
 
