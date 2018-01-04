@@ -46,7 +46,7 @@ public class SwingServoR extends OpMode{
 
         switch(gameState) {
             case 0: //preset variables
-                clark.setPosition(0.9);
+                clark.setPosition(0.1);
                 gameState = 1;
                 waitTime = getRuntime(); //get current runTime
                 break;
