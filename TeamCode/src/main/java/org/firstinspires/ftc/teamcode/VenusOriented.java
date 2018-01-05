@@ -35,7 +35,7 @@ public class VenusOriented extends OpMode {
     public DcMotor billiam;
     //GLYPH FLIPPER\\
     public Servo hamilton = null;
-//    //LIFT\\
+    //LIFT\\
     public DcMotor evangelino; //Left
     public DcMotor wilbert; //Right
     //HAMMER\\
@@ -73,12 +73,12 @@ public void init() {
     hamilton = hardwareMap.servo.get("hamilton");
     //LIFT\\
     evangelino = hardwareMap.dcMotor.get("evangelino");
-    wilbert = hardwareMap.dcMotor.get("wilbert");
+    //wilbert = hardwareMap.dcMotor.get("wilbert");
 
     evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
-    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+    //wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    //wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
     //HAMMER\\
     eddie = hardwareMap.servo.get("eddie");
     clark = hardwareMap.servo.get("clark");
@@ -144,7 +144,6 @@ public void loop() {
         double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
         double rightX = -gamepad1.right_stick_x;
-
 
 
         final double v5 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) - rightX;
@@ -214,52 +213,56 @@ public void loop() {
     // GAMEPAD 2 //
     ///////////////
     if (gamepad2.right_bumper) {
-        billiam.setPower(-0.75); }
-    else if (gamepad2.right_trigger >.7) {
-        billiam.setPower(0.75); }
-    else {
-        billiam.setPower(0.00); }
+        billiam.setPower(-0.75);
+    } else if (gamepad2.right_trigger > .7) {
+        billiam.setPower(0.75);
+    } else {
+        billiam.setPower(0.00);
+    }
 
     if (gamepad2.left_trigger > .7) {
-        hamilton.setPosition(0.6); }
-    else if (gamepad2.left_bumper) {
-        hamilton.setPosition(1); }
+        hamilton.setPosition(0.6);
+    } else if (gamepad2.left_bumper) {
+        hamilton.setPosition(1);
+    }
 
 
-
-
-
-    if (gamepad2.a) {
+    if (gamepad2.a) { //Bottom level
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         evangelino.setTargetPosition(0);
-        wilbert.setTargetPosition(0);
+        //wilbert.setTargetPosition(0);
         evangelino.setPower(0.75);
-        wilbert.setPower(0.75); }
+        //wilbert.setPower(0.75);
+    }
 
-    if (gamepad2.x) {
+    if (gamepad2.x) { //6 inches
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         evangelino.setTargetPosition(22);
-        wilbert.setTargetPosition(22);
+        //wilbert.setTargetPosition(22);
         evangelino.setPower(0.75);
-        wilbert.setPower(0.75); }
+        //wilbert.setPower(0.75);
+    }
 
-    if (gamepad2.b) {
+    if (gamepad2.b) { //18 inches
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setTargetPosition(22);
-        wilbert.setTargetPosition(22);
-        evangelino.setPower(0.75);
-        wilbert.setPower(0.75); }
-
-    if (gamepad2.y) {
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         evangelino.setTargetPosition(66);
-        wilbert.setTargetPosition(66);
+        //wilbert.setTargetPosition(22);
         evangelino.setPower(0.75);
-        wilbert.setPower(0.75); } }
+        //wilbert.setPower(0.75);
+    }
+
+    if (gamepad2.y) { //12 inches
+        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setTargetPosition(44);
+        //wilbert.setTargetPosition(66);
+        evangelino.setPower(0.75);
+        //wilbert.setPower(0.75);
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
