@@ -27,15 +27,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="AutoEncoderDrive", group="Auto")
-
+@Autonomous(name="AutoEncoderDrive", group="Pushbot")
+@Disabled
 public class AutoEncoderDrive extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -59,6 +60,7 @@ public class AutoEncoderDrive extends LinearOpMode {
 //    public double timeoutS;
 
 
+    @Override
     public void runOpMode() {
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
@@ -75,10 +77,11 @@ public class AutoEncoderDrive extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
@@ -121,6 +124,7 @@ public class AutoEncoderDrive extends LinearOpMode {
             newBackRightTarget = motorBackRight.getCurrentPosition() + (int)(backRightInches * COUNTS_PER_INCH);
             newFrontRightTarget = motorFrontRight.getCurrentPosition() + (int)(frontRightInches * COUNTS_PER_INCH);
             newBackLeftTarget = motorBackLeft.getCurrentPosition() + (int)(backLeftInches * COUNTS_PER_INCH);
+
             motorFrontLeft.setTargetPosition(newFrontLeftTarget);
             motorBackRight.setTargetPosition(newBackRightTarget);
             motorFrontRight.setTargetPosition(newFrontRightTarget);
@@ -154,6 +158,8 @@ public class AutoEncoderDrive extends LinearOpMode {
             // Stop all motion;
             motorFrontLeft.setPower(0);
             motorBackRight.setPower(0);
+            motorFrontRight.setPower(0);
+            motorBackLeft.setPower(0);
 
             // Turn off RUN_TO_POSITION
             motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

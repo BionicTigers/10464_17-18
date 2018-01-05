@@ -55,11 +55,9 @@
  */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.AutoEncoderDrive;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -82,6 +80,7 @@ public class ConceptVuMarkIdentificationCopy extends AutoEncoderDrive {
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
+    private double time;
 
 
     @Override
@@ -105,6 +104,8 @@ public class ConceptVuMarkIdentificationCopy extends AutoEncoderDrive {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        time = getRuntime();
+
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
                 motorFrontLeft.getCurrentPosition(),
@@ -124,17 +125,6 @@ public class ConceptVuMarkIdentificationCopy extends AutoEncoderDrive {
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-
-
-        DcMotor motorFrontLeft;
-        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        DcMotor motorBackLeft;
-        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        DcMotor motorFrontRight;
-        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        DcMotor motorBackRight;
-        motorBackRight = hardwareMap.dcMotor.get("backRight");
-        BNO055IMU imu = (BNO055IMU) hardwareMap.get("imu");
 
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
@@ -163,14 +153,15 @@ public class ConceptVuMarkIdentificationCopy extends AutoEncoderDrive {
                         break;
 
                     case CENTER:
-                        encoderDrive(DRIVE_SPEED, -28.5, -28.5, -28.5,-28.5,2.0);
+
+                        encoderDrive(DRIVE_SPEED, -35.5, -35.5, -35.5,-35.5,2.0);
 
                         break;
 
 
                     case LEFT:
 
-                        encoderDrive(DRIVE_SPEED, -28.5, -28.5, -28.5,-28.5,2.0);
+                        encoderDrive(DRIVE_SPEED, -42.5, -42.5, -42.5,-42.5,2.0);
 
                         break;
 
@@ -243,8 +234,6 @@ public class ConceptVuMarkIdentificationCopy extends AutoEncoderDrive {
                     double rX = rot.firstAngle;
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
-
-                    telemetry.addData("pos", imu.getPosition());
 
                 } else {
                     telemetry.addData("VuMark", "not visible");
