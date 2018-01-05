@@ -30,43 +30,31 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name="AutoEncoderDrive", group="Pushbot")
-@Disabled
-public class AutoEncoderDrive extends LinearOpMode {
+
+public class AutoEncoderDrive extends AutoTest {
 
     /* Declare OpMode members. */
-    public DcMotor motorFrontLeft;
-    public DcMotor motorBackRight;
-    public DcMotor motorFrontRight;
-    public DcMotor motorBackLeft;
-
-    private ElapsedTime runtime = new ElapsedTime();
-
-    public static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
-    public static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
-    public static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
-    public static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI);
-    public static final double DRIVE_SPEED = 0.5;
-    public static final double TURN_SPEED = 0.4;
 
 
-    @Override
     public void runOpMode() {
 
-        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backRight");
-        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
-        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
-
+        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate");
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -84,7 +72,7 @@ public class AutoEncoderDrive extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0",  "Starting at %7d :%7d",
+        telemetry.addData("Path0", "Starting at %7d :%7d",
                 motorFrontLeft.getCurrentPosition(),
                 motorBackRight.getCurrentPosition(),
                 motorFrontRight.getCurrentPosition(),
@@ -92,9 +80,7 @@ public class AutoEncoderDrive extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        sleep(1000);     // pause for servos to move
 
-        telemetry.addData("Path", "Complete");
         telemetry.update();
     }
 
@@ -136,6 +122,7 @@ public class AutoEncoderDrive extends LinearOpMode {
             motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             telemetry.addData("speed", speed);
+            telemetry.addData("target", newBackLeftTarget);
 
             while (opModeIsActive() &&
                    (runtime.seconds() < timeoutS) &&
