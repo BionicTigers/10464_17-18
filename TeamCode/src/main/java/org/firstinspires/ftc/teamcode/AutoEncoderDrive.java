@@ -137,7 +137,6 @@ public class AutoEncoderDrive extends LinearOpMode {
 
             telemetry.addData("speed", speed);
 
-
             while (opModeIsActive() &&
                    (runtime.seconds() < timeoutS) &&
                    (motorFrontLeft.isBusy() && motorBackRight.isBusy())) {
