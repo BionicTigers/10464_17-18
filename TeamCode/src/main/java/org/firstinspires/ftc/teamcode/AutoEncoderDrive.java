@@ -135,6 +135,8 @@ public class AutoEncoderDrive extends LinearOpMode {
             motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+            telemetry.addData("speed", speed);
+
 
             while (opModeIsActive() &&
                    (runtime.seconds() < timeoutS) &&
