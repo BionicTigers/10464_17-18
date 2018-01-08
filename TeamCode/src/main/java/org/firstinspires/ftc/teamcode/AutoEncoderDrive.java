@@ -37,7 +37,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-@Autonomous(name="AutoEncoderDrive", group="Pushbot")
+@Autonomous(name="AutoEncoderDrive", group="Test")
 
 public class AutoEncoderDrive extends AutoTest {
 
@@ -154,6 +154,7 @@ public class AutoEncoderDrive extends AutoTest {
             sleep(250);   // optional pause after each move
 
             telemetry.update();
+
         }
     }
 }
