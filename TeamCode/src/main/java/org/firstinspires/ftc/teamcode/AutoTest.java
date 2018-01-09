@@ -84,54 +84,56 @@ public class AutoTest extends LinearOpMode {
         //telemetry.update();
         waitForStart();
 
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+        telemetry.addData("VuMark", vuMark);
+
+        switch (vuMark) {
+            case RIGHT:
+                encoderDrive(DRIVE_SPEED, -28.5, 28.5, -28.5, 28.5, 4);
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackLeft.setPower(0);
+                break;
+            case LEFT:
+                encoderDrive(DRIVE_SPEED, -42.5, 42.5, -42.4, 42.5, 4);
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackLeft.setPower(0);
+                break;
+            case CENTER:
+                encoderDrive(DRIVE_SPEED, -35.5, 35.5, -35.5, 35.5, 4);
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackLeft.setPower(0);
+                break;
+            default:
+                encoderDrive(DRIVE_SPEED, 35.5, -35.5, 35.5, -35.5, 2);
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackLeft.setPower(0);
+                break;
+
+        }
+
+
         relicTrackables.activate();
 
         while (opModeIsActive()) {
 
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-            telemetry.addData("VuMark", vuMark);
+        }
 
-            switch(vuMark){
-                case RIGHT:
-                    encoderDrive(DRIVE_SPEED,-28.5,28.5,-28.5,28.5,4);
-                    motorFrontLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    motorFrontRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    break;
-                case LEFT:
-                    encoderDrive(DRIVE_SPEED,-42.5,42.5,-42.4,42.5,4);
-                    motorFrontLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    motorFrontRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    break;
-                case CENTER:
-                    encoderDrive(DRIVE_SPEED,-35.5,35.5,-35.5,35.5,4);
-                    motorFrontLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    motorFrontRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    break;
-                default:
-                    encoderDrive(DRIVE_SPEED,35.5,-35.5,35.5,-35.5,2);
-                    motorFrontLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    motorFrontRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    break;
+        idle();
+        telemetry.update();
+    }
 
-                }
-
-            }
-
-                idle();
-                telemetry.update();
-            }
-
-        String format (OpenGLMatrix transformationMatrix){
-            return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+    String format(OpenGLMatrix transformationMatrix) {
+        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
 
     public void encoderDrive(double speed,
@@ -149,26 +151,26 @@ public class AutoTest extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFrontLeftTarget = motorFrontLeft.getCurrentPosition() + (int)(frontLeftInches * COUNTS_PER_INCH);
-            newBackRightTarget = motorBackRight.getCurrentPosition() + (int)(backRightInches * COUNTS_PER_INCH);
-            newFrontRightTarget = motorFrontRight.getCurrentPosition() + (int)(frontRightInches * COUNTS_PER_INCH);
-            newBackLeftTarget = motorBackLeft.getCurrentPosition() + (int)(backLeftInches * COUNTS_PER_INCH);
+            newFrontLeftTarget = motorFrontLeft.getCurrentPosition() + (int) (frontLeftInches * COUNTS_PER_INCH);
+            newBackRightTarget = motorBackRight.getCurrentPosition() + (int) (backRightInches * COUNTS_PER_INCH);
+            newFrontRightTarget = motorFrontRight.getCurrentPosition() + (int) (frontRightInches * COUNTS_PER_INCH);
+            newBackLeftTarget = motorBackLeft.getCurrentPosition() + (int) (backLeftInches * COUNTS_PER_INCH);
 
             motorFrontLeft.setTargetPosition(newFrontLeftTarget);
             motorBackRight.setTargetPosition(newBackRightTarget);
             motorFrontRight.setTargetPosition(newFrontRightTarget);
             motorBackLeft.setTargetPosition(newBackLeftTarget);
 
+            motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
             runtime.reset();
             motorFrontLeft.setPower(Math.abs(speed));
             motorBackRight.setPower(Math.abs(speed));
             motorFrontRight.setPower(Math.abs(speed));
             motorBackLeft.setPower(Math.abs(speed));
-
-            motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             telemetry.addData("speed", speed);
             telemetry.addData("target", newBackLeftTarget);
@@ -186,7 +188,7 @@ public class AutoTest extends LinearOpMode {
                         motorBackLeft.getCurrentPosition());
             }
 
-            if(motorFrontLeft.getCurrentPosition() == frontLeftInches &&
+            if (motorFrontLeft.getCurrentPosition() == frontLeftInches &&
                     motorBackRight.getCurrentPosition() == backRightInches &&
                     motorFrontRight.getCurrentPosition() == frontRightInches &&
                     motorBackLeft.getCurrentPosition() == backLeftInches) {
@@ -206,8 +208,8 @@ public class AutoTest extends LinearOpMode {
                 sleep(250);   // optional pause after each move
 
                 telemetry.update();
+
             }
         }
     }
 }
-
