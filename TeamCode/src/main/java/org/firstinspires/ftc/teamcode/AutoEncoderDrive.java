@@ -30,43 +30,31 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="AutoEncoderDrive", group="Auto")
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-public class AutoEncoderDrive extends LinearOpMode {
+@Autonomous(name="AutoEncoderDrive", group="Test")
+
+public class AutoEncoderDrive extends AutoTest {
 
     /* Declare OpMode members. */
-    public DcMotor motorFrontLeft;
-    public DcMotor motorBackRight;
-    public DcMotor motorFrontRight;
-    public DcMotor motorBackLeft;
-
-    private ElapsedTime runtime = new ElapsedTime();
-
-    public static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
-    public static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
-    public static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
-    public static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
-    public static final double DRIVE_SPEED = 0.5;
-    public static final double TURN_SPEED = 0.4;
-//    public double speed;
-//    public double leftInches;
-//    public double rightInches;
-//    public double timeoutS;
 
 
     public void runOpMode() {
 
-        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backRight");
-        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate");
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -77,13 +65,14 @@ public class AutoEncoderDrive extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0",  "Starting at %7d :%7d",
+        telemetry.addData("Path0", "Starting at %7d :%7d",
                 motorFrontLeft.getCurrentPosition(),
                 motorBackRight.getCurrentPosition(),
                 motorFrontRight.getCurrentPosition(),
@@ -91,15 +80,7 @@ public class AutoEncoderDrive extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-//
-//        // Reverse movement is obtained by setting a negative distance (not speed)
-//        encoderDrive(DRIVE_SPEED,  48.0,  48.0, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-//        encoderDrive(TURN_SPEED,   12.0, -12.0, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-//        encoderDrive(DRIVE_SPEED, -24.0, -24.0, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
 
-        sleep(1000);     // pause for servos to move
-
-        telemetry.addData("Path", "Complete");
         telemetry.update();
     }
 
@@ -129,34 +110,40 @@ public class AutoEncoderDrive extends LinearOpMode {
             motorFrontRight.setTargetPosition(newFrontRightTarget);
             motorBackLeft.setTargetPosition(newBackLeftTarget);
 
-            // Turn On RUN_TO_POSITION
+            runtime.reset();
+            motorFrontLeft.setPower(Math.abs(speed));
+            motorBackRight.setPower(Math.abs(speed));
+            motorFrontRight.setPower(Math.abs(speed));
+            motorBackLeft.setPower(Math.abs(speed));
+
             motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            // reset the timeout time and start motion.
-            runtime.reset();
-            motorFrontLeft.setPower(Math.abs(speed)/2);
-            motorBackRight.setPower(Math.abs(speed)/2);
-            motorFrontRight.setPower(Math.abs(speed)/2);
-            motorBackLeft.setPower(Math.abs(speed)/2);
 
+            telemetry.addData("speed", speed);
+            telemetry.addData("target", newBackLeftTarget);
 
             while (opModeIsActive() &&
                    (runtime.seconds() < timeoutS) &&
                    (motorFrontLeft.isBusy() && motorBackRight.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newFrontLeftTarget,  newBackRightTarget);
+                telemetry.addData("Path1",  "Running to %7d :%7d", newFrontLeftTarget,  newBackRightTarget, newBackLeftTarget, newFrontRightTarget);
                 telemetry.addData("Path2",  "Running at %7d :%7d",
                         motorFrontLeft.getCurrentPosition(),
-                        motorBackRight.getCurrentPosition());
+                        motorBackRight.getCurrentPosition(),
+                        motorFrontRight.getCurrentPosition(),
+                        motorBackLeft.getCurrentPosition());
+
                 telemetry.update();
             }
 
             // Stop all motion;
             motorFrontLeft.setPower(0);
             motorBackRight.setPower(0);
+            motorFrontRight.setPower(0);
+            motorBackLeft.setPower(0);
 
             // Turn off RUN_TO_POSITION
             motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -164,7 +151,10 @@ public class AutoEncoderDrive extends LinearOpMode {
             motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            //  sleep(250);   // optional pause after each move
+            sleep(250);   // optional pause after each move
+
+            telemetry.update();
+
         }
     }
 }
