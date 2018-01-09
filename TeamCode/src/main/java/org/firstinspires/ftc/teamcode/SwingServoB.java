@@ -52,7 +52,7 @@ public class SwingServoB extends OpMode{
                 break;
 
             case 1://delay to allow servo to drop
-                if (getRuntime() > waitTime + 1.0) {
+                if (getRuntime() > waitTime + 3.0) {
                     gameState = 2;
                 }
                 break;
@@ -76,7 +76,7 @@ public class SwingServoB extends OpMode{
                 break;
 
             case 3://delay to allow turn
-                if(getRuntime() > waitTime + 1.0) {
+                if(getRuntime() > waitTime + 2.0) {
                     gameState = 4;
                 }
                 break;
@@ -88,7 +88,7 @@ public class SwingServoB extends OpMode{
                 break;
 
             case 5://delay to allow turn
-                if(getRuntime() > waitTime + 1.0) {
+                if(getRuntime() > waitTime + 2.0) {
                     gameState = 6;
                 }
                 break;

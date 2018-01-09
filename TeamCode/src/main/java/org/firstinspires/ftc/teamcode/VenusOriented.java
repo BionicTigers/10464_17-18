@@ -53,6 +53,7 @@ public class VenusOriented extends OpMode {
     //VARIABLES\\
     public int calibToggle;
     public double elbowPos;
+    private double time = getRuntime();
 
 
 public void init() {
@@ -73,12 +74,12 @@ public void init() {
     hamilton = hardwareMap.servo.get("hamilton");
     //LIFT\\
     evangelino = hardwareMap.dcMotor.get("evangelino");
-    //wilbert = hardwareMap.dcMotor.get("wilbert");
+    wilbert = hardwareMap.dcMotor.get("wilbert");
 
     evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
-    //wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    //wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
     //HAMMER\\
     eddie = hardwareMap.servo.get("eddie");
     clark = hardwareMap.servo.get("clark");
@@ -213,9 +214,9 @@ public void loop() {
     // GAMEPAD 2 //
     ///////////////
     if (gamepad2.right_bumper) {
-        billiam.setPower(-0.75);
+        billiam.setPower(-1);
     } else if (gamepad2.right_trigger > .7) {
-        billiam.setPower(0.75);
+        billiam.setPower(1);
     } else {
         billiam.setPower(0.00);
     }
@@ -228,39 +229,74 @@ public void loop() {
 
 
     if (gamepad2.a) { //Bottom level
+        evangelino.getCurrentPosition();
+        telemetry.addData("evangelino", evangelino.getCurrentPosition());
+        evangelino.setTargetPosition(6);
+        telemetry.addData("evangelino", wilbert.getCurrentPosition());
+        wilbert.getCurrentPosition();
+        telemetry.addData("wilbert", wilbert.getCurrentPosition());
+        wilbert.setTargetPosition(-6);
+        telemetry.addData("wilbert", wilbert.getCurrentPosition());
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setTargetPosition(0);
-        //wilbert.setTargetPosition(0);
-        evangelino.setPower(0.75);
-        //wilbert.setPower(0.75);
+        telemetry.addData("evangelino", wilbert.getCurrentPosition());
+        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        telemetry.addData("wilbert", wilbert.getCurrentPosition());
+        evangelino.setPower(-0.5);
+        wilbert.setPower(0.5);
+        if(evangelino.getCurrentPosition() == 6 && wilbert.getCurrentPosition() == -6){
+            telemetry.addData("evangelino", wilbert.getCurrentPosition());
+            telemetry.addData("wilbert", wilbert.getCurrentPosition());
+            evangelino.setPower(0);
+            wilbert.setPower(0);
+        }
+
+//        try{
+//            evangelino.setPower(-0.25);
+//            wilbert.setPower(-0.25);
+//            Thread.sleep(1000); //sleep for 1 second
+//
+//            evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        }
+//        catch(InterruptedException e){
+//            System.out.println("got interrupted!");
+//        }
+
+//        while(evangelino.isBusy() && wilbert.isBusy()){
+//
+//            evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //}
+//        evangelino.setTargetPosition(0);
+//        wilbert.setTargetPosition(0);
+
     }
 
     if (gamepad2.x) { //6 inches
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setTargetPosition(22);
-        //wilbert.setTargetPosition(22);
-        evangelino.setPower(0.75);
-        //wilbert.setPower(0.75);
+//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        evangelino.setTargetPosition(6);
+//        wilbert.setTargetPosition(6);
+        evangelino.setPower(.5);
+        wilbert.setPower(-.5);
     }
 
     if (gamepad2.b) { //18 inches
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setTargetPosition(66);
-        //wilbert.setTargetPosition(22);
-        evangelino.setPower(0.75);
-        //wilbert.setPower(0.75);
+//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        evangelino.setTargetPosition(18);
+//        wilbert.setTargetPosition(18);
+        evangelino.setPower(-0.5);
+        wilbert.setPower(0.5);
     }
 
     if (gamepad2.y) { //12 inches
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setTargetPosition(44);
-        //wilbert.setTargetPosition(66);
-        evangelino.setPower(0.75);
-        //wilbert.setPower(0.75);
+//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        evangelino.setTargetPosition(12);
+//        wilbert.setTargetPosition(12);
+        evangelino.setPower(0);
+        wilbert.setPower(0);
     }
 }
 
