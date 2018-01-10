@@ -79,7 +79,7 @@ public void init() {
     evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
     wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     //HAMMER\\
     eddie = hardwareMap.servo.get("eddie");
     clark = hardwareMap.servo.get("clark");
@@ -229,26 +229,39 @@ public void loop() {
 
 
     if (gamepad2.a) { //Bottom level
-        evangelino.getCurrentPosition();
-        telemetry.addData("evangelino", evangelino.getCurrentPosition());
-        evangelino.setTargetPosition(6);
-        telemetry.addData("evangelino", wilbert.getCurrentPosition());
-        wilbert.getCurrentPosition();
-        telemetry.addData("wilbert", wilbert.getCurrentPosition());
-        wilbert.setTargetPosition(-6);
-        telemetry.addData("wilbert", wilbert.getCurrentPosition());
+        wilbert.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        telemetry.addData("evangelino", wilbert.getCurrentPosition());
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        telemetry.addData("wilbert", wilbert.getCurrentPosition());
+
+        evangelino.getCurrentPosition();
+        evangelino.setTargetPosition(-6);
+
         evangelino.setPower(-0.5);
         wilbert.setPower(0.5);
-        if(evangelino.getCurrentPosition() == 6 && wilbert.getCurrentPosition() == -6){
-            telemetry.addData("evangelino", wilbert.getCurrentPosition());
-            telemetry.addData("wilbert", wilbert.getCurrentPosition());
-            evangelino.setPower(0);
-            wilbert.setPower(0);
+
+        while(evangelino.isBusy() && wilbert.isBusy()){
+            telemetry.addData("encoder-fwd", evangelino.getCurrentPosition() + "  busy=" + evangelino.isBusy());
+            telemetry.update();
+            try{
+                Thread.sleep(1000); //sleep for 1 second
+            }
+            catch(InterruptedException e){
+                System.out.println("got interrupted!");
         }
+
+        evangelino.setPower(0);
+        wilbert.setPower(0);
+
+        }
+//        if(evangelino.getCurrentPosition() == 6 && wilbert.getCurrentPosition() == -6){
+//            telemetry.addData("evangelino", wilbert.getCurrentPosition());
+//            telemetry.addData("wilbert", wilbert.getCurrentPosition());
+//            evangelino.setPower(0);
+//            wilbert.setPower(0);
+//        }
 ////
 //        try{
 //            evangelino.setPower(-0.25);
