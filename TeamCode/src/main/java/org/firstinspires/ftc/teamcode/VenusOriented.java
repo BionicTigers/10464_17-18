@@ -197,16 +197,20 @@ public void loop() {
 
     //FOUR BAR WITH ENCODERS//
     if (evangelino.getCurrentPosition() < targetPos - 10) { //up
-        evangelino.setPower(-0.75);
-        wilbert.setPower(0.75);
+        evangelino.setPower(-0.85);
+        wilbert.setPower(0.85);
     } else if (evangelino.getCurrentPosition() > targetPos + 10) { //down
-        evangelino.setPower(0.75);
-        wilbert.setPower(-0.75);
+        evangelino.setPower(0.85);
+        wilbert.setPower(-0.85);
     } else {
         evangelino.setPower(0);
         wilbert.setPower(0);
     }
-//
+
+    if (gamepad2.x) {
+        evangelino.setPower(0);
+        wilbert.setPower(0); }
+
     if (gamepad2.a) {
         targetPos = -12;
     }
@@ -274,7 +278,7 @@ public void loop() {
         }
 
         if (gamepad2.left_trigger > .7) {
-            hamilton.setPosition(0.6);
+            hamilton.setPosition(0.3);
         } else if (gamepad2.left_bumper) {
             hamilton.setPosition(1);
         }
