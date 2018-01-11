@@ -90,16 +90,16 @@ public class TestingEnvironment extends OpMode {
 
         //FOUR BAR WITH ENCODERS//
         if (gamepad2.a) {
-            evangelino.setTargetPosition(20);
-            evangelino.setPower(.50);
-            wilbert.setTargetPosition(20);
-            wilbert.setPower(.50); }
+            evangelino.setTargetPosition(-18);
+            evangelino.setPower(.90);
+            wilbert.setTargetPosition(-18);
+            wilbert.setPower(.90); }
 
         if (gamepad2.y) {
-            evangelino.setTargetPosition(5);
-            evangelino.setPower(.90);
-            wilbert.setTargetPosition(5);
-            wilbert.setPower(.90); }
+            evangelino.setTargetPosition(-5);
+            evangelino.setPower(.50);
+            wilbert.setTargetPosition(-5);
+            wilbert.setPower(.50); }
 
         if (gamepad2.right_bumper) {
             billiam.setPower(-1); }
