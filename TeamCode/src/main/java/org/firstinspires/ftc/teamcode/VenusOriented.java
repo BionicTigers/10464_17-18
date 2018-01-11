@@ -43,8 +43,8 @@ public class VenusOriented extends OpMode {
     public Servo clark = null; //Dropper
     //RELIC\\
     //public DcMotor georgery; //Extender
-    //public Servo brandy = null; //Elbow
-    //public Servo franny = null; //Left Finger
+    public Servo brandy = null; //Elbow
+    public Servo franny = null; //Left Finger
     //public Servo mobert = null; //Right Finger
     //IMU\\
     BNO055IMU imu;
@@ -54,6 +54,8 @@ public class VenusOriented extends OpMode {
     public int calibToggle;
     public double elbowPos;
     private double time = getRuntime();
+    private int targetPos;
+    private double topPos;
 
 
 public void init() {
@@ -76,17 +78,17 @@ public void init() {
     evangelino = hardwareMap.dcMotor.get("evangelino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
 
-    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
-    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//    evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
+//    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     //HAMMER\\
     eddie = hardwareMap.servo.get("eddie");
     clark = hardwareMap.servo.get("clark");
     //RELIC\\
 //    georgery = hardwareMap.dcMotor.get("georgery");
-//    brandy = hardwareMap.servo.get("brandy");
-//    franny = hardwareMap.servo.get("franny");
+    brandy = hardwareMap.servo.get("brandy");
+    franny = hardwareMap.servo.get("franny");
 //    mobert = hardwareMap.servo.get("mobert");
     //IMU\\
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -102,12 +104,19 @@ public void init() {
     calibToggle = 0;
     motorBackRight.setDirection(DcMotor.Direction.REVERSE);
     motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
-    elbowPos = 0.00; }
+    elbowPos = 0.00;
+    targetPos = 0;
+    topPos = 0;
+//    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+}
 
 
 public void loop() {
-
+    telemetry.addData("evangelino", evangelino.getCurrentPosition());
+    telemetry.addData("TopPos", topPos);
+    telemetry.addData("targetPos", targetPos);
     telemetry.update();
+    topPos = evangelino.getCurrentPosition();
 
     ///////////////
     // GAMEPAD 1 //
@@ -182,12 +191,44 @@ public void loop() {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
     }
+        ///////////////
+        // GAMEPAD 2 //
+        ///////////////
 
-    if (gamepad1.y) {
-        eddie.setPosition(0.5);
-        clark.setPosition(0.6);
+    //FOUR BAR WITH ENCODERS//
+    if (evangelino.getCurrentPosition() < targetPos - 10) { //up
+        evangelino.setPower(-0.75);
+        wilbert.setPower(0.75);
+    } else if (evangelino.getCurrentPosition() > targetPos + 10) { //down
+        evangelino.setPower(0.75);
+        wilbert.setPower(-0.75);
+    } else {
+        evangelino.setPower(0);
+        wilbert.setPower(0);
     }
 
+    if (gamepad2.a) {
+        targetPos = -12;
+    }
+    if (gamepad2.y) {
+        targetPos = 12;
+    }
+
+    //FOUR BAR WITHOUT ENCODERS//
+//    if (gamepad2.a) { //up
+//        wilbert.setPower(-0.85);
+//        evangelino.setPower(0.85);
+//    }
+//    if (gamepad2.y) { //down
+//        evangelino.setPower(-0.85);
+//        wilbert.setPower(0.85);
+//    }
+//    if (gamepad2.x) {
+//        wilbert.setPower(0);
+//        evangelino.setPower(0);
+//    }
+
+    //RELIC//
 //    if (gamepad1.dpad_up) {
 //        georgery.setPower(0.75); }
 //    else if (gamepad1.dpad_down) {
@@ -210,109 +251,35 @@ public void loop() {
 //        franny.setPosition(1.00);
 //        mobert.setPosition(1.00); }
 
-    ///////////////
-    // GAMEPAD 2 //
-    ///////////////
-    if (gamepad2.right_bumper) {
-        billiam.setPower(-1);
-    } else if (gamepad2.right_trigger > .7) {
-        billiam.setPower(1);
-    } else {
-        billiam.setPower(0.00);
-    }
-
-    if (gamepad2.left_trigger > .7) {
-        hamilton.setPosition(0.6);
-    } else if (gamepad2.left_bumper) {
-        hamilton.setPosition(1);
-    }
-
-
-    if (gamepad2.a) { //Bottom level
-        wilbert.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        evangelino.getCurrentPosition();
-        evangelino.setTargetPosition(-6);
-
-        evangelino.setPower(-0.5);
-        wilbert.setPower(0.5);
-
-        while(evangelino.isBusy() && wilbert.isBusy()){
-            telemetry.addData("encoder-fwd", evangelino.getCurrentPosition() + "  busy=" + evangelino.isBusy());
-            telemetry.update();
-            try{
-                Thread.sleep(1000); //sleep for 1 second
-            }
-            catch(InterruptedException e){
-                System.out.println("got interrupted!");
+        //MAKESHIFT RELIC//
+        if (gamepad2.dpad_up) {
+            brandy.setPosition(0.3);
+        }
+        if (gamepad2.dpad_down) {
+            brandy.setPosition(0.9);
+        }
+        if (gamepad2.dpad_left) {
+            franny.setPosition(0.5);
+        }
+        if (gamepad2.dpad_right) {
+            franny.setPosition(1);
         }
 
-        evangelino.setPower(0);
-        wilbert.setPower(0);
-
+        if (gamepad2.right_bumper) {
+            billiam.setPower(-1);
+        } else if (gamepad2.right_trigger > .7) {
+            billiam.setPower(1);
+        } else {
+            billiam.setPower(0.00);
         }
-//        if(evangelino.getCurrentPosition() == 6 && wilbert.getCurrentPosition() == -6){
-//            telemetry.addData("evangelino", wilbert.getCurrentPosition());
-//            telemetry.addData("wilbert", wilbert.getCurrentPosition());
-//            evangelino.setPower(0);
-//            wilbert.setPower(0);
-//        }
-////
-//        try{
-//            evangelino.setPower(-0.25);
-//            wilbert.setPower(-0.25);
-//            Thread.sleep(1000); //sleep for 1 second
-//
-//            evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        }
-//        catch(InterruptedException e){
-//            System.out.println("got interrupted!");
-//        }
 
-//        while(evangelino.isBusy() && wilbert.isBusy()){
-//
-//            evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //}
-//        evangelino.setTargetPosition(0);
-//        wilbert.setTargetPosition(0);
+        if (gamepad2.left_trigger > .7) {
+            hamilton.setPosition(0.6);
+        } else if (gamepad2.left_bumper) {
+            hamilton.setPosition(1);
+        }
 
     }
-
-    if (gamepad2.x) { //6 inches
-//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        evangelino.setTargetPosition(6);
-//        wilbert.setTargetPosition(6);
-        evangelino.setPower(.5);
-        wilbert.setPower(-.5);
-    }
-
-    if (gamepad2.b) { //18 inches
-//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        evangelino.setTargetPosition(18);
-//        wilbert.setTargetPosition(18);
-        evangelino.setPower(-0.5);
-        wilbert.setPower(0.5);
-    }
-
-    if (gamepad2.y) { //12 inches
-//        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        evangelino.setTargetPosition(12);
-//        wilbert.setTargetPosition(12);
-        evangelino.setPower(0);
-        wilbert.setPower(0);
-    }
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
