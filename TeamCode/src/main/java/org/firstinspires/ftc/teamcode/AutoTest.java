@@ -78,9 +78,6 @@ public class AutoTest extends LinearOpMode {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessa
 
-//
-        //telemetr.addData(">", "Press Play to start");
-        //telemetry.update();
         waitForStart();
 
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -90,8 +87,6 @@ public class AutoTest extends LinearOpMode {
         switch (vuMark) {
             case RIGHT:
                 DriveForward(.5,100);
-//                DriveForward(.5,450);
-//                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
 
@@ -107,8 +102,6 @@ public class AutoTest extends LinearOpMode {
                 break;
             case LEFT:
                 DriveForward(.5,100);
-//                DriveForward(.5,450);
-//                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
 
@@ -124,8 +117,6 @@ public class AutoTest extends LinearOpMode {
                 break;
             case CENTER:
                 DriveForward(.5,100);
-//                DriveForward(.5,450);
-//                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
 
@@ -141,8 +132,6 @@ public class AutoTest extends LinearOpMode {
                 break;
             default:
                 DriveForward(.5,100);
-//                DriveForward(.5,450);
-//                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
 
