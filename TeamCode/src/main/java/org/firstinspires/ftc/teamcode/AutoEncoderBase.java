@@ -1,175 +1,54 @@
+/* Copyright (c) 2017 FIRST. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted (subject to the limitations in the disclaimer below) provided that
+ * the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this list
+ * of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of FIRST nor the names of its contributors may be used to endorse or
+ * promote products derived from this software without specific prior written permission.
+ *
+ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
+ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+@Autonomous(name="AutoEncoderBase", group="Test")
 
+public abstract class
+AutoEncoderBase extends LinearOpMode {
 
-@Autonomous(name="Auto Test", group ="Vuforia")
+    public DcMotor motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+    public DcMotor motorBackRight = hardwareMap.dcMotor.get("backRight");
+    public DcMotor motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+    public DcMotor motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+    public DcMotor evangelino = hardwareMap.dcMotor.get("evangelino");
+    public DcMotor wilbert = hardwareMap.dcMotor.get("wilbert");
 
-public class AutoTest extends LinearOpMode {
-
-    OpenGLMatrix lastLocation = null;
-    VuforiaLocalizer vuforia;
-    public DcMotor motorFrontLeft;
-    public DcMotor motorBackRight;
-    public DcMotor motorFrontRight;
-    public DcMotor motorBackLeft;
-    public DcMotor wilbert;
-    public DcMotor evangelino;
-    public Servo hamilton;
-    public ElapsedTime runtime = new ElapsedTime();
-
-    @Override
     public void runOpMode() {
-        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backRight");
-        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-
-        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
-        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
-
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Resetting Encoders");    //
-        telemetry.update();
-
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        time = getRuntime();
-
-        // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0", "Starting at %7d :%7d",
-                motorFrontLeft.getCurrentPosition(),
-                motorBackRight.getCurrentPosition(),
-                motorFrontRight.getCurrentPosition(),
-                motorBackLeft.getCurrentPosition());
-        telemetry.update();
-        waitForStart();
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessa
-
-
-        //telemetr.addData(">", "Press Play to start");
-        //telemetry.update();
-        waitForStart();
-
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-
-        telemetry.addData("VuMark", vuMark);
-
-        switch (vuMark) {
-            case RIGHT:
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-
-                PointTurnLeft(.5,1440);
-
-                DropGlyph(.5,16);
-
-                DriveForward(.5,250);
-
-                sleep(250);
-
-                DriveBackward(.5,500);
-                PointTurnLeft(.5,2880);
-
-                break;
-            case LEFT:
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-
-                PointTurnLeft(.5,1440);
-
-                DropGlyph(.5,16);
-
-                DriveForward(.5,250);
-
-                sleep(250);
-
-                DriveBackward(.5,500);
-                PointTurnLeft(.5,2880);
-
-                break;
-            case CENTER:
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-
-                PointTurnLeft(.5,1440);
-
-                DropGlyph(.5,16);
-
-                DriveForward(.5,250);
-
-                sleep(250);
-
-                DriveBackward(.5,500);
-                PointTurnLeft(.5,2880);
-
-                break;
-            default:
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-
-                PointTurnLeft(.5,1440);
-
-                DropGlyph(.5,16);
-
-                DriveForward(.5,250);
-
-                sleep(250);
-
-                DriveBackward(.5,500);
-                PointTurnLeft(.5,2880);
-
-                break;
-
-        }
-
-
-        relicTrackables.activate();
-
-        while (opModeIsActive()) {
-
-
-        }
-
-        idle();
-        telemetry.update();
     }
 
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-    }
+    /* Declare OpMode members. */
 
     public void DriveForward ( double power, int distance){
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -200,7 +79,7 @@ public class AutoTest extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sleep(500);
 
-    }
+        }
 
     public void PointTurnRight(double power, int distance) {
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -313,6 +192,7 @@ public class AutoTest extends LinearOpMode {
         sleep(500);
 
     }
+
     public void DropGlyph ( double power, int distance){
         wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -334,7 +214,9 @@ public class AutoTest extends LinearOpMode {
         wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        hamilton.setPosition((1));
+        //hamilton.setPosition(1);
+
+        DriveForward(.5, 250);
 
         sleep(500);
 
