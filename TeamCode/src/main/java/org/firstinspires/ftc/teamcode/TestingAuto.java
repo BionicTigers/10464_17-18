@@ -29,6 +29,11 @@ public class TestingAuto extends OpMode{
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);
@@ -54,7 +59,7 @@ public class TestingAuto extends OpMode{
                 break;
             // Drive forward stop motors when target reached and move to next step
             case 1:
-                if (motorFrontLeft.getCurrentPosition() > leftPos - 50) {
+                if (motorFrontLeft.getCurrentPosition() > leftPos - 75) {
                     motorFrontLeft.getCurrentPosition();
                     motorBackLeft.getCurrentPosition();
                     motorFrontLeft.setPower(.35);
@@ -80,6 +85,7 @@ public class TestingAuto extends OpMode{
                 motorFrontRight.setPower(0);
                 motorBackRight.setPower(0);
                 motorBackLeft.setPower(0);
+                break;
         }
     }
 }
