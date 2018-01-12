@@ -137,7 +137,7 @@ public class AutoTest extends LinearOpMode {
                 sleep(250);
 
                 DriveBackward(.5,500);
-                PointTurnLeft(.5,2880);
+                PointTurnLeft(.5,2880) ;
 
                 break;
             default:
