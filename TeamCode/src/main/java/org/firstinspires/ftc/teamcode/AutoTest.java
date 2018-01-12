@@ -86,7 +86,7 @@ public class AutoTest extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT:
-                DriveForward(.5,100);
+                DriveForward(.5,785);
 
                 PointTurnLeft(.5,1440);
 
@@ -101,7 +101,7 @@ public class AutoTest extends LinearOpMode {
 
                 break;
             case LEFT:
-                DriveForward(.5,100);
+                DriveForward(.5,785);
 
                 PointTurnLeft(.5,1440);
 
@@ -116,7 +116,7 @@ public class AutoTest extends LinearOpMode {
 
                 break;
             case CENTER:
-                DriveForward(.5,100);
+                DriveForward(.5,785);
 
                 PointTurnLeft(.5,1440);
 
@@ -131,7 +131,7 @@ public class AutoTest extends LinearOpMode {
 
                 break;
             default:
-                DriveForward(.5,100);
+                DriveForward(.5,785);
 
                 PointTurnLeft(.5,1440);
 
@@ -165,10 +165,6 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void DriveForward ( double power, int distance){
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFrontLeft.setTargetPosition(distance);
         motorBackRight.setTargetPosition(distance);
         motorBackLeft.setTargetPosition(distance);
@@ -196,11 +192,6 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void PointTurnRight(double power, int distance) {
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         motorFrontLeft.setTargetPosition(distance);
         motorBackRight.setTargetPosition(-distance);
         motorBackLeft.setTargetPosition(distance);
@@ -234,11 +225,6 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void PointTurnLeft(double power, int distance) {
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(distance);
         motorBackLeft.setTargetPosition(-distance);
@@ -270,11 +256,6 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void DriveBackward(double power, int distance) {
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(-distance);
         motorBackLeft.setTargetPosition(-distance);
@@ -307,14 +288,11 @@ public class AutoTest extends LinearOpMode {
 
     }
     public void DropGlyph ( double power, int distance){
-        wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         wilbert.setTargetPosition(distance);
         evangelino.setTargetPosition(distance);
-
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         wilbert.setPower(power);
         evangelino.setPower(power);
