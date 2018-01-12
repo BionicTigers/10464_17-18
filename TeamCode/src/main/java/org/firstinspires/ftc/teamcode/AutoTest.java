@@ -40,7 +40,7 @@ public class AutoTest extends LinearOpMode {
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Resetting Encoders");    //
+        telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
 
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
