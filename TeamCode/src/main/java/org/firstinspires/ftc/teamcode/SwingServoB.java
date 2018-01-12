@@ -1,26 +1,21 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 @Autonomous(name="SwingServoB", group="Blue")
 public class SwingServoB extends OpMode{
 
     int i;
+    boolean blue;
     private Servo clark; //drop down servo (for color sensor)
     private Servo eddie; //swing servo (for color sensor)
     private ColorSensor roger; //right color sensor
     private ColorSensor leo; //left color sensor
-    private boolean blue;
     private double waitTime;
     private int gameState;
 

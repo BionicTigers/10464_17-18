@@ -190,34 +190,48 @@ public void loop() {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
     }
-        ///////////////
-        // GAMEPAD 2 //
-        ///////////////
+    ///////////////
+    // GAMEPAD 2 //
+    ///////////////
 
     //FOUR BAR WITH ENCODERS//
-    if (evangelino.getCurrentPosition() < targetPos - 10) { //up
-        evangelino.setPower(-0.85);
-        wilbert.setPower(0.85);
-        evangelino.getCurrentPosition();
-        telemetry.update();
-    } else if (evangelino.getCurrentPosition() > targetPos + 10) { //down
-        evangelino.setPower(0.85);
-        wilbert.setPower(-0.85);
-        evangelino.getCurrentPosition();
-        telemetry.update();
-    } else {
-        evangelino.setPower(0);
-        wilbert.setPower(0);
-        evangelino.getCurrentPosition();
-        telemetry.update();
-    }
+//    if (evangelino.getCurrentPosition() < targetPos - 10) { //up
+//        evangelino.setPower(-0.85);
+//        wilbert.setPower(0.85);
+//        evangelino.getCurrentPosition();
+//        telemetry.update();
+//    } else if (evangelino.getCurrentPosition() > targetPos + 10) { //down
+//        evangelino.setPower(0.85);
+//        wilbert.setPower(-0.85);
+//        evangelino.getCurrentPosition();
+//        telemetry.update();
+//    } else {
+//        evangelino.setPower(0);
+//        wilbert.setPower(0);
+//        evangelino.getCurrentPosition();
+//        telemetry.update();
+//    }
 //
     if (gamepad2.a) {
-        targetPos = -12;
+        evangelino.setPower(-.85);
+        wilbert.setPower(.85);
     }
+    else {
+        evangelino.setPower(0);
+        wilbert.setPower(0);
+    }
+
+
     if (gamepad2.y) {
-        targetPos = 12;
+        evangelino.setPower(.85);
+        wilbert.setPower(-.85);
     }
+    else {
+
+        evangelino.setPower(0);
+        wilbert.setPower(0);
+    }
+
 
     //FOUR BAR WITHOUT ENCODERS//
 //    if (gamepad2.a) { //up
