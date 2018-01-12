@@ -107,7 +107,8 @@ public void init() {
     elbowPos = 0.00;
     targetPos = 0;
     topPos = 0;
-    evangelino.setDirection(DcMotor.Direction.REVERSE); }
+//    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+}
 
 
 public void loop() {
@@ -196,20 +197,22 @@ public void loop() {
 
     //FOUR BAR WITH ENCODERS//
     if (evangelino.getCurrentPosition() < targetPos - 10) { //up
-        evangelino.setPower(0.85);
+        evangelino.setPower(-0.85);
         wilbert.setPower(0.85);
+        evangelino.getCurrentPosition();
+        telemetry.update();
     } else if (evangelino.getCurrentPosition() > targetPos + 10) { //down
         evangelino.setPower(0.85);
-        wilbert.setPower(0.85);
+        wilbert.setPower(-0.85);
+        evangelino.getCurrentPosition();
+        telemetry.update();
     } else {
         evangelino.setPower(0);
         wilbert.setPower(0);
+        evangelino.getCurrentPosition();
+        telemetry.update();
     }
-
-    if (gamepad2.x) {
-        evangelino.setPower(0);
-        wilbert.setPower(0); }
-
+//
     if (gamepad2.a) {
         targetPos = -12;
     }
@@ -217,33 +220,70 @@ public void loop() {
         targetPos = 12;
     }
 
-    //MAKESHIFT RELIC//
-    if (gamepad2.dpad_up) {
-        brandy.setPosition(0.3);
-    }
-    if (gamepad2.dpad_down) {
-        brandy.setPosition(0.9);
-    }
-    if (gamepad2.dpad_left) {
-        franny.setPosition(0.5);
-    }
-    if (gamepad2.dpad_right) {
-        franny.setPosition(1);
-    }
+    //FOUR BAR WITHOUT ENCODERS//
+//    if (gamepad2.a) { //up
+//        wilbert.setPower(-0.85);
+//        evangelino.setPower(0.85);
+//    }
+//    if (gamepad2.y) { //down
+//        evangelino.setPower(-0.85);
+//        wilbert.setPower(0.85);
+//    }
+//    if (gamepad2.x) {
+//        wilbert.setPower(0);
+//        evangelino.setPower(0);
+//    }
 
-    if (gamepad2.right_bumper) {
-        billiam.setPower(-1);
-    } else if (gamepad2.right_trigger > .7) {
-        billiam.setPower(1);
-    } else {
-        billiam.setPower(0.00);
-    }
+    //RELIC//
+//    if (gamepad1.dpad_up) {
+//        georgery.setPower(0.75); }
+//    else if (gamepad1.dpad_down) {
+//        georgery.setPower(-0.75); }
+//    else {
+//        georgery.setPower(0.0); }
+//
+//    if (gamepad1.right_bumper) {
+//        elbowPos += .01;
+//        brandy.setPosition(elbowPos); }
+//
+//    else if (gamepad1.left_bumper) {
+//        elbowPos -= .01;
+//        brandy.setPosition(elbowPos); }
+//
+//    if (gamepad1.right_trigger > .7) {
+//        franny.setPosition(0.00);
+//        mobert.setPosition(0.00); }
+//    else if (gamepad1.left_trigger > .7) {
+//        franny.setPosition(1.00);
+//        mobert.setPosition(1.00); }
 
-    if (gamepad2.left_trigger > .7) {
-        hamilton.setPosition(0.3);
-    } else if (gamepad2.left_bumper) {
-        hamilton.setPosition(1);
-    }
+        //MAKESHIFT RELIC//
+        if (gamepad2.dpad_up) {
+            brandy.setPosition(0.3);
+        }
+        if (gamepad2.dpad_down) {
+            brandy.setPosition(0.9);
+        }
+        if (gamepad2.dpad_left) {
+            franny.setPosition(0.5);
+        }
+        if (gamepad2.dpad_right) {
+            franny.setPosition(1);
+        }
+
+        if (gamepad2.right_bumper) {
+            billiam.setPower(-1);
+        } else if (gamepad2.right_trigger > .7) {
+            billiam.setPower(1);
+        } else {
+            billiam.setPower(0.00);
+        }
+
+        if (gamepad2.left_trigger > .7) {
+            hamilton.setPosition(0.3);
+        } else if (gamepad2.left_bumper) {
+            hamilton.setPosition(1);
+        }
 
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
