@@ -74,7 +74,7 @@ public class AutoTest extends LinearOpMode {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessa
 
-
+//
         //telemetr.addData(">", "Press Play to start");
         //telemetry.update();
         waitForStart();
