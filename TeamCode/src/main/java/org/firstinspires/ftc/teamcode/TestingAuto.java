@@ -59,7 +59,7 @@ public class TestingAuto extends OpMode{
                 break;
             // Drive forward stop motors when target reached and move to next step
             case 1:
-                if (motorFrontLeft.getCurrentPosition() > leftPos - 75) {
+                if (motorFrontLeft.getCurrentPosition() > leftPos - 200) {
                     motorFrontLeft.getCurrentPosition();
                     motorBackLeft.getCurrentPosition();
                     motorFrontLeft.setPower(.35);
