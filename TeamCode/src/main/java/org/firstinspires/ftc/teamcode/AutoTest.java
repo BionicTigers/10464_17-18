@@ -86,10 +86,12 @@ public class AutoTest extends LinearOpMode {
         switch (vuMark) {
             case RIGHT:
                 DriveForward(.5,450);
-                DriveForward(.5,450);
-                DriveForward(.5,450);
+
+                sleep(250);
 
                 PointTurnLeft(.5,1440);
+
+                sleep(250);
 
                 DropGlyph(.5,16);
 
