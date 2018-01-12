@@ -36,8 +36,8 @@ public class AutoTest extends LinearOpMode {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
 
-        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
-        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -61,6 +61,10 @@ public class AutoTest extends LinearOpMode {
                 motorBackRight.getCurrentPosition(),
                 motorFrontRight.getCurrentPosition(),
                 motorBackLeft.getCurrentPosition());
+        telemetry.addData("FL Enc", motorFrontLeft.getCurrentPosition());
+        telemetry.addData("FR Enc", motorFrontRight.getCurrentPosition());
+        telemetry.addData("BL Enc", motorBackLeft.getCurrentPosition());
+        telemetry.addData("BR Enc", motorBackRight.getCurrentPosition());
         telemetry.update();
         waitForStart();
 
@@ -85,13 +89,11 @@ public class AutoTest extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT:
-                DriveForward(.5,450);
-
-                sleep(250);
+                DriveForward(.5,100);
+//                DriveForward(.5,450);
+//                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
-
-                sleep(250);
 
                 DropGlyph(.5,16);
 
@@ -104,9 +106,9 @@ public class AutoTest extends LinearOpMode {
 
                 break;
             case LEFT:
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-                DriveForward(.5,450);
+                DriveForward(.5,100);
+//                DriveForward(.5,450);
+//                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
 
@@ -121,9 +123,9 @@ public class AutoTest extends LinearOpMode {
 
                 break;
             case CENTER:
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-                DriveForward(.5,450);
+                DriveForward(.5,100);
+//                DriveForward(.5,450);
+//                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
 
@@ -138,9 +140,9 @@ public class AutoTest extends LinearOpMode {
 
                 break;
             default:
-                DriveForward(.5,450);
-                DriveForward(.5,450);
-                DriveForward(.5,450);
+                DriveForward(.5,100);
+//                DriveForward(.5,450);
+//                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
 
