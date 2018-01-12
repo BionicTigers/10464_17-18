@@ -107,7 +107,6 @@ public void init() {
     elbowPos = 0.00;
     targetPos = 0;
     topPos = 0;
-//    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 }
 
 
@@ -364,4 +363,3 @@ public void loop() {
     String formatRadians(double radians) {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.RADIANS.normalize(radians));
     } }
-    //ALL HAIL NATHANISM
