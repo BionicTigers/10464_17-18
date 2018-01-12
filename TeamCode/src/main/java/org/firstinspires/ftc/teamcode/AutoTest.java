@@ -111,7 +111,7 @@ public class AutoTest extends LinearOpMode {
                 motorBackLeft.setPower(0);
                 break;
             default:
-                encoderDrive(DRIVE_SPEED, 35.5, -35.5, 35.5, -35.5, 2);
+                //encoderDrive(DRIVE_SPEED, 35.5, -35.5, 35.5, -35.5, 2);
                 motorFrontLeft.setPower(0);
                 motorBackRight.setPower(0);
                 motorFrontRight.setPower(0);

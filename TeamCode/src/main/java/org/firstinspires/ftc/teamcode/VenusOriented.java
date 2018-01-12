@@ -121,7 +121,7 @@ public void loop() {
     // GAMEPAD 1 //
     ///////////////
 
-    if (gamepad1.a) { //orientation calibration
+    if (gamepad1.y) { //orientation calibration
         // Get the calibration data
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -256,24 +256,23 @@ public void loop() {
 //        franny.setPosition(1.00);
 //        mobert.setPosition(1.00); }
 
-        //MAKESHIFT RELIC//
-        if (gamepad2.dpad_up) {
-            brandy.setPosition(0.3);
-        }
-        if (gamepad2.dpad_down) {
-            brandy.setPosition(0.9);
-        }
-        if (gamepad2.dpad_left) {
-            franny.setPosition(0.5);
-        }
-        if (gamepad2.dpad_right) {
-            franny.setPosition(1);
-        }
+//        //MAKESHIFT RELIC//
+//        if (gamepad2.dpad_up) {
+//            brandy.setPosition(0.3);
+//        }
+//        if (gamepad2.dpad_down) {
+//            brandy.setPosition(0.9);
+//        }
+//        if (gamepad2.dpad_left) {
+//            franny.setPosition(0.5);
+//        }
+//        if (gamepad2.dpad_right) {
+//            franny.setPosition(1);
 
         if (gamepad2.right_bumper) {
-            billiam.setPower(-1);
-        } else if (gamepad2.right_trigger > .7) {
             billiam.setPower(1);
+        } else if (gamepad2.right_trigger > .7) {
+            billiam.setPower(-1);
         } else {
             billiam.setPower(0.00);
         }
