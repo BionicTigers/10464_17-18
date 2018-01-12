@@ -61,6 +61,7 @@ public class AutoTest extends LinearOpMode {
                 motorBackRight.getCurrentPosition(),
                 motorFrontRight.getCurrentPosition(),
                 motorBackLeft.getCurrentPosition());
+
         telemetry.addData("FL Enc", motorFrontLeft.getCurrentPosition());
         telemetry.addData("FR Enc", motorFrontRight.getCurrentPosition());
         telemetry.addData("BL Enc", motorBackLeft.getCurrentPosition());
@@ -176,28 +177,29 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void DriveForward ( double power, int distance){
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         motorFrontLeft.setTargetPosition(distance);
         motorBackRight.setTargetPosition(distance);
         motorBackLeft.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
+
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
+
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
         }
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
         motorBackLeft.setPower(0);
         motorFrontRight.setPower(0);
+
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -207,10 +209,6 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void PointTurnRight(double power, int distance) {
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         motorFrontLeft.setTargetPosition(distance);
         motorBackRight.setTargetPosition(-distance);
@@ -245,10 +243,6 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void PointTurnLeft(double power, int distance) {
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(distance);
@@ -281,10 +275,6 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void DriveBackward(double power, int distance) {
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(-distance);
