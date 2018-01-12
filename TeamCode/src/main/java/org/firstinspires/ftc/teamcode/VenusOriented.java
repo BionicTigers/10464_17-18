@@ -121,7 +121,7 @@ public void loop() {
     // GAMEPAD 1 //
     ///////////////
 
-    if (gamepad1.a) { //orientation calibration
+    if (gamepad1.y) { //orientation calibration
         // Get the calibration data
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
