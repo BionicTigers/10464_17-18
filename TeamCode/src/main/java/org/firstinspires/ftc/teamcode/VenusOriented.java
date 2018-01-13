@@ -295,6 +295,8 @@ public void loop() {
             hamilton.setPosition(0.3);
         } else if (gamepad2.left_bumper) {
             hamilton.setPosition(1);
+        } else if (gamepad2.dpad_up) {
+            hamilton.setPosition(0.4);
         }
 
     }
