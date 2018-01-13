@@ -290,7 +290,7 @@ public void loop() {
         } else {
             billiam.setPower(0.00);
         }
-
+//
         if (gamepad2.left_trigger > .7) {
             hamilton.setPosition(0.3);
         } else if (gamepad2.left_bumper) {
