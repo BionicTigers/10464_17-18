@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name="VenusAutoBlue", group ="Vuforia")
 
-public class VenusAutoRedFront extends LinearOpMode {
+public class VenusAutoRedCorner extends LinearOpMode {
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
@@ -126,7 +126,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 PointTurnRight(.5,1440);
 
-                DriveForward(.5,250);
+                DriveBackward(.5,250);
 
                 sleep(250);
 
@@ -150,53 +150,59 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 break;
             default:
-                        clark.setPosition(0.18);
-                        sleep(1000);
+                clark.setPosition(0.18);
+                sleep(1000);
 
 
-                        if (leo.blue() < roger.blue()) {
-                            eddie.setPosition(0.65);
+                if (leo.blue() < roger.blue()) {
+                    eddie.setPosition(0.65);
 
-                            blue = true;
-                            sleep(2000);
-                        }
-                        else if (leo.blue() > roger.blue()) {
-                            eddie.setPosition(0.45);
-                            sleep(2000);
-
-                            blue = false;
-                        }
-                        else {
-                            telemetry.addData("eddie", "did not work");
-                            sleep(250);
-                        }
-
-                        eddie.setPosition(0.55);
-                        sleep(2000);
-
-                        clark.setPosition(0.8);
-                        sleep(1000);
-
-                        DriveBackward(.5, 1000);
-                        sleep(2000);
-
-                        PointTurnLeft(.5, 1440);
-                        sleep(2000);
-
-                        hamilton.setPosition(1);
-                        //burr.setPosition(1);
-                        sleep(500);
-
-                        DriveBackward(.35,25);
-                        sleep(500);
-
-                        DriveForward(.35,25);
-                        sleep(500);
-
-                        hamilton.setPosition(0.3);
-                        //burr.setPosition(0.3);
-                        sleep(500);
+                    blue = true;
+                    sleep(2000);
                 }
+                else if (leo.blue() > roger.blue()) {
+                    eddie.setPosition(0.45);
+                    sleep(2000);
+
+                    blue = false;
+                }
+                else {
+                    telemetry.addData("eddie", "did not work");
+                    sleep(250);
+                }
+
+                eddie.setPosition(0.55);
+                sleep(2000);
+
+                clark.setPosition(0.8);
+                sleep(1000);
+
+                DriveBackward(.5, 800);
+                sleep(2000);
+
+                PointTurnLeft(.5, 1440);
+                sleep(2000);
+
+                DriveBackward(.5, 800);
+                sleep(2000);
+
+                PointTurnRight(.5,1440);
+                sleep(1000);
+
+                hamilton.setPosition(1);
+                //burr.setPosition(1);
+                sleep(500);
+
+                DriveBackward(.35,25);
+                sleep(500);
+
+                DriveForward(.35,25);
+                sleep(500);
+
+                hamilton.setPosition(0.3);
+                //burr.setPosition(0.3);
+                sleep(500);
+        }
 
 
         relicTrackables.activate();

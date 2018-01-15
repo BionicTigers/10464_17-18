@@ -178,7 +178,7 @@ public class VenusAutoBlueFront extends LinearOpMode {
                 clark.setPosition(0.8);
                 sleep(1000);
 
-                DriveBackward(.5, 1000);
+                DriveForward(.5, 1000);
                 sleep(2000);
 
                 PointTurnRight(.5, 1440);
@@ -188,10 +188,10 @@ public class VenusAutoBlueFront extends LinearOpMode {
                 //burr.setPosition(1);
                 sleep(500);
 
-                DriveBackward(.35,25);
+                DriveForward(.35,25);
                 sleep(500);
 
-                DriveForward(.35,25);
+                DriveBackward(.35,25);
                 sleep(500);
 
                 hamilton.setPosition(0.3);
