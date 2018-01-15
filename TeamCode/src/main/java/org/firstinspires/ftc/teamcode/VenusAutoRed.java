@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 
-@Autonomous(name="FullAutoRed", group="Red")
+@Autonomous(name="VenusAutoRed", group="Red")
 public class VenusAutoRed extends OpMode{
 
     int i;
@@ -76,12 +76,6 @@ public class VenusAutoRed extends OpMode{
                 motorFrontRight.getCurrentPosition(),
                 motorBackLeft.getCurrentPosition());
 
-        telemetry.addData("FL Enc", motorFrontLeft.getCurrentPosition());
-        telemetry.addData("FR Enc", motorFrontRight.getCurrentPosition());
-        telemetry.addData("BL Enc", motorBackLeft.getCurrentPosition());
-        telemetry.addData("BR Enc", motorBackRight.getCurrentPosition());
-        telemetry.update();
-
     }
 
 
@@ -92,75 +86,70 @@ public class VenusAutoRed extends OpMode{
         telemetry.addData("leo blue", leo.blue());
         telemetry.addData("roger blue", roger.blue());
         telemetry.addData("runtime", getRuntime());
+        telemetry.addData("FL Enc", motorFrontLeft.getCurrentPosition());
+        telemetry.addData("FR Enc", motorFrontRight.getCurrentPosition());
+        telemetry.addData("BL Enc", motorBackLeft.getCurrentPosition());
+        telemetry.addData("BR Enc", motorBackRight.getCurrentPosition());
+        telemetry.update();
 
-        switch (gameState) {
-            case 0: //preset variables
-                clark.setPosition(0.189);
-                gameState = 1;
-                waitTime = getRuntime(); //get current runTime
-                break;
-
-            case 1://delay to allow servo to drop
-                if (getRuntime() > waitTime + 3.0) {
-                    gameState = 2;
-                }
-                break;
-
-            case 2: //detect color sensor and choose direction
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.45);
-                    gameState = 3;
-                    blue = true;
-                } else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.60);
-                    gameState = 3;
-                    blue = false;
-                } else {
-                    gameState = 3;
-                }
-                waitTime = getRuntime(); //get current runTime
-                break;
-
-            case 3://delay to allow turn
-                if (getRuntime() > waitTime + 2.0) {
-                    gameState = 4;
-                }
-                break;
-
-            case 4: //stop all motors, pull servo up
-                eddie.setPosition(0.55);
-                waitTime = getRuntime();
-                gameState = 5;
-                break;
-
-            case 5://delay to allow turn
-                if (getRuntime() > waitTime + 2.0) {
-                    gameState = 6;
-                }
-                break;
-
-            case 6:
-                clark.setPosition(0.8);
-                gameState = 7;
-                break;
-
-            case 7:
+//        switch (gameState) {
+//            case 0: //preset variables
+//                clark.setPosition(0.189);
+//                gameState = 1;
+//                waitTime = getRuntime(); //get current runTime
+//                break;
+//
+//            case 1://delay to allow servo to drop
+//                if (getRuntime() > waitTime + 3.0) {
+//                    gameState = 2;
+//                }
+//                break;
+//
+//            case 2: //detect color sensor and choose direction
+//                if (leo.blue() < roger.blue()) {
+//                    eddie.setPosition(0.45);
+//                    gameState = 3;
+//                    blue = true;
+//                } else if (leo.blue() > roger.blue()) {
+//                    eddie.setPosition(0.60);
+//                    gameState = 3;
+//                    blue = false;
+//                } else {
+//                    gameState = 3;
+//                }
+//                waitTime = getRuntime(); //get current runTime
+//                break;
+//
+//            case 3://delay to allow turn
+//                if (getRuntime() > waitTime + 2.0) {
+//                    gameState = 4;
+//                }
+//                break;
+//
+//            case 4: //stop all motors, pull servo up
+//                eddie.setPosition(0.55);
+//                waitTime = getRuntime();
+//                gameState = 5;
+//                break;
+//
+//            case 5://delay to allow turn
+//                if (getRuntime() > waitTime + 2.0) {
+//                    gameState = 6;
+//                }
+//                break;
+//
+//            case 6:
+//                clark.setPosition(0.8);
+//                gameState = 7;
+//                break;
+//
+//            case 7:
 
                 DriveForward(.5,1000);
-//                DriveForward(.5,450);
-//                DriveForward(.5,450);
 
-                PointTurnLeft(.5,1440);
-
-                DropGlyph(.5,16);
-
-                DriveForward(.5,250);
-
-                DriveBackward(.5,500);
-                PointTurnLeft(.5,2880);
 
         }
-    }
+    //}
 
     public void DriveForward ( double power, int distance){
 
@@ -169,15 +158,15 @@ public class VenusAutoRed extends OpMode{
         motorBackLeft.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
 
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
         }

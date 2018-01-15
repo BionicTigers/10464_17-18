@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-@Autonomous(name="Auto Test", group ="Vuforia")
+@Autonomous(name="VenusAutoBlue", group ="Vuforia")
 
 public class VenusAutoBlue extends LinearOpMode {
 
@@ -85,7 +85,6 @@ public class VenusAutoBlue extends LinearOpMode {
         telemetry.addData("BL Enc", motorBackLeft.getCurrentPosition());
         telemetry.addData("BR Enc", motorBackRight.getCurrentPosition());
         telemetry.update();
-        waitForStart();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -102,61 +101,6 @@ public class VenusAutoBlue extends LinearOpMode {
         //telemetry.update();
         waitForStart();
 
-        switch(gameState) {
-            case 0: //preset variables
-                clark.setPosition(0.18);
-                gameState = 1;
-                waitTime = getRuntime(); //get current runTime
-                break;
-
-            case 1://delay to allow servo to drop
-                if (getRuntime() > waitTime + 3.0) {
-                    gameState = 2;
-                }
-                break;
-
-            case 2: //detect color sensor and choose direction
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.65);
-                    //eddie.setPosition(0.5);
-                    gameState = 3;
-                    blue = true;
-                }
-                else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.45);
-                    //eddie.setPosition(0.5);
-                    gameState = 3;
-                    blue = false;
-                } else {
-                    gameState = 3;
-                }
-                waitTime = getRuntime(); //get current runTime
-                break;
-
-            case 3://delay to allow turn
-                if(getRuntime() > waitTime + 2.0) {
-                    gameState = 4;
-                }
-                break;
-
-            case 4: //stop all motors, pull servo up
-                eddie.setPosition(0.55);
-                waitTime = getRuntime();
-                gameState = 5;
-                break;
-
-            case 5://delay to allow turn
-                if(getRuntime() > waitTime + 2.0) {
-                    gameState = 6;
-                }
-                break;
-
-            case 6:
-                clark.setPosition(0.8);
-                break;
-        }
-
-
 
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
@@ -164,20 +108,14 @@ public class VenusAutoBlue extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT:
-                DriveForward(.5,100);
+                DriveForward(.5,1000);
 //                DriveForward(.5,450);
 //                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
 
-                DropGlyph(.5,16);
-
-                DriveForward(.5,250);
-
                 sleep(250);
 
-                DriveBackward(.5,500);
-                PointTurnLeft(.5,2880);
 
                 break;
             case LEFT:
@@ -186,8 +124,6 @@ public class VenusAutoBlue extends LinearOpMode {
 //                DriveForward(.5,450);
 
                 PointTurnLeft(.5,1440);
-
-                DropGlyph(.5,16);
 
                 DriveForward(.5,250);
 
@@ -204,8 +140,6 @@ public class VenusAutoBlue extends LinearOpMode {
 
                 PointTurnLeft(.5,1440);
 
-                DropGlyph(.5,16);
-
                 DriveForward(.5,250);
 
                 sleep(250);
@@ -215,24 +149,42 @@ public class VenusAutoBlue extends LinearOpMode {
 
                 break;
             default:
-                DriveForward(.5,100);
-//                DriveForward(.5,450);
-//                DriveForward(.5,450);
+                        clark.setPosition(0.18);
+                        sleep(1000);
 
-                PointTurnLeft(.5,1440);
 
-                DropGlyph(.5,16);
+                        if (leo.blue() < roger.blue()) {
+                            eddie.setPosition(0.65);
 
-                DriveForward(.5,250);
+                            blue = true;
+                            sleep(2000);
+                        }
+                        else if (leo.blue() > roger.blue()) {
+                            eddie.setPosition(0.45);
+                            sleep(2000);
 
-                sleep(250);
+                            blue = false;
+                        }
+                        else {
+                            telemetry.addData("eddie", "did not work");
+                            sleep(250);
+                        }
 
-                DriveBackward(.5,500);
-                PointTurnLeft(.5,2880);
 
-                break;
+                        eddie.setPosition(0.55);
+                        sleep(2000);
 
-        }
+
+                        clark.setPosition(0.8);
+                        sleep(1000);
+
+                        DriveForward(.5, 1000);
+                        sleep(2000);
+
+                        PointTurnLeft(.5, 1440);
+                        sleep(2000);
+
+                }
 
 
         relicTrackables.activate();
@@ -246,9 +198,9 @@ public class VenusAutoBlue extends LinearOpMode {
         telemetry.update();
     }
 
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-    }
+//    String format(OpenGLMatrix transformationMatrix) {
+//        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+
 
     public void DriveForward ( double power, int distance){
 
@@ -257,15 +209,15 @@ public class VenusAutoBlue extends LinearOpMode {
         motorBackLeft.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
 
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
         }
@@ -289,15 +241,15 @@ public class VenusAutoBlue extends LinearOpMode {
         motorBackLeft.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(-distance);
 
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(-power);
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(-power);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
 
@@ -381,32 +333,7 @@ public class VenusAutoBlue extends LinearOpMode {
         sleep(500);
 
     }
-    public void DropGlyph ( double power, int distance){
-        wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        wilbert.setTargetPosition(distance);
-        evangelino.setTargetPosition(distance);
-
-        wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        wilbert.setPower(power);
-        evangelino.setPower(power);
-
-        while (evangelino.isBusy() && wilbert.isBusy()) {
-        }
-        wilbert.setPower(0);
-        evangelino.setPower(0);
-
-        wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        hamilton.setPosition((1));
-
-        sleep(500);
-
-    }
 
 }
 
