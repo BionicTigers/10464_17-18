@@ -156,13 +156,13 @@ public class VenusAutoBlueFront extends LinearOpMode {
 
 
                 if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.45);
+                    eddie.setPosition(0.65);
 
                     blue = true;
                     sleep(2000);
                 }
                 else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.65);
+                    eddie.setPosition(0.45);
                     sleep(2000);
 
                     blue = false;
