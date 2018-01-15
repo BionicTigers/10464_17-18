@@ -28,6 +28,7 @@ public class VenusAutoBlue extends LinearOpMode {
     public DcMotor wilbert;
     public DcMotor evangelino;
     public Servo hamilton;
+    public Servo burr;
     public ElapsedTime runtime = new ElapsedTime();
     int i;
     boolean blue;
@@ -183,6 +184,16 @@ public class VenusAutoBlue extends LinearOpMode {
 
                         PointTurnLeft(.5, 1440);
                         sleep(2000);
+
+                        hamilton.setPosition(1);
+                        burr.setPosition(1);
+                        sleep(500);
+
+                        DriveForward(.35,25);
+                        sleep(500);
+
+                        DriveBackward(.35,25);
+                        sleep(500);
 
                 }
 
