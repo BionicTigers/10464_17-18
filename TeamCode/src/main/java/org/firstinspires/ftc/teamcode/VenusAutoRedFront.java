@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name="VenusAutoBlue", group ="Vuforia")
 
-public class VenusAutoBlue extends LinearOpMode {
+public class VenusAutoRedFront extends LinearOpMode {
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
@@ -171,10 +171,8 @@ public class VenusAutoBlue extends LinearOpMode {
                             sleep(250);
                         }
 
-
                         eddie.setPosition(0.55);
                         sleep(2000);
-
 
                         clark.setPosition(0.8);
                         sleep(1000);
@@ -186,7 +184,7 @@ public class VenusAutoBlue extends LinearOpMode {
                         sleep(2000);
 
                         hamilton.setPosition(1);
-                        burr.setPosition(1);
+                        //burr.setPosition(1);
                         sleep(500);
 
                         DriveForward(.35,25);
@@ -195,6 +193,9 @@ public class VenusAutoBlue extends LinearOpMode {
                         DriveBackward(.35,25);
                         sleep(500);
 
+                        hamilton.setPosition(0.3);
+                        //burr.setPosition(0.3);
+                        sleep(500);
                 }
 
 
