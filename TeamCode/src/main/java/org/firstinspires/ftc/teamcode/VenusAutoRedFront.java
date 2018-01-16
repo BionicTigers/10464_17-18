@@ -177,25 +177,25 @@ public class VenusAutoRedFront extends LinearOpMode {
                         clark.setPosition(0.8);
                         sleep(1000);
 
-//                        DriveBackward(.5, 1000);
-//                        sleep(2000);
-//
-//                        PointTurnLeft(.5, 1440);
-//                        sleep(2000);
-//
-//                        hamilton.setPosition(1);
-//                        //burr.setPosition(1);
-//                        sleep(500);
-//
-//                        DriveBackward(.35,25);
-//                        sleep(500);
-//
-//                        DriveForward(.35,25);
-//                        sleep(500);
-//
-//                        hamilton.setPosition(0.3);
-//                        //burr.setPosition(0.3);
-//                        sleep(500);
+                        DriveBackward(.5, 1000);
+                        sleep(2000);
+
+                        PointTurnLeft(.5, 1440);
+                        sleep(2000);
+
+                        hamilton.setPosition(1);
+                        //burr.setPosition(1);
+                        sleep(500);
+
+                        DriveBackward(.35,25);
+                        sleep(500);
+
+                        DriveForward(.35,25);
+                        sleep(500);
+
+                        hamilton.setPosition(0.3);
+                        //burr.setPosition(0.3);
+                        sleep(500);
                 }
 
 
