@@ -54,6 +54,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        hamilton = hardwareMap.servo.get("hamilton");
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -120,18 +121,18 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
                 break;
             case LEFT: //Go to Left column
-                DriveBackward(.5,100);
+                DriveBackward(.5,200);
 //                DriveForward(.5,450);
 //                DriveForward(.5,450);
 
-                PointTurnRight(.5,1440);
+                PointTurnRight(.5,100);
 
-                DriveBackward(.5,250);
+                DriveBackward(.5,200);
 
-                sleep(250);
+                sleep(500);
 
-                DriveForward(.5,500);
-                PointTurnRight(.5,2880);
+                DriveForward(.5,200);
+                PointTurnRight(.5,100);
 
                 break;
             case CENTER: //Go to Center column
@@ -180,29 +181,25 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
                 //MOVE
 
-                DriveBackward(.5, 800);
-                sleep(2000);
-
-                PointTurnLeft(.5, 1440);
-                sleep(2000);
-
-                DriveBackward(.5, 800);
-                sleep(2000);
-
-                PointTurnRight(.5,1440);
+                DriveBackward(.5, 280);
                 sleep(1000);
+
+                StrafeRight(.7, 200);
+                sleep(1000);
+
+                //PointTurnRight(.5,80);
 
                 hamilton.setPosition(1);
                 //burr.setPosition(1);
                 sleep(500);
 
-                DriveBackward(.35,25);
+                DriveBackward(.5,80);
                 sleep(500);
 
-                DriveForward(.35,25);
+                DriveForward(.5,80);
                 sleep(500);
 
-                hamilton.setPosition(0.3);
+                hamilton.setPosition(.3);
                 //burr.setPosition(0.3);
                 sleep(500);
         }
@@ -289,11 +286,11 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
     }
 
-    public void PointTurnLeft(double power, int distance) {
+    public void StrafeLeft(double power, int distance) {
 
         motorFrontLeft.setTargetPosition(-distance);
-        motorBackRight.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(-distance);
+        motorBackRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -302,8 +299,8 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(-power);
+        motorBackRight.setPower(-power);
+        motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
@@ -352,6 +349,72 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
+
+    }
+
+    public void StrafeRight(double power, int distance) {
+
+        motorFrontLeft.setTargetPosition(distance);
+        motorBackRight.setTargetPosition(distance);
+        motorBackLeft.setTargetPosition(-distance);
+        motorFrontRight.setTargetPosition(-distance);
+
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(-power);
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(-power);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
+
+        }
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        motorFrontRight.setPower(0);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        sleep(500);
+
+    }
+
+    public void PointTurnLeft(double power, int distance) {
+
+        motorFrontLeft.setTargetPosition(-distance);
+        motorBackRight.setTargetPosition(distance);
+        motorBackLeft.setTargetPosition(-distance);
+        motorFrontRight.setTargetPosition(distance);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(-power);
+        motorFrontRight.setPower(power);
+
+        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
+
+        }
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        motorFrontRight.setPower(0);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 

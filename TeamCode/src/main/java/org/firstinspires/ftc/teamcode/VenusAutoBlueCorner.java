@@ -178,16 +178,16 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                 clark.setPosition(0.8);
                 sleep(1000);
 
-                DriveForward(.5, 800);
+                DriveForward(.5, 200);
                 sleep(2000);
 
-                PointTurnRight(.5, 1440);
+                PointTurnRight(.5, 100);
                 sleep(2000);
 
-                DriveForward(.5, 800);
+                DriveForward(.5, 100);
                 sleep(2000);
 
-                PointTurnLeft(.5,1440);
+                PointTurnLeft(.5,100);
                 sleep(1000);
 
                 hamilton.setPosition(1);
