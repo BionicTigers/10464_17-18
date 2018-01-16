@@ -180,10 +180,10 @@ public void loop() {
         double sinRAngle = Math.sin(robotAngle);
         double cosRAngle = Math.cos(robotAngle);
 
-        final double v1 = (P * sinRAngle) + (P * cosRAngle) + rightX;
-        final double v2 = (P * sinRAngle) - (P * cosRAngle) - rightX;
-        final double v3 = (P * sinRAngle) - (P * cosRAngle) + rightX;
-        final double v4 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v1 = (P * sinRAngle) + (P * cosRAngle) - rightX;
+        final double v2 = (P * sinRAngle) - (P * cosRAngle) + rightX;
+        final double v3 = (P * sinRAngle) - (P * cosRAngle) - rightX;
+        final double v4 = (P * sinRAngle) + (P * cosRAngle) + rightX;
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);

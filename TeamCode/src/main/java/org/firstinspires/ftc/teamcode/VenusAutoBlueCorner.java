@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-@Autonomous(name="VenusAutoBlue", group ="Vuforia")
+@Autonomous(name="VenusAutoBlueCorner", group ="Vuforia")
 
 public class VenusAutoBlueCorner extends LinearOpMode {
 
@@ -152,7 +152,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
 
             default:
                 clark.setPosition(0.18);
-                sleep(1000);
+                sleep(3000);
 
 
                 if (leo.blue() < roger.blue()) {

@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-@Autonomous(name="VenusAutoBlue", group ="Vuforia")
+@Autonomous(name="VenusAutoRedCorner ", group ="Vuforia")
 
 public class VenusAutoRedCorner extends LinearOpMode {
 
@@ -25,10 +25,10 @@ public class VenusAutoRedCorner extends LinearOpMode {
     public DcMotor motorBackRight;
     public DcMotor motorFrontRight;
     public DcMotor motorBackLeft;
-    public DcMotor wilbert;
-    public DcMotor evangelino;
-    public Servo hamilton;
-    public Servo burr;
+    public DcMotor wilbert; //Four Bar Right
+    public DcMotor evangelino; //Four Bar Left
+    public Servo hamilton; //Glyph Flipper
+    //public Servo burr; //Glyph Flipper 2
     public ElapsedTime runtime = new ElapsedTime();
     int i;
     boolean blue;
@@ -108,7 +108,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
         telemetry.addData("VuMark", vuMark);
 
         switch (vuMark) {
-            case RIGHT:
+            case RIGHT: //Go to Right column
                 DriveBackward(.5,1000);
 //                DriveForward(.5,450);
 //                DriveForward(.5,450);
@@ -119,7 +119,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
 
                 break;
-            case LEFT:
+            case LEFT: //Go to Left column
                 DriveBackward(.5,100);
 //                DriveForward(.5,450);
 //                DriveForward(.5,450);
@@ -134,7 +134,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 PointTurnRight(.5,2880);
 
                 break;
-            case CENTER:
+            case CENTER: //Go to Center column
                 DriveBackward(.5,100);
 //                DriveForward(.5,450);
 //                DriveForward(.5,450);
@@ -149,9 +149,10 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 PointTurnRight(.5,2880) ;
 
                 break;
-            default:
+            default: //ACTUAL START OF PROGRAM
+                //JEWELS//
                 clark.setPosition(0.18);
-                sleep(1000);
+                sleep(3000);
 
 
                 if (leo.blue() < roger.blue()) {
@@ -176,6 +177,8 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
                 clark.setPosition(0.8);
                 sleep(1000);
+
+                //MOVE
 
                 DriveBackward(.5, 800);
                 sleep(2000);
