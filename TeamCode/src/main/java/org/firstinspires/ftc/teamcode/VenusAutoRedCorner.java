@@ -96,7 +96,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessa
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necess
 
 //
         //telemetr.addData(">", "Press Play to start");
@@ -110,11 +110,11 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT: //Go to Right column
-                DriveBackward(.5,1000);
+                DriveBackward(.5,50);
 //                DriveForward(.5,450);
 //                DriveForward(.5,450);
 
-                PointTurnRight(.5,1440);
+                //PointTurnRight(.5,1440);
 
                 sleep(250);
 
@@ -125,14 +125,14 @@ public class VenusAutoRedCorner extends LinearOpMode {
 //                DriveForward(.5,450);
 //                DriveForward(.5,450);
 
-                PointTurnRight(.5,100);
+                //PointTurnRight(.5,100);
 
-                DriveBackward(.5,200);
+                DriveBackward(.5,50);
 
                 sleep(500);
 
-                DriveForward(.5,200);
-                PointTurnRight(.5,100);
+                DriveForward(.5,50);
+                //PointTurnRight(.5,100);
 
                 break;
             case CENTER: //Go to Center column
@@ -140,14 +140,14 @@ public class VenusAutoRedCorner extends LinearOpMode {
 //                DriveForward(.5,450);
 //                DriveForward(.5,450);
 
-                PointTurnRight(.5,1440);
+                StrafeLeft(.5,200);
 
-                DriveBackward(.5,250);
+                DriveBackward(.5,20);
 
-                sleep(250);
+                sleep(500);
 
-                DriveForward(.5,500);
-                PointTurnRight(.5,2880) ;
+                DriveForward(.5,20);
+                //PointTurnRight(.5,2880) ;
 
                 break;
             default: //ACTUAL START OF PROGRAM
@@ -181,10 +181,10 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
                 //MOVE
 
-                DriveBackward(.5, 320);
+                DriveBackward(.5, 325);
                 sleep(1000);
 
-                StrafeLeft(.5, 200);
+                StrafeRight(.7, 175);
                 sleep(1000);
 
                 //PointTurnRight(.5,80);
@@ -193,11 +193,11 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 //burr.setPosition(1);
                 sleep(500);
 
-                DriveBackward(.5,100);
-                sleep(1000);
+                DriveBackward(.5,75);
+                sleep(2000);
 
-                DriveForward(.5,100);
-                sleep(1000);
+                DriveForward(.5,25);
+                sleep(2000);
 
                 hamilton.setPosition(.3);
                 //burr.setPosition(0.3);
@@ -222,9 +222,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
     public void DriveForward ( double power, int distance){
 
-        motorFrontLeft.setTargetPosition(distance);
         motorBackRight.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
 
         motorFrontLeft.setPower(power);
@@ -237,7 +235,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
+        while (motorBackRight.isBusy() && motorFrontRight.isBusy() && motorBackLeft.isBusy() && motorFrontLeft.isBusy())  {
         }
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
@@ -248,16 +246,21 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        sleep(500);
 
+        sleep(500);
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
     }
 
     public void DriveBackward(double power, int distance) {
 
-        motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(-distance);
         motorFrontRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(-distance);
+        motorFrontLeft.setTargetPosition(-distance);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -283,15 +286,17 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
-
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
     }
 
     public void PointTurnRight(double power, int distance) {
 
-        motorFrontLeft.setTargetPosition(distance);
-        motorBackRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(distance);
-        motorFrontRight.setTargetPosition(-distance);
+        motorBackRight.setTargetPosition(distance);
+        motorFrontRight.setTargetPosition(distance);
 
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(-power);
@@ -317,25 +322,27 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
-
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
     }
 
     public void PointTurnLeft(double power, int distance) {
 
-        motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(-distance);
         motorFrontRight.setTargetPosition(distance);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorFrontLeft.setPower(-power);
         motorBackRight.setPower(power);
         motorBackLeft.setPower(-power);
         motorFrontRight.setPower(power);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
 
@@ -351,26 +358,28 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
-
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
     }
 
 
     public void StrafeLeft(double power, int distance) {
 
-        motorFrontLeft.setTargetPosition(distance);
-        motorBackRight.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(-distance);
-        motorFrontRight.setTargetPosition(-distance);
+        motorBackRight.setTargetPosition(-distance);
+        motorFrontRight.setTargetPosition(distance);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        motorFrontLeft.setPower(power);
-        motorBackRight.setPower(-power);
-        motorBackLeft.setPower(power);
-        motorFrontRight.setPower(-power);
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(-power);
+        motorFrontRight.setPower(power);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
 
@@ -386,20 +395,22 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
-
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
     }
 
 
     public void StrafeRight(double power, int distance) {
 
-        motorFrontLeft.setTargetPosition(-distance);
-        motorBackRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(distance);
+        motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
 
-        motorFrontLeft.setPower(power);
+        motorFrontLeft.setPower(-power);
         motorBackRight.setPower(-power);
-        motorBackLeft.setPower(-power);
+        motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -421,10 +432,12 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
 
     }
 
 }
-
-
-
