@@ -160,7 +160,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                 DriveBackward(.5, 350);
                 sleep(1000);
 
-                PointTurnRight(.5, 100);
+                PointTurnLeft(.5, 130);
                 sleep(1000);
 
                 hamilton.setPosition(1);
