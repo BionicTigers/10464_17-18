@@ -32,8 +32,8 @@ public class MercuryKidsCode extends OpMode {
         motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
-        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
     }
 
 
