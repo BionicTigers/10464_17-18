@@ -110,35 +110,18 @@ public class VenusAutoRedFront extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT: //Go to Right column
-                DriveBackward(.5,1000);
-//                DriveForward(.5,450);
-
-                sleep(250);
-
-
-                break;
-            case LEFT: //Go to Left column
-                DriveBackward(.5,200);
-
-                break;
-            case CENTER: //Go to Center column
-                DriveBackward(.5,100);
-//                DriveForward(.5,450);
-
-                break;
-            default: //ACTUAL START OF PROGRAM
                 //JEWELS//
                 clark.setPosition(0.18);
                 sleep(3000);
 
 
-                if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.4);
+                if (leo.blue() < roger.blue()) {
+                    eddie.setPosition(0.35);
 
                     blue = true;
                     sleep(2000);
                 }
-                else if (leo.blue() < roger.blue()) {
+                else if (leo.blue() > roger.blue()) {
                     eddie.setPosition(0.6);
                     sleep(1000);
 
@@ -157,20 +140,22 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 //MOVE
 
-                DriveBackward(.5, 350);
+                telemetry.addData("encoderRightFront", motorBackRight.getCurrentPosition());
+
+                DriveBackward(.5, 440);
                 sleep(1000);
 
-                PointTurnLeft(.5, 130);
+                PointTurnRight(.5, 200);
                 sleep(1000);
 
                 hamilton.setPosition(1);
-                sleep(500);
+                sleep(1000);
 
                 DriveBackward(.5,50);
-                sleep(1000);
+                sleep(500);
 
-                DriveForward(.5,50);
-                sleep(1000);
+                DriveForward(.5,100);
+                sleep(500);
 
                 hamilton.setPosition(.3);
                 sleep(500);
@@ -181,8 +166,182 @@ public class VenusAutoRedFront extends LinearOpMode {
                 motorFrontRight.setPower(0);
                 sleep(10000);
 
-        }
+                break;
+            case LEFT: //Go to Left column
+                //JEWELS//
+                clark.setPosition(0.18);
+                sleep(3000);
 
+
+                if (leo.blue() < roger.blue()) {
+                    eddie.setPosition(0.35);
+
+                    blue = true;
+                    sleep(2000);
+                }
+                else if (leo.blue() > roger.blue()) {
+                    eddie.setPosition(0.6);
+                    sleep(1000);
+
+                    blue = false;
+                }
+                else {
+                    telemetry.addData("eddie", "did not work");
+                    sleep(250);
+                }
+
+                eddie.setPosition(0.55);
+                sleep(1000);
+
+                clark.setPosition(0.8);
+                sleep(1000);
+
+                //MOVE
+
+                telemetry.addData("encoderRightFront", motorBackRight.getCurrentPosition());
+
+                DriveBackward(.5, 440);
+                sleep(1000);
+
+                PointTurnRight(.5, 240);
+                sleep(1000);
+
+                DriveBackward(.5,50);
+
+                hamilton.setPosition(1);
+                sleep(1000);
+
+                DriveForward(.5,100);
+                sleep(500);
+
+                hamilton.setPosition(.3);
+                sleep(500);
+
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorBackLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                sleep(10000);
+
+
+                break;
+            case CENTER: //Go to Center column
+                clark.setPosition(0.18);
+                sleep(3000);
+
+
+                if (leo.blue() < roger.blue()) {
+                    eddie.setPosition(0.35);
+
+                    blue = true;
+                    sleep(2000);
+                }
+                else if (leo.blue() > roger.blue()) {
+                    eddie.setPosition(0.6);
+                    sleep(1000);
+
+                    blue = false;
+                }
+                else {
+                    telemetry.addData("eddie", "did not work");
+                    sleep(250);
+                }
+
+                eddie.setPosition(0.55);
+                sleep(1000);
+
+                clark.setPosition(0.8);
+                sleep(1000);
+
+                //MOVE
+
+                telemetry.addData("encoderRightFront", motorBackRight.getCurrentPosition());
+
+                DriveBackward(.5, 440);
+                sleep(1000);
+
+                PointTurnRight(.5, 220);
+                sleep(1000);
+
+                DriveForward(.5,10);
+
+                hamilton.setPosition(1);
+                sleep(1000);
+
+                DriveBackward(.5,100);
+                sleep(500);
+
+                hamilton.setPosition(.3);
+                sleep(500);
+
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorBackLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                sleep(10000);
+//                DriveForward(.5,450);
+
+                break;
+
+            default: //ACTUAL START OF PROGRAM
+                clark.setPosition(0.18);
+                sleep(3000);
+
+
+                if (leo.blue() < roger.blue()) {
+                    eddie.setPosition(0.35);
+
+                    blue = true;
+                    sleep(2000);
+                }
+                else if (leo.blue() > roger.blue()) {
+                    eddie.setPosition(0.6);
+                    sleep(1000);
+
+                    blue = false;
+                }
+                else {
+                    telemetry.addData("eddie", "did not work");
+                    sleep(250);
+                }
+
+                eddie.setPosition(0.55);
+                sleep(1000);
+
+                clark.setPosition(0.8);
+                sleep(1000);
+
+                //MOVE
+
+                telemetry.addData("encoderRightFront", motorBackRight.getCurrentPosition());
+
+                DriveBackward(.5, 440);
+                sleep(1000);
+
+                PointTurnRight(.5, 200);
+                sleep(1000);
+
+                DriveBackward(.5,10);
+                sleep(500);
+
+                hamilton.setPosition(1);
+                sleep(1000);
+
+                DriveForward(.5,100);
+
+                hamilton.setPosition(.3);
+                sleep(500);
+
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorBackLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                sleep(10000);
+//                DriveForward(.5,450);
+
+                break;
+
+        }
 
         relicTrackables.activate();
 
@@ -190,7 +349,6 @@ public class VenusAutoRedFront extends LinearOpMode {
 
 
         }
-
         idle();
         telemetry.update();
     }
@@ -204,17 +362,17 @@ public class VenusAutoRedFront extends LinearOpMode {
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
 
-        motorFrontLeft.setPower(power);
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(power);
-        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(-power);
+        motorBackLeft.setPower(-power);
+        motorFrontRight.setPower(-power);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (motorBackRight.isBusy() && motorFrontRight.isBusy() && motorBackLeft.isBusy() && motorFrontLeft.isBusy())  {
+        while (motorBackRight.isBusy() && motorFrontRight.isBusy()){// && motorBackLeft.isBusy() && motorFrontLeft.isBusy())  {
         }
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
@@ -298,8 +456,8 @@ public class VenusAutoRedFront extends LinearOpMode {
 
     public void PointTurnLeft(double power, int distance) {
 
-        motorBackRight.setTargetPosition(distance);
-        motorFrontRight.setTargetPosition(distance);
+        motorBackRight.setTargetPosition(-distance);
+        motorFrontRight.setTargetPosition(-distance);
 
         motorFrontLeft.setPower(-power);
         motorBackRight.setPower(power);
