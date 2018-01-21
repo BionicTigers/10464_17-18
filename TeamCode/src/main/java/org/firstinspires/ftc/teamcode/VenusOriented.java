@@ -42,10 +42,10 @@ public class VenusOriented extends OpMode {
     public Servo eddie = null; //Flicker
     public Servo clark = null; //Dropper
     //RELIC\\
-    //public DcMotor georgery; //Extender
-    public Servo brandy = null; //Elbow
-    public Servo franny = null; //Left Finger
-    //public Servo mobert = null; //Right Finger
+//    public DcMotor georgery; //Extender
+//    public Servo brandy = null; //Elbow
+//    public Servo franny = null; //Left Finger
+//    public Servo mobert = null; //Right Finger
     //IMU\\
     BNO055IMU imu;
     public Orientation angles;
@@ -77,18 +77,13 @@ public void init() {
     //LIFT\\
     evangelino = hardwareMap.dcMotor.get("evangelino");
     wilbert = hardwareMap.dcMotor.get("wilbert");
-
-//    evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//    evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
-//    wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//    wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     //HAMMER\\
     eddie = hardwareMap.servo.get("eddie");
     clark = hardwareMap.servo.get("clark");
     //RELIC\\
 //    georgery = hardwareMap.dcMotor.get("georgery");
-    brandy = hardwareMap.servo.get("brandy");
-    franny = hardwareMap.servo.get("franny");
+//    brandy = hardwareMap.servo.get("brandy");
+//    franny = hardwareMap.servo.get("franny");
 //    mobert = hardwareMap.servo.get("mobert");
     //IMU\\
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -106,8 +101,7 @@ public void init() {
     motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
     elbowPos = 0.00;
     targetPos = 0;
-    topPos = 0;
-}
+    topPos = 0; }
 
 
 public void loop() {
@@ -137,16 +131,13 @@ public void loop() {
         String filename = "BNO055IMUCalibration.json";
         File file = AppUtil.getInstance().getSettingsFile(filename);
         ReadWriteFile.writeFile(file, calibrationData.serialize());
-        telemetry.log().add("saved to '%s'", filename);
-    }
+        telemetry.log().add("saved to '%s'", filename); }
 
     if (gamepad1.x) { //toggle on
-        calibToggle = 1;
-    }
+        calibToggle = 1; }
 
     if (gamepad1.b) { //toggle off
-        calibToggle = 0;
-    }
+        calibToggle = 0; }
 
     if (calibToggle == 1) { //when toggled we are oriented with this math
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
@@ -188,8 +179,9 @@ public void loop() {
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);
-        motorBackLeft.setPower(v4);
-    }
+        motorBackLeft.setPower(v4); }
+
+
     ///////////////
     // GAMEPAD 2 //
     ///////////////
@@ -211,41 +203,18 @@ public void loop() {
 //        evangelino.getCurrentPosition();
 //        telemetry.update();
 //    }
-//
+
     if (gamepad2.a) {
-        evangelino.setPower(-.85);
-        wilbert.setPower(.85);
-    }
-    else {
+        evangelino.setPower(-.90);
+        wilbert.setPower(.90);
+
+    } else if (gamepad2.y) {
+        evangelino.setPower(.90);
+        wilbert.setPower(-.90);
+
+    } else {
         evangelino.setPower(0);
-        wilbert.setPower(0);
-    }
-
-
-    if (gamepad2.y) {
-        evangelino.setPower(.85);
-        wilbert.setPower(-.85);
-    }
-    else {
-
-        evangelino.setPower(0);
-        wilbert.setPower(0);
-    }
-
-
-    //FOUR BAR WITHOUT ENCODERS//
-//    if (gamepad2.a) { //up
-//        wilbert.setPower(-0.85);
-//        evangelino.setPower(0.85);
-//    }
-//    if (gamepad2.y) { //down
-//        evangelino.setPower(-0.85);
-//        wilbert.setPower(0.85);
-//    }
-//    if (gamepad2.x) {
-//        wilbert.setPower(0);
-//        evangelino.setPower(0);
-//    }
+        wilbert.setPower(0); }
 
     //RELIC//
 //    if (gamepad1.dpad_up) {
@@ -288,18 +257,16 @@ public void loop() {
         } else if (gamepad2.right_trigger > .7) {
             billiam.setPower(-1);
         } else {
-            billiam.setPower(0.00);
-        }
+            billiam.setPower(0.00); }
 
         if (gamepad2.left_trigger > .7) {
             hamilton.setPosition(0.3);
         } else if (gamepad2.left_bumper) {
             hamilton.setPosition(1);
         } else if (gamepad2.dpad_up) {
-            hamilton.setPosition(0.4);
-        }
-
+            hamilton.setPosition(0.4); }
     }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     private String composeTelemetry() {
