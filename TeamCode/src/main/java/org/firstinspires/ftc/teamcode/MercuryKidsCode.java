@@ -114,14 +114,6 @@ public class MercuryKidsCode extends OpMode {
             motorBackLeft.setPower(v7);//3
             motorBackRight.setPower(v8);//4
 
-            //some telemetry for testing purposes
-            telemetry.addData("robotAngle", robotAngle);
-            telemetry.addData("P", P);
-            telemetry.addData("rightX", rightX);
-            telemetry.addData("v5", v5);
-            telemetry.addData("v6", v6);
-            telemetry.addData("angles.firstAngle", angles.firstAngle);
-
         } else if (calibToggle == 0) { //regular drive
             double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
             double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
