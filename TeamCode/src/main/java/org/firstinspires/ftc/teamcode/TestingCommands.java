@@ -15,9 +15,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-@Autonomous(name="Blue Corner", group ="Blue")
+@Autonomous(name="TestingCommands ", group ="Vuforia")
 
-public class VenusAutoBlueCorner extends LinearOpMode {
+public class TestingCommands extends LinearOpMode {
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
@@ -25,6 +25,10 @@ public class VenusAutoBlueCorner extends LinearOpMode {
     public DcMotor motorBackRight;
     public DcMotor motorFrontRight;
     public DcMotor motorBackLeft;
+    public DcMotor wilbert; //Four Bar Right
+    public DcMotor evangelino; //Four Bar Left
+    public Servo hamilton; //Glyph Flipper
+    //public Servo burr; //Glyph Flipper 2
     public ElapsedTime runtime = new ElapsedTime();
     int i;
     boolean blue;
@@ -50,6 +54,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        hamilton = hardwareMap.servo.get("hamilton");
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -91,7 +96,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessa
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necess
 
 //
         //telemetr.addData(">", "Press Play to start");
@@ -104,223 +109,104 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         telemetry.addData("VuMark", vuMark);
 
         switch (vuMark) {
-            case RIGHT:
-                clark.setPosition(0.18);
-                sleep(3000);
-
-
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.6);
-
-                    blue = true;
-                    sleep(1000);
-                } else if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.4);
-                    sleep(1000);
-
-                    blue = false;
-                } else {
-                    telemetry.addData("eddie", "did not work");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                DriveForward(.5, 345);
-                sleep(1000);
-
-                DriveBackward(.5, 25);
-                sleep(2000);
-
-                StrafeLeft(.7, 220);
-                sleep(1000);
-
-                //PointTurnRight(.5,80);
-                DriveForward(.5, 75);
-                sleep(2000);
-
-                PointTurnLeft(0.5,440);
-
-                //hamilton.setPosition(1);
-                //burr.setPosition(1);
-                sleep(500);
-
-                DriveBackward(.5, 30);
-                sleep(1000);
-
-                //hamilton.setPosition(.3);
-                //burr.setPosition(0.3);
-                sleep(1000);
-                break;
-            case LEFT:
-                clark.setPosition(0.18);
-                sleep(3000);
-
-
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.6);
-
-                    blue = true;
-                    sleep(1000);
-                }
-                else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.4);
-                    sleep(1000);
-
-                    blue = false;
-                }
-                else {
-                    telemetry.addData("eddie", "did not work");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
+//            case RIGHT: //Go to Right column
+//                DriveBackward(.5,50);
+////                DriveForward(.5,450);
+               // sleep(2000);
+////                DriveForward(.5,450);
+//
+//                //PointTurnRight(.5,1440);
+//
+//                sleep(250);
+//
+//
+//                break;
+//            case LEFT: //Go to Left column
+//                DriveBackward(.5,200);
+////                DriveForward(.5,450);
+////                DriveForward(.5,450);
+//
+//                //PointTurnRight(.5,100);
+//
+//                DriveBackward(.5,50);
+//
+//                sleep(500);
+//
+//                DriveForward(.5,50);
+//                //PointTurnRight(.5,100);
+//
+//                break;
+//            case CENTER: //Go to Center column
+//                DriveBackward(.5,100);
+////                DriveForward(.5,450);
+////                DriveForward(.5,450);
+//
+//                StrafeLeft(.5,200);
+//
+//                DriveBackward(.5,20);
+//
+//                sleep(500);
+//
+//                DriveForward(.5,20);
+//                //PointTurnRight(.5,2880) ;
+//
+//                break;
+            default: //ACTUAL START OF PROGRAM
+                //JEWELS//
+//                clark.setPosition(0.18);
+//
+//
+//                if (leo.blue() < roger.blue()) {
+//                    eddie.setPosition(0.4);
+//
+//                    blue = true;
+//                    sleep(1000);
+//                }
+//                else if (leo.blue() > roger.blue()) {
+//                    eddie.setPosition(0.6);
+//                    sleep(1000);
+//
+//                    blue = false;
+//                }
+//                else {
+//                    telemetry.addData("eddie", "did not work");
+//                    sleep(250);
+//                }
+//
+//                eddie.setPosition(0.55);
+//                sleep(1000);
+//
+//                clark.setPosition(0.8);
+//                sleep(1000);
 
                 //MOVE
 
-                DriveForward(.5, 345);
+                DriveBackward(.5, 325);
                 sleep(1000);
-
-                DriveBackward(.5,25);
-                sleep(2000);
-
-                StrafeLeft(.7, 220);
-                sleep(1000);
-//TURN SOMETIME
-
-                //PointTurnRight(.5,80);
-                DriveForward(.5,75);
-                sleep(2000);
-
-                //hamilton.setPosition(1);
-                //burr.setPosition(1);
-                sleep(500);
-
-                DriveBackward(.5,30);
-                sleep(1000);
-
-                //hamilton.setPosition(.3);
-                //burr.setPosition(0.3);
-                sleep(1000);
-
-
-                break;
-            case CENTER:
-                clark.setPosition(0.18);
-                sleep(3000);
+//
+//                StrafeRight(.7, 200);
+//                sleep(1000);
+//
+//                //PointTurnRight(.5,80);
+//
+//                hamilton.setPosition(1);
+//                //burr.setPosition(1);
+//                sleep(500);
+//
+//                DriveBackward(.5,75);
+//                sleep(2000);
+//
+//                DriveForward(.5,50);
+//                sleep(2000);
+//
+//                hamilton.setPosition(.3);
+//                //burr.setPosition(0.3);
+//                sleep(1000);
+ break;
+}
 
 
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.6);
-
-                    blue = true;
-                    sleep(1000);
-                } else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.4);
-                    sleep(1000);
-
-                    blue = false;
-                } else {
-                    telemetry.addData("eddie", "did not work");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                DriveForward(.5, 280);
-                sleep(1000);
-
-                StrafeRight(.7, 200);
-                sleep(1000);
-
-                //PointTurnRight(.5,80);
-
-                //hamilton.setPosition(1);
-                //burr.setPosition(1);
-                sleep(500);
-
-                DriveForward(.5, 80);
-                sleep(1000);
-
-                DriveBackward(.5, 80);
-                sleep(1000);
-
-                //hamilton.setPosition(.3);
-                //burr.setPosition(0.3);
-                sleep(1000);
-
-            default:
-                clark.setPosition(0.18);
-                sleep(3000);
-
-
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.6);
-
-                    blue = true;
-                    sleep(1000);
-                } else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.4);
-                    sleep(1000);
-
-                    blue = false;
-                } else {
-                    telemetry.addData("eddie", "did not work");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                DriveBackward(.5, 345);
-                sleep(1000);
-
-                DriveForward(.5, 25);
-                sleep(2000);
-
-                StrafeRight(.7, 220);
-                sleep(1000);
-
-                //PointTurnRight(.5,80);
-                DriveBackward(.5, 75);
-                sleep(2000);
-
-                //hamilton.setPosition(1);
-                //burr.setPosition(1);
-                sleep(500);
-
-                DriveForward(.5, 30);
-                sleep(1000);
-
-                //hamilton.setPosition(.3);
-                //burr.setPosition(0.3);
-                sleep(1000);
-        }
-
-
-
-                relicTrackables.activate();
+        relicTrackables.activate();
 
         while (opModeIsActive()) {
 
@@ -331,12 +217,14 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         telemetry.update();
     }
 
+//    String format(OpenGLMatrix transformationMatrix) {
+//        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+
+
     public void DriveForward ( double power, int distance){
 
-        motorFrontLeft.setTargetPosition(distance);
-        motorBackRight.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(distance);
-        motorFrontRight.setTargetPosition(distance);
+        motorBackRight.setTargetPosition(-distance);
+        motorFrontRight.setTargetPosition(-distance);
 
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
@@ -348,41 +236,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
-        }
-        motorFrontLeft.setPower(0);
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-        motorFrontRight.setPower(0);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        sleep(500);
-
-    }
-
-
-    public void PointTurnLeft(double power, int distance) {
-
-        motorFrontLeft.setTargetPosition(-distance);
-        motorBackRight.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(-distance);
-        motorFrontRight.setTargetPosition(distance);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(-power);
-        motorFrontRight.setPower(power);
-
-        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
-
+        while (motorBackRight.isBusy() && motorFrontRight.isBusy() && motorBackLeft.isBusy() && motorFrontLeft.isBusy())  {
         }
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
@@ -395,15 +249,19 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
-
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
     }
 
     public void DriveBackward(double power, int distance) {
 
-        motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(-distance);
         motorFrontRight.setTargetPosition(-distance);
+        motorBackLeft.setTargetPosition(-distance);
+        motorFrontLeft.setTargetPosition(-distance);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -429,26 +287,100 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
+    }
 
+    public void PointTurnRight(double power, int distance) {
+
+        motorBackRight.setTargetPosition(distance);
+        motorFrontRight.setTargetPosition(distance);
+
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(-power);
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(-power);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
+
+        }
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        motorFrontRight.setPower(0);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        sleep(500);
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
+    }
+
+    public void PointTurnLeft(double power, int distance) {
+
+        motorBackRight.setTargetPosition(distance);
+        motorFrontRight.setTargetPosition(distance);
+
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(-power);
+        motorFrontRight.setPower(power);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
+
+        }
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorBackLeft.setPower(0);
+        motorFrontRight.setPower(0);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        sleep(500);
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
     }
 
 
     public void StrafeLeft(double power, int distance) {
 
-        motorFrontLeft.setTargetPosition(distance);
-        motorBackRight.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(-distance);
-        motorFrontRight.setTargetPosition(-distance);
+        motorBackRight.setTargetPosition(-distance);
+        motorFrontRight.setTargetPosition(distance);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        motorFrontLeft.setPower(power);
+        motorFrontLeft.setPower(-power);
         motorBackRight.setPower(power);
         motorBackLeft.setPower(-power);
-        motorFrontRight.setPower(-power);
+        motorFrontRight.setPower(power);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
 
@@ -464,15 +396,17 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
-
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
     }
 
 
     public void StrafeRight(double power, int distance) {
 
-        motorFrontLeft.setTargetPosition(-distance);
-        motorBackRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(distance);
+        motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
 
         motorFrontLeft.setPower(-power);
@@ -499,11 +433,12 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         sleep(500);
+        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(500);
 
     }
 
-
 }
-
-
-
