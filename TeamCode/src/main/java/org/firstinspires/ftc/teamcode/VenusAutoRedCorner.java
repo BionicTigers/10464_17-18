@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-@Autonomous(name="VenusAutoRedCorner ", group ="Vuforia")
+@Autonomous(name="Red Corner ", group ="Red")
 
 public class VenusAutoRedCorner extends LinearOpMode {
 

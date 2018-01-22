@@ -1,18 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-
-@TeleOp(name="Venus Mechanum", group="Venus")
+@TeleOp(name="Venus Oriented", group="Venus")
 
 
 public class VenusMechanum extends OpMode {
@@ -38,12 +33,16 @@ public class VenusMechanum extends OpMode {
 //    public Servo franny = null; //Left Finger
 //    public Servo mobert = null; //Right Finger
     //VARIABLES\\
+    public int calibToggle;
     public double elbowPos;
+    private double time = getRuntime();
+    private int targetPos;
+    private double topPos;
 
 
     public void init() {
 
-        //DRIVETRAIN\\
+        ///DRIVETRAIN\\
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
@@ -60,11 +59,6 @@ public class VenusMechanum extends OpMode {
         //LIFT\\
         evangelino = hardwareMap.dcMotor.get("evangelino");
         wilbert = hardwareMap.dcMotor.get("wilbert");
-
-        evangelino.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        evangelino.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
-        wilbert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wilbert.setMode(DcMotor.RunMode.RUN_USING_ENCODER) ;
         //HAMMER\\
         eddie = hardwareMap.servo.get("eddie");
         clark = hardwareMap.servo.get("clark");
@@ -74,14 +68,21 @@ public class VenusMechanum extends OpMode {
 //    franny = hardwareMap.servo.get("franny");
 //    mobert = hardwareMap.servo.get("mobert");
         //VARIABLES\\
-        elbowPos = 0.00;
-
+        calibToggle = 0;
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        elbowPos = 0.00;
+        targetPos = 0;
+        topPos = 0;
     }
 
 
     public void loop() {
+        telemetry.addData("evangelino", evangelino.getCurrentPosition());
+        telemetry.addData("TopPos", topPos);
+        telemetry.addData("targetPos", targetPos);
+        telemetry.update();
+        topPos = evangelino.getCurrentPosition();
 
         ///////////////
         // GAMEPAD 1 //
@@ -102,11 +103,43 @@ public class VenusMechanum extends OpMode {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
-        if (gamepad1.y) {
-            eddie.setPosition(0.5);
-            clark.setPosition(0.6);
+
+        ///////////////
+        // GAMEPAD 2 //
+        ///////////////
+
+        //FOUR BAR WITH ENCODERS//
+//    if (evangelino.getCurrentPosition() < targetPos - 10) { //up
+//        evangelino.setPower(-0.85);
+//        wilbert.setPower(0.85);
+//        evangelino.getCurrentPosition();
+//        telemetry.update();
+//    } else if (evangelino.getCurrentPosition() > targetPos + 10) { //down
+//        evangelino.setPower(0.85);
+//        wilbert.setPower(-0.85);
+//        evangelino.getCurrentPosition();
+//        telemetry.update();
+//    } else {
+//        evangelino.setPower(0);
+//        wilbert.setPower(0);
+//        evangelino.getCurrentPosition();
+//        telemetry.update();
+//    }
+
+        if (gamepad2.a) {
+            evangelino.setPower(-.90);
+            wilbert.setPower(.90);
+
+        } else if (gamepad2.y) {
+            evangelino.setPower(.90);
+            wilbert.setPower(-.90);
+
+        } else {
+            evangelino.setPower(0);
+            wilbert.setPower(0);
         }
 
+        //RELIC//
 //    if (gamepad1.dpad_up) {
 //        georgery.setPower(0.75); }
 //    else if (gamepad1.dpad_down) {
@@ -115,11 +148,11 @@ public class VenusMechanum extends OpMode {
 //        georgery.setPower(0.0); }
 //
 //    if (gamepad1.right_bumper) {
-//            elbowPos += .01;
+//        elbowPos += .01;
 //        brandy.setPosition(elbowPos); }
 //
 //    else if (gamepad1.left_bumper) {
-//            elbowPos -= .01;
+//        elbowPos -= .01;
 //        brandy.setPosition(elbowPos); }
 //
 //    if (gamepad1.right_trigger > .7) {
@@ -129,57 +162,33 @@ public class VenusMechanum extends OpMode {
 //        franny.setPosition(1.00);
 //        mobert.setPosition(1.00); }
 
-        ///////////////
-        // GAMEPAD 2 //
-        ///////////////
+//        //MAKESHIFT RELIC//
+//        if (gamepad2.dpad_up) {
+//            brandy.setPosition(0.3);
+//        }
+//        if (gamepad2.dpad_down) {
+//            brandy.setPosition(0.9);
+//        }
+//        if (gamepad2.dpad_left) {
+//            franny.setPosition(0.5);
+//        }
+//        if (gamepad2.dpad_right) {
+//            franny.setPosition(1);
+
         if (gamepad2.right_bumper) {
-            billiam.setPower(-0.75);
+            billiam.setPower(1);
         } else if (gamepad2.right_trigger > .7) {
-            billiam.setPower(0.75);
+            billiam.setPower(-1);
         } else {
             billiam.setPower(0.00);
         }
 
         if (gamepad2.left_trigger > .7) {
-            hamilton.setPosition(0.6);
+            hamilton.setPosition(0.3);
         } else if (gamepad2.left_bumper) {
             hamilton.setPosition(1);
-        }
-
-        if (gamepad2.a) { //Bottom level
-            evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            evangelino.setTargetPosition(0);
-            wilbert.setTargetPosition(0);
-            evangelino.setPower(-0.25);
-            wilbert.setPower(0.25);
-        }
-
-        if (gamepad2.x) { //6 inches
-            evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            evangelino.setTargetPosition(6);
-            wilbert.setTargetPosition(6);
-            evangelino.setPower(.25);
-            wilbert.setPower(-.25);
-        }
-
-        if (gamepad2.b) { //18 inches
-            evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            evangelino.setTargetPosition(18);
-            wilbert.setTargetPosition(18);
-            evangelino.setPower(0.25);
-            wilbert.setPower(-0.25);
-        }
-
-        if (gamepad2.y) { //12 inches
-            evangelino.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            wilbert.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            evangelino.setTargetPosition(12);
-            wilbert.setTargetPosition(12);
-            evangelino.setPower(0.25);
-            wilbert.setPower(-0.25);
+        } else if (gamepad2.dpad_up) {
+            hamilton.setPosition(0.4);
         }
     }
 }
