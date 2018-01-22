@@ -69,8 +69,8 @@ public class VenusMechanum extends OpMode {
 //    mobert = hardwareMap.servo.get("mobert");
         //VARIABLES\\
         calibToggle = 0;
-        motorBackRight.setDirection(DcMotor.Direction.REVERSE);
-        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         elbowPos = 0.00;
         targetPos = 0;
         topPos = 0;

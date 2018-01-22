@@ -97,8 +97,8 @@ public void init() {
     imu.initialize(parameters);
     //VARIABLES\\
     calibToggle = 0;
-    motorBackRight.setDirection(DcMotor.Direction.REVERSE);
-    motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+    motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+    motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
     elbowPos = 0.00;
     targetPos = 0;
     topPos = 0; }
