@@ -21,7 +21,7 @@ import java.io.File;
 import java.util.Locale;
 
 
-@TeleOp(name="Mercury Kids Code", group="KidsCode")
+@TeleOp(name="Not So Flat Stanley", group="KidsCode")
 
 
 public class MercuryKidsCode extends OpMode {
