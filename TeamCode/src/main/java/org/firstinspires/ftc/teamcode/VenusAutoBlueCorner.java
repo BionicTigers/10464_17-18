@@ -132,26 +132,26 @@ public class VenusAutoBlueCorner extends LinearOpMode {
 
                 //MOVE
 
-                DriveForward(.5, 345);
+                driveForward(.5, 345);
                 sleep(1000);
 
-                DriveBackward(.5, 25);
+                driveBackward(.5, 25);
                 sleep(2000);
 
-                StrafeLeft(.7, 220);
+                strafeLeft(.7, 220);
                 sleep(1000);
 
                 //PointTurnRight(.5,80);
-                DriveForward(.5, 75);
+                driveForward(.5, 75);
                 sleep(2000);
 
-                PointTurnLeft(0.5,440);
+                pointTurnLeft(0.5,440);
 
                 //hamilton.setPosition(1);
                 //burr.setPosition(1);
                 sleep(500);
 
-                DriveBackward(.5, 30);
+                driveBackward(.5, 30);
                 sleep(1000);
 
                 //hamilton.setPosition(.3);
@@ -188,25 +188,25 @@ public class VenusAutoBlueCorner extends LinearOpMode {
 
                 //MOVE
 
-                DriveForward(.5, 345);
+                driveForward(.5, 345);
                 sleep(1000);
 
-                DriveBackward(.5,25);
+                driveBackward(.5,25);
                 sleep(2000);
 
-                StrafeLeft(.7, 220);
+                strafeLeft(.7, 220);
                 sleep(1000);
 //TURN SOMETIME
 
                 //PointTurnRight(.5,80);
-                DriveForward(.5,75);
+                driveForward(.5,75);
                 sleep(2000);
 
                 //hamilton.setPosition(1);
                 //burr.setPosition(1);
                 sleep(500);
 
-                DriveBackward(.5,30);
+                driveBackward(.5,30);
                 sleep(1000);
 
                 //hamilton.setPosition(.3);
@@ -243,10 +243,10 @@ public class VenusAutoBlueCorner extends LinearOpMode {
 
                 //MOVE
 
-                DriveForward(.5, 280);
+                driveForward(.5, 280);
                 sleep(1000);
 
-                StrafeRight(.7, 200);
+                strafeRight(.7, 200);
                 sleep(1000);
 
                 //PointTurnRight(.5,80);
@@ -255,10 +255,10 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                 //burr.setPosition(1);
                 sleep(500);
 
-                DriveForward(.5, 80);
+                driveForward(.5, 80);
                 sleep(1000);
 
-                DriveBackward(.5, 80);
+                driveBackward(.5, 80);
                 sleep(1000);
 
                 //hamilton.setPosition(.3);
@@ -293,24 +293,24 @@ public class VenusAutoBlueCorner extends LinearOpMode {
 
                 //MOVE
 
-                DriveBackward(.5, 345);
+                driveBackward(.5, 345);
                 sleep(1000);
 
-                DriveForward(.5, 25);
+                driveForward(.5, 25);
                 sleep(2000);
 
-                StrafeRight(.7, 220);
+                strafeRight(.7, 220);
                 sleep(1000);
 
                 //PointTurnRight(.5,80);
-                DriveBackward(.5, 75);
+                driveBackward(.5, 75);
                 sleep(2000);
 
                 //hamilton.setPosition(1);
                 //burr.setPosition(1);
                 sleep(500);
 
-                DriveForward(.5, 30);
+                driveForward(.5, 30);
                 sleep(1000);
 
                 //hamilton.setPosition(.3);
@@ -318,9 +318,8 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                 sleep(1000);
         }
 
-
-
                 relicTrackables.activate();
+
 
         while (opModeIsActive()) {
 
@@ -331,7 +330,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         telemetry.update();
     }
 
-    public void DriveForward ( double power, int distance){
+    public void driveForward ( double power, int distance){
 
         motorFrontLeft.setTargetPosition(distance);
         motorBackRight.setTargetPosition(distance);
@@ -364,7 +363,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
     }
 
 
-    public void PointTurnLeft(double power, int distance) {
+    public void pointTurnLeft(double power, int distance) {
 
         motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(distance);
@@ -398,7 +397,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
 
     }
 
-    public void DriveBackward(double power, int distance) {
+    public void driveBackward(double power, int distance) {
 
         motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(-distance);
@@ -433,7 +432,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
     }
 
 
-    public void StrafeLeft(double power, int distance) {
+    public void strafeLeft(double power, int distance) {
 
         motorFrontLeft.setTargetPosition(distance);
         motorBackRight.setTargetPosition(distance);
@@ -468,7 +467,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
     }
 
 
-    public void StrafeRight(double power, int distance) {
+    public void strafeRight(double power, int distance) {
 
         motorFrontLeft.setTargetPosition(-distance);
         motorBackRight.setTargetPosition(-distance);

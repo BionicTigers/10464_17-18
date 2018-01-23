@@ -322,10 +322,10 @@ public class VenusAutoBlueFront extends LinearOpMode {
                 sleep(1000);
 
                 DriveBackward(.5,10);
-                sleep(500);
+                sleep(2000);
 
                 hamilton.setPosition(1);
-                sleep(1000);
+                sleep(2000);
 
                 DriveForward(.5,100);
 
@@ -400,7 +400,7 @@ public class VenusAutoBlueFront extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        motorFrontLeft.setPower(-power);
+        motorFrontLeft.setPower(-power*.85);
         motorBackRight.setPower(-power);
         motorBackLeft.setPower(-power);
         motorFrontRight.setPower(-power);

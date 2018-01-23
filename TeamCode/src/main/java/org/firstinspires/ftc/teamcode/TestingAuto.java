@@ -50,19 +50,20 @@ public class TestingAuto extends LinearOpMode {
 
         waitForStart();
 
-        PointTurnRight(.5,100);
+        driveForward(.5,500);
+
 
     }
 
-    public void PointTurnRight(double power, int distance) {
+    public void driveForward(double power, int distance) {
 
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
 
         motorFrontLeft.setPower(power);
-        motorBackRight.setPower(-power);
+        motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
-        motorFrontRight.setPower(-power);
+        motorFrontRight.setPower(power);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
