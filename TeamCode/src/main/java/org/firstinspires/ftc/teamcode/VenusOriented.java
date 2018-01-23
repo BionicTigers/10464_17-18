@@ -238,9 +238,9 @@ public void loop() {
 
 // GATE //
     if (gamepad2.x) {
-        donneet.setPosition(1); }
-    else if (gamepad2.b) {
         donneet.setPosition(0); }
+    else if (gamepad2.b) {
+        donneet.setPosition(.6); }
 
 // CAR WASHER //
     if (gamepad2.right_bumper) {
