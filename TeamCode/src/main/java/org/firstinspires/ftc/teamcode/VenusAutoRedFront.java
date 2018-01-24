@@ -110,19 +110,18 @@ public class VenusAutoRedFront extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT: //Go to Right column
-                //JEWELS//
                 clark.setPosition(0.18);
                 sleep(3000);
 
 
                 if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.35);
+                    eddie.setPosition(0.3);
 
                     blue = true;
                     sleep(2000);
                 }
                 else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.6);
+                    eddie.setPosition(0.65);
                     sleep(1000);
 
                     blue = false;
@@ -140,11 +139,13 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 //MOVE
 
-                driveBackward(.5, 420);
+                driveBackward(.5,525);
                 sleep(1000);
 
-                pointTurnRight(.5, 750);
+                pointTurnRight(.5, 255);
                 sleep(1000);
+
+                strafeRight(.5,90);
 
                 driveBackward(.5,100);
                 sleep(1000);
@@ -152,7 +153,10 @@ public class VenusAutoRedFront extends LinearOpMode {
                 hamilton.setPosition(1);
                 sleep(1000);
 
-                driveBackward(.5,-50);
+                driveBackward(.5,100);
+                sleep(500);
+
+                driveBackward(.5,-120);
                 sleep(500);
 
                 hamilton.setPosition(.3);
@@ -168,13 +172,13 @@ public class VenusAutoRedFront extends LinearOpMode {
 
 
                 if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.35);
+                    eddie.setPosition(0.3);
 
                     blue = true;
                     sleep(2000);
                 }
                 else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.6);
+                    eddie.setPosition(0.65);
                     sleep(1000);
 
                     blue = false;
@@ -192,21 +196,25 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 //MOVE
 
-                driveBackward(.5, 420);
+                driveBackward(.5,525);
                 sleep(1000);
 
-                pointTurnRight(.5, 750);
+                pointTurnRight(.5, 255);
                 sleep(1000);
+
+                strafeRight(.5,-90);
+                sleep(500);
 
                 driveBackward(.5,100);
                 sleep(1000);
 
-                strafeRight(.5,70);
-
                 hamilton.setPosition(1);
                 sleep(1000);
 
-                driveBackward(.5,-50);
+                driveBackward(.5,100);
+                sleep(500);
+
+                driveBackward(.5,-120);
                 sleep(500);
 
                 hamilton.setPosition(.3);
@@ -223,13 +231,13 @@ public class VenusAutoRedFront extends LinearOpMode {
 
 
                 if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.35);
+                    eddie.setPosition(0.3);
 
                     blue = true;
                     sleep(2000);
                 }
                 else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.6);
+                    eddie.setPosition(0.65);
                     sleep(1000);
 
                     blue = false;
@@ -245,19 +253,16 @@ public class VenusAutoRedFront extends LinearOpMode {
                 clark.setPosition(0.8);
                 sleep(1000);
 
-                hamilton.setPosition(.4);
-                sleep(500);
                 //MOVE
 
-                telemetry.addData("encoderRightFront", motorBackRight.getCurrentPosition());
-
-                driveBackward(.5, 440);
+                driveBackward(.5,525);
                 sleep(1000);
 
-                pointTurnRight(.5, 220);
+                pointTurnRight(.5, 255);
                 sleep(1000);
 
-                driveForward(.5,10);
+                driveBackward(.5,100);
+                sleep(1000);
 
                 hamilton.setPosition(1);
                 sleep(1000);
@@ -265,15 +270,13 @@ public class VenusAutoRedFront extends LinearOpMode {
                 driveBackward(.5,100);
                 sleep(500);
 
+                driveBackward(.5,-120);
+                sleep(500);
+
                 hamilton.setPosition(.3);
                 sleep(500);
 
-                motorFrontLeft.setPower(0);
-                motorBackRight.setPower(0);
-                motorBackLeft.setPower(0);
-                motorFrontRight.setPower(0);
-                sleep(10000);
-//                DriveForward(.5,450);
+                stop();
 
                 break;
 
@@ -307,14 +310,11 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 //MOVE
 
-                driveBackward(.5, 480);
+                driveBackward(.5,525);
                 sleep(1000);
 
                 pointTurnRight(.5, 255);
                 sleep(1000);
-
-                strafeRight(.5,80);
-                sleep(500);
 
                 driveBackward(.5,100);
                 sleep(1000);
@@ -325,7 +325,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                 driveBackward(.5,100);
                 sleep(500);
 
-                driveBackward(.5,-50);
+                driveBackward(.5,-120);
                 sleep(500);
 
                 hamilton.setPosition(.3);
@@ -346,9 +346,6 @@ public class VenusAutoRedFront extends LinearOpMode {
         idle();
         telemetry.update();
     }
-
-//    String format(OpenGLMatrix transformationMatrix) {
-//        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
 
 
     public void driveForward ( double power, int distance){
@@ -401,7 +398,7 @@ public class VenusAutoRedFront extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(-power*1.4);
+        motorBackRight.setPower(-power*1.45);
         motorBackLeft.setPower(-power*0.65);
         motorFrontRight.setPower(-power);
 
