@@ -106,9 +106,7 @@ public void init() {
 
 
 public void loop() {
-    telemetry.addData("evangelino", evangelino.getCurrentPosition());
-    telemetry.addData("TopPos", topPos);
-    telemetry.addData("targetPos", targetPos);
+
     telemetry.update();
     topPos = evangelino.getCurrentPosition();
 
