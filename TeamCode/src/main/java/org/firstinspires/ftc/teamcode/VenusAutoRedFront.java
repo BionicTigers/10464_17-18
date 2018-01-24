@@ -82,10 +82,6 @@ public class VenusAutoRedFront extends LinearOpMode {
                 motorFrontRight.getCurrentPosition(),
                 motorBackLeft.getCurrentPosition());
 
-        telemetry.addData("FL Enc", motorFrontLeft.getCurrentPosition());
-        telemetry.addData("FR Enc", motorFrontRight.getCurrentPosition());
-        telemetry.addData("BL Enc", motorBackLeft.getCurrentPosition());
-        telemetry.addData("BR Enc", motorBackRight.getCurrentPosition());
         telemetry.update();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -99,17 +95,20 @@ public class VenusAutoRedFront extends LinearOpMode {
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessa
 
 
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+        telemetry.addData("VuMark", vuMark);
+
+
         //telemetr.addData(">", "Press Play to start");
         //telemetry.update();
         waitForStart();
 
 
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-
-        telemetry.addData("VuMark", vuMark);
-
         switch (vuMark) {
             case RIGHT: //Go to Right column
+                telemetry.addData("vumark","right");
+
                 clark.setPosition(0.18);
                 sleep(3000);
 
@@ -141,7 +140,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 driveBackward(.5,525);
                 sleep(1000);
-//
+
                 pointTurnRight(.5, 255);
                 sleep(1000);
 
@@ -167,6 +166,8 @@ public class VenusAutoRedFront extends LinearOpMode {
                 break;
 
             case LEFT: //Go to Left column
+
+                telemetry.addData("vumark","left");
                 clark.setPosition(0.18);
                 sleep(3000);
 
@@ -226,6 +227,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
 
             case CENTER: //Go to Center column
+                telemetry.addData("vumark","center");
                 clark.setPosition(0.18);
                 sleep(3000);
 
@@ -281,6 +283,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                 break;
 
             default: //ACTUAL START OF PROGRAM
+                telemetry.addData("vumark","you dumbass, its not reading");
                 clark.setPosition(0.18);
                 sleep(3000);
 

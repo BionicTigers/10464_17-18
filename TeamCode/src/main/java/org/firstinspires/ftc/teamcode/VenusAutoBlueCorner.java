@@ -84,10 +84,6 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                 motorFrontRight.getCurrentPosition(),
                 motorBackLeft.getCurrentPosition());
 
-        telemetry.addData("FL Enc", motorFrontLeft.getCurrentPosition());
-        telemetry.addData("FR Enc", motorFrontRight.getCurrentPosition());
-        telemetry.addData("BL Enc", motorBackLeft.getCurrentPosition());
-        telemetry.addData("BR Enc", motorBackRight.getCurrentPosition());
         telemetry.update();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
