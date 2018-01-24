@@ -107,7 +107,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT: //Go to Right column
-                telemetry.addData("vumark","right");
+                telemetry.addData("vumark","RIGHT");
 
                 clark.setPosition(0.18);
                 sleep(3000);
@@ -126,7 +126,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                     blue = false;
                 }
                 else {
-                    telemetry.addData("eddie", "did not work");
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 
@@ -167,7 +167,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
             case LEFT: //Go to Left column
 
-                telemetry.addData("vumark","left");
+                telemetry.addData("vumark","LEFT");
                 clark.setPosition(0.18);
                 sleep(3000);
 
@@ -185,7 +185,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                     blue = false;
                 }
                 else {
-                    telemetry.addData("eddie", "did not work");
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 
@@ -227,7 +227,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
 
             case CENTER: //Go to Center column
-                telemetry.addData("vumark","center");
+                telemetry.addData("vumark","CENTER");
                 clark.setPosition(0.18);
                 sleep(3000);
 
@@ -245,7 +245,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                     blue = false;
                 }
                 else {
-                    telemetry.addData("eddie", "did not work");
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 
@@ -283,7 +283,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                 break;
 
             default: //ACTUAL START OF PROGRAM
-                telemetry.addData("vumark","you dumbass, its not reading");
+                telemetry.addData("vumark","NOT READ");
                 clark.setPosition(0.18);
                 sleep(3000);
 
@@ -301,7 +301,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                     blue = false;
                 }
                 else {
-                    telemetry.addData("eddie", "did not work");
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 
@@ -516,8 +516,8 @@ public class VenusAutoRedFront extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(-power);
+        motorBackRight.setPower(-power);
+        motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {

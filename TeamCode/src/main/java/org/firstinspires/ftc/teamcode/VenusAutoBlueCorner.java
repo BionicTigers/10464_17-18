@@ -301,7 +301,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
 
                     blue = false;
                 } else {
-                    telemetry.addData("eddie", "did not work");
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 

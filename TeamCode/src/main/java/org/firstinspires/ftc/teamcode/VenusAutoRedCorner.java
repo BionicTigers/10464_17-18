@@ -125,7 +125,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                     blue = false;
                 }
                 else {
-                    telemetry.addData("eddie", "did not work");
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 
@@ -182,7 +182,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                     blue = false;
                 }
                 else {
-                    telemetry.addData("eddie", "did not work");
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 
@@ -240,7 +240,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                     blue = false;
                 }
                 else {
-                    telemetry.addData("eddie", "did not work");
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 
@@ -297,7 +297,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
                     blue = false;
                 } else {
-                    telemetry.addData("eddie", "did not work");
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 
