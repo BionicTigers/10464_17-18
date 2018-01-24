@@ -108,7 +108,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT: //Go to Right column
-                clark.setPosition(0.15);
+                clark.setPosition(0.13);
                 sleep(3000);
 
 
