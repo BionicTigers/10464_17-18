@@ -133,7 +133,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                 eddie.setPosition(0.55);
                 sleep(1000);
 
-                clark.setPosition(0.8);
+                clark.setPosition(0.7);
                 sleep(1000);
 
                 //MOVE

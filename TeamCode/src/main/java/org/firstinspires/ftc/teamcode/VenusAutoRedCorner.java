@@ -108,7 +108,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT: //Go to Right column
-                clark.setPosition(0.13);
+                clark.setPosition(0.2);
                 sleep(3000);
 
 
@@ -140,7 +140,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 DriveBackward(.5, 345);
                 sleep(1000);
 
-                StrafeRight(.7, 200);
+                StrafeRight(.7, 100);
                 sleep(1000);
 
                 //PointTurnRight(.5,80);
@@ -165,7 +165,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
                 break;
             case LEFT: //Go to Left column
-                clark.setPosition(0.15);
+                clark.setPosition(0.2);
                 sleep(3000);
 
 
@@ -197,7 +197,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 DriveBackward(.5, 345);
                 sleep(1000);
 
-                StrafeRight(.7, 295);
+                StrafeRight(.7, 330);
                 sleep(1000);
 
                 //PointTurnRight(.5,80);
@@ -223,7 +223,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
                 break;
             case CENTER: //Go to Center column
-                clark.setPosition(0.15);
+                clark.setPosition(0.2);
                 sleep(3000);
 
 
@@ -256,7 +256,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 sleep(1000);
 
 
-                StrafeRight(.7, 255);
+                StrafeRight(.7, 270);
                 sleep(1000);
 
                 //PointTurnRight(.5,80);
@@ -282,7 +282,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
             default: //ACTUAL START OF PROGRAM
                 //JEWELS//
-                clark.setPosition(0.12);
+                clark.setPosition(0.1);
                 sleep(3000);
 
 
@@ -304,7 +304,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 eddie.setPosition(0.55);
                 sleep(1000);
 
-                clark.setPosition(0.8);
+                clark.setPosition(0.7);
                 sleep(1000);
 
                 //MOVE
@@ -312,7 +312,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 DriveBackward(.5, 345);
                 sleep(1000);
 
-                StrafeRight(.7, 255);
+                StrafeRight(.7, 270);
                 sleep(1000);
 
                 DriveBackward(.5, 70);
