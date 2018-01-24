@@ -141,7 +141,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 driveBackward(.5,525);
                 sleep(1000);
-
+//
                 pointTurnRight(.5, 255);
                 sleep(1000);
 
