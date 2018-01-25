@@ -241,13 +241,7 @@ public void loop() {
     }
 
 // CAR WASHER //
-    if (gamepad2.right_bumper) {
-        billiam.setPower(.75);
-    } else if (gamepad2.right_trigger > .7) {
-        billiam.setPower(-.75);
-    } else {
-        billiam.setPower(0.00);
-    }
+    billiam.setPower(-gamepad2.left_stick_y);
 
 // GLYPH FLIPPER //
     if (gamepad2.left_trigger > .7) {
