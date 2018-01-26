@@ -260,7 +260,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                 PointTurnRight(0.5,440);
                 sleep(1000);
 
-                StrafeLeft(.7, 245);
+                StrafeLeft(.7, 20);
                 sleep(1000);
 
                 //PointTurnRight(.5,80);
@@ -316,10 +316,10 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                 DriveForward(.5, 345);
                 sleep(1000);
 
-                PointTurnRight(0.5,440);
+                StrafeRight(.7, 245);
                 sleep(1000);
 
-                StrafeLeft(.7, 245);
+                PointTurnRight(0.5,325);
                 sleep(1000);
 
                 DriveBackward(.5, 70);
@@ -514,6 +514,8 @@ public class VenusAutoBlueCorner extends LinearOpMode {
 
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
+        motorBackLeft.setTargetPosition(distance);
+        motorFrontLeft.setTargetPosition(distance);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -548,14 +550,15 @@ public class VenusAutoBlueCorner extends LinearOpMode {
 
 
     public void StrafeRight(double power, int distance) {
-
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
+        motorFrontLeft.setTargetPosition(distance);
+        motorBackLeft.setTargetPosition(distance);
 
-        motorFrontLeft.setPower(power);
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(-power);
-        motorFrontRight.setPower(-power);
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(-power);
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(power);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -581,6 +584,8 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleep(500);
+
+
 
     }
 
