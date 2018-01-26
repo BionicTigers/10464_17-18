@@ -47,18 +47,16 @@ public class VenusOriented extends OpMode {
     //public Servo brandy = null; // Elbow
     //public Servo franny = null; // Left Finger
     //public Servo mobert = null; // Right Finger
-// IMU \\
+//IMU\\
     BNO055IMU imu;
     public Orientation angles;
     public Acceleration gravity;
 // VARIABLES \\
-    public int calibToggle;
     public double elbowPos;
-    private int targetPos;
-    private double topPos;
+    public int calibToggle;
 
 
-public void init() {
+    public void init() {
 
 // DRIVETRAIN \\
     motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -86,7 +84,7 @@ public void init() {
     //brandy = hardwareMap.servo.get("brandy");
     //franny = hardwareMap.servo.get("franny");
     //mobert = hardwareMap.servo.get("mobert");
-// IMU \\
+//IMU\\
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
     parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
     parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -97,30 +95,26 @@ public void init() {
     imu = hardwareMap.get(BNO055IMU.class, "imu");
     imu.initialize(parameters);
 // VARIABLES \\
-    calibToggle = 0;
     motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
     motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
     elbowPos = 0.00;
-    targetPos = 0;
-    topPos = 0; }
+    calibToggle = 0; }
 
 
 public void loop() {
-
     telemetry.update();
-    topPos = evangelino.getCurrentPosition();
 
 
     ///////////////
     // GAMEPAD 1 //
     ///////////////
 
-    if (gamepad1.a) { // Orientation calibration
+    if (gamepad1.y) { //orientation calibration
         // Get the calibration data
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // See the calibration sample opmode
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
@@ -131,15 +125,18 @@ public void loop() {
         String filename = "BNO055IMUCalibration.json";
         File file = AppUtil.getInstance().getSettingsFile(filename);
         ReadWriteFile.writeFile(file, calibrationData.serialize());
-        telemetry.log().add("saved to '%s'", filename); }
+        telemetry.log().add("saved to '%s'", filename);
+    }
 
-    if (gamepad1.x) { // Toggle on
-        calibToggle = 1; }
+    if (gamepad1.x) { //toggle on
+        calibToggle = 1;
+    }
 
-    if (gamepad1.b) { // Toggle off
-        calibToggle = 0; }
+    if (gamepad1.b) { //toggle off
+        calibToggle = 0;
+    }
 
-    if (calibToggle == 1) { // When toggled we are oriented with this math
+    if (calibToggle == 1) { //when toggled we are oriented with this math
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
@@ -151,12 +148,12 @@ public void loop() {
         final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) - rightX;
         final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX;
 
-        motorFrontLeft.setPower(v5);
-        motorFrontRight.setPower(v6);
-        motorBackLeft.setPower(v7);
-        motorBackRight.setPower(v8);
+        motorFrontLeft.setPower(v5);//1
+        motorFrontRight.setPower(v6);//2
+        motorBackLeft.setPower(v7);//3
+        motorBackRight.setPower(v8);//4
 
-        // Some telemetry for testing purposes
+        //some telemetry for testing purposes
         telemetry.addData("robotAngle", robotAngle);
         telemetry.addData("P", P);
         telemetry.addData("rightX", rightX);
@@ -164,7 +161,7 @@ public void loop() {
         telemetry.addData("v6", v6);
         telemetry.addData("angles.firstAngle", angles.firstAngle);
 
-    } else if (calibToggle == 0) { // Regular drive
+    } else if (calibToggle == 0) { //regular drive
         double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
         double rightX = -gamepad1.right_stick_x;
@@ -179,7 +176,8 @@ public void loop() {
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);
-        motorBackLeft.setPower(v4); }
+        motorBackLeft.setPower(v4);
+    }
 
 // RELIC //
 //    if (gamepad1.dpad_up) { // Extension
@@ -217,9 +215,9 @@ public void loop() {
 //            franny.setPosition(1); }
 
 
-    ///////////////
-    // GAMEPAD 2 //
-    ///////////////
+        ///////////////
+        // GAMEPAD 2 //
+        ///////////////
 
 // FOUR BAR WITH ENCODERS //
     if (gamepad2.a) {
@@ -232,21 +230,18 @@ public void loop() {
 
     } else {
         evangelino.setPower(0);
-        wilbert.setPower(0); }
+        wilbert.setPower(0);
+    }
 
 // GATE //
     if (gamepad2.x) {
-        donneet.setPosition(1); }
-    else if (gamepad2.b) {
-        donneet.setPosition(.4); }
+        donneet.setPosition(1);
+    } else if (gamepad2.b) {
+        donneet.setPosition(.5);
+    }
 
 // CAR WASHER //
-    if (gamepad2.right_bumper) {
-        billiam.setPower(1);
-    } else if (gamepad2.right_trigger > .7) {
-        billiam.setPower(-1);
-    } else {
-        billiam.setPower(0.00); }
+    billiam.setPower(-gamepad2.left_stick_y);
 
 // GLYPH FLIPPER //
     if (gamepad2.left_trigger > .7) {
@@ -256,7 +251,8 @@ public void loop() {
     } else if (gamepad2.dpad_up) {
         hamilton.setPosition(0.4); }
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     private String composeTelemetry() {

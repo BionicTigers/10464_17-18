@@ -14,8 +14,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.sql.Driver;
 
-@Autonomous(name="Red Corner ", group ="Red")
+
+@Autonomous(name="VenusAutoRedCorner ", group ="Vuforia")
 
 public class VenusAutoRedCorner extends LinearOpMode {
 
@@ -27,7 +29,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
     public DcMotor motorBackLeft;
     public DcMotor wilbert; //Four Bar Right
     public DcMotor evangelino; //Four Bar Left
-    //public Servo hamilton; //Glyph Flipper
+    public Servo hamilton; //Glyph Flipper
     //public Servo burr; //Glyph Flipper 2
     public ElapsedTime runtime = new ElapsedTime();
     int i;
@@ -54,7 +56,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        //hamilton = hardwareMap.servo.get("hamilton");
+        hamilton = hardwareMap.servo.get("hamilton");
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -94,9 +96,9 @@ public class VenusAutoRedCorner extends LinearOpMode {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necess
 
-//
-        //telemetr.addData(">", "Press Play to start");
-        //telemetry.update();
+
+        telemetry.addData(">", "Press Play to start");
+        telemetry.update();
         waitForStart();
 
 
@@ -106,204 +108,24 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
         switch (vuMark) {
             case RIGHT: //Go to Right column
-//                clark.setPosition(0.18);
-//                sleep(3000);
-//
-//
-//                if (leo.blue() < roger.blue()) {
-//                    eddie.setPosition(0.35);
-//
-//                    blue = true;
-//                    sleep(1000);
-//                }
-//                else if (leo.blue() > roger.blue()) {
-//                    eddie.setPosition(0.55);
-//                    sleep(1000);
-//
-//                    blue = false;
-//                }
-//                else {
-//                    telemetry.addData("eddie", "did not work");
-//                    sleep(250);
-//                }
-//
-//                eddie.setPosition(0.55);
-//                sleep(1000);
-//
-//                clark.setPosition(0.8);
-//                sleep(1000);
-//
-//                //MOVE
-//
-//                DriveBackward(.5, 345);
-//                sleep(1000);
-//
-//                DriveForward(.5,25);
-//                sleep(2000);
-//
-//                StrafeRight(.7, 190);
-//                sleep(1000);
-//
-//                //PointTurnRight(.5,80);
-//                DriveBackward(.5,75);
-//                sleep(2000);
-//
-//                hamilton.setPosition(1);
-//                //burr.setPosition(1);
-//                sleep(500);
-//
-//                DriveForward(.5,30);
-//                sleep(1000);
-//
-//                hamilton.setPosition(.3);
-//                //burr.setPosition(0.3);
-//
-//                motorFrontLeft.setPower(0);
-//                motorBackRight.setPower(0);
-//                motorBackLeft.setPower(0);
-//                motorFrontRight.setPower(0);
-//                sleep(1000);
-//
-                break;
-            case LEFT: //Go to Left column
-//                clark.setPosition(0.18);
-//                sleep(3000);
-//
-//
-//                if (leo.blue() < roger.blue()) {
-//                    eddie.setPosition(0.4);
-//
-//                    blue = true;
-//                    sleep(1000);
-//                }
-//                else if (leo.blue() > roger.blue()) {
-//                    eddie.setPosition(0.6);
-//                    sleep(1000);
-//
-//                    blue = false;
-//                }
-//                else {
-//                    telemetry.addData("eddie", "did not work");
-//                    sleep(250);
-//                }
-//
-//                eddie.setPosition(0.55);
-//                sleep(1000);
-//
-//                clark.setPosition(0.8);
-//                sleep(1000);
-//
-//                //MOVE
-//
-//                DriveBackward(.5, 345);
-//                sleep(1000);
-//
-//                DriveForward(.5,25);
-//                sleep(2000);
-//
-//                StrafeRight(.7, 240);
-//                sleep(1000);
-//
-//                //PointTurnRight(.5,80);
-//                DriveBackward(.5,75);
-//                sleep(2000);
-//
-//                hamilton.setPosition(1);
-//                //burr.setPosition(1);
-//                sleep(500);
-//
-//                DriveForward(.5,30);
-//                sleep(1000);
-//
-//                hamilton.setPosition(.3);
-//                //burr.setPosition(0.3);
-//
-//                motorFrontLeft.setPower(0);
-//                motorBackRight.setPower(0);
-//                motorBackLeft.setPower(0);
-//                motorFrontRight.setPower(0);
-//                sleep(1000);
-//
-
-                break;
-            case CENTER: //Go to Center column
-//                clark.setPosition(0.18);
-//                sleep(3000);
-//
-//
-//                if (leo.blue() < roger.blue()) {
-//                    eddie.setPosition(0.4);
-//
-//                    blue = true;
-//                    sleep(1000);
-//                }
-//                else if (leo.blue() > roger.blue()) {
-//                    eddie.setPosition(0.6);
-//                    sleep(1000);
-//
-//                    blue = false;
-//                }
-//                else {
-//                    telemetry.addData("eddie", "did not work");
-//                    sleep(250);
-//                }
-//
-//                eddie.setPosition(0.55);
-//                sleep(1000);
-//
-//                clark.setPosition(0.8);
-//                sleep(1000);
-//
-//                //MOVE
-//
-//                DriveBackward(.5, 345);
-//                sleep(1000);
-//
-//                DriveForward(.5,25);
-//                sleep(2000);
-//
-//                StrafeRight(.7, 220);
-//                sleep(1000);
-//
-//                //PointTurnRight(.5,80);
-//                DriveBackward(.5,75);
-//                sleep(2000);
-//
-//                hamilton.setPosition(1);
-//                //burr.setPosition(1);
-//                sleep(500);
-//
-//                DriveForward(.5,30);
-//                sleep(1000);
-//
-//                hamilton.setPosition(.3);
-//                //burr.setPosition(0.3);
-//                motorFrontLeft.setPower(0);
-//                motorBackRight.setPower(0);
-//                motorBackLeft.setPower(0);
-//                motorFrontRight.setPower(0);
-//                sleep(1000);
-//
-                break;
-
-            default: //ACTUAL START OF PROGRAM
-                //JEWELS//
-                clark.setPosition(0.18);
+                clark.setPosition(0.2);
                 sleep(3000);
 
 
                 if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.3);
+                    eddie.setPosition(0.45);
 
                     blue = true;
                     sleep(1000);
-                } else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.7);
+                }
+                else if (leo.blue() > roger.blue()) {
+                    eddie.setPosition(0.6);
                     sleep(1000);
 
                     blue = false;
-                } else {
-                    telemetry.addData("eddie", "did not work");
+                }
+                else {
+                    telemetry.addData("eddie", "NOT CORRECT");
                     sleep(250);
                 }
 
@@ -315,24 +137,194 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
                 //MOVE
 
-                driveBackward(.5, 345);
+                DriveBackward(.5, 345);
                 sleep(1000);
 
-                strafeRight(.7, 250);
+                StrafeRight(.7, 100);
                 sleep(1000);
 
                 //PointTurnRight(.5,80);
-                driveBackward(.5, 75);
-                sleep(1000);
+                DriveBackward(.5,75);
+                sleep(2000);
 
-                //hamilton.setPosition(1);
+                hamilton.setPosition(1);
                 //burr.setPosition(1);
                 sleep(500);
 
-                driveForward(.5, 10);
+                DriveForward(.5,30);
                 sleep(1000);
 
-                //hamilton.setPosition(.3);
+                hamilton.setPosition(.3);
+                //burr.setPosition(0.3);
+
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorBackLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                sleep(1000);
+
+                break;
+            case LEFT: //Go to Left column
+                clark.setPosition(0.2);
+                sleep(3000);
+
+
+                if (leo.blue() < roger.blue()) {
+                    eddie.setPosition(0.3);
+
+                    blue = true;
+                    sleep(1000);
+                }
+                else if (leo.blue() > roger.blue()) {
+                    eddie.setPosition(0.6);
+                    sleep(1000);
+
+                    blue = false;
+                }
+                else {
+                    telemetry.addData("eddie", "NOT CORRECT");
+                    sleep(250);
+                }
+
+                eddie.setPosition(0.55);
+                sleep(1000);
+
+                clark.setPosition(0.8);
+                sleep(1000);
+
+                //MOVE
+
+                DriveBackward(.5, 345);
+                sleep(1000);
+
+                StrafeRight(.7, 330);
+                sleep(1000);
+
+                //PointTurnRight(.5,80);
+                DriveBackward(.5,75);
+                sleep(2000);
+
+                hamilton.setPosition(1);
+                //burr.setPosition(1);
+                sleep(500);
+
+                DriveForward(.5,30);
+                sleep(1000);
+
+                hamilton.setPosition(.3);
+                //burr.setPosition(0.3);
+
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorBackLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                sleep(1000);
+
+
+                break;
+            case CENTER: //Go to Center column
+                clark.setPosition(0.2);
+                sleep(3000);
+
+
+                if (leo.blue() < roger.blue()) {
+                    eddie.setPosition(0.45);
+
+                    blue = true;
+                    sleep(1000);
+                }
+                else if (leo.blue() > roger.blue()) {
+                    eddie.setPosition(0.6);
+                    sleep(1000);
+
+                    blue = false;
+                }
+                else {
+                    telemetry.addData("eddie", "NOT CORRECT");
+                    sleep(250);
+                }
+
+                eddie.setPosition(0.55);
+                sleep(1000);
+
+                clark.setPosition(0.8);
+                sleep(1000);
+
+                //MOVE
+
+                DriveBackward(.5, 345);
+                sleep(1000);
+
+
+                StrafeRight(.7, 270);
+                sleep(1000);
+
+                //PointTurnRight(.5,80);
+                DriveBackward(.5,70);
+                sleep(2000);
+
+                hamilton.setPosition(1);
+                //burr.setPosition(1);
+                sleep(500);
+
+                DriveForward(.5,28);
+                sleep(1000);
+
+                hamilton.setPosition(.3);
+                //burr.setPosition(0.3);
+                motorFrontLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorBackLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                sleep(1000);
+
+                break;
+
+            default: //ACTUAL START OF PROGRAM
+                //JEWELS//
+                clark.setPosition(0.1);
+                sleep(3000);
+
+
+                if (leo.blue() < roger.blue()) {
+                    eddie.setPosition(0.4);
+
+                    blue = true;
+                    sleep(1000);
+                } else if (leo.blue() > roger.blue()) {
+                    eddie.setPosition(0.6);
+                    sleep(1000);
+
+                    blue = false;
+                } else {
+                    telemetry.addData("eddie", "NOT CORRECT");
+                    sleep(250);
+                }
+
+                eddie.setPosition(0.55);
+                sleep(1000);
+
+                clark.setPosition(0.7);
+                sleep(1000);
+
+                //MOVE
+
+                DriveBackward(.5, 345);
+                sleep(1000);
+
+                StrafeRight(.7, 270);
+                sleep(1000);
+
+                DriveBackward(.5, 70);
+                sleep(2000);
+
+                hamilton.setPosition(1);
+                sleep(500);
+
+                DriveForward(.5, 28);
+                sleep(500);
+
+                hamilton.setPosition(.3);
                 //burr.setPosition(0.3);
                 sleep(1000);
 
@@ -341,6 +333,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 motorBackLeft.setPower(0);
                 motorFrontRight.setPower(0);
                 sleep(10000);
+
                 break;
         }
 
@@ -359,14 +352,16 @@ public class VenusAutoRedCorner extends LinearOpMode {
 //        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
 
 
-    public void driveForward ( double power, int distance){
+    public void DriveForward ( double power, int distance){
 
-        motorBackRight.setTargetPosition(-distance);
-        motorFrontRight.setTargetPosition(-distance);
+        motorBackRight.setTargetPosition(distance);
+        motorFrontRight.setTargetPosition(distance);
+        motorBackLeft.setTargetPosition(distance);
+        motorFrontLeft.setTargetPosition(distance);
 
-        motorFrontLeft.setPower(-power);
+        motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
-        motorBackLeft.setPower(-power);
+        motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -385,8 +380,8 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        sleep(500);
 
+        sleep(500);
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -394,7 +389,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
         sleep(500);
     }
 
-    public void driveBackward(double power, int distance) {
+    public void DriveBackward(double power, int distance) {
 
         motorBackRight.setTargetPosition(-distance);
         motorFrontRight.setTargetPosition(-distance);
@@ -407,8 +402,8 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(-power);
-        motorBackLeft.setPower(-power*0.85);
+        motorBackRight.setPower(-power*1.45);
+        motorBackLeft.setPower(-power*0.65);
         motorFrontRight.setPower(-power);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
@@ -434,8 +429,10 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
     public void pointTurnRight(double power, int distance) {
 
-        motorBackRight.setTargetPosition(distance);
-        motorFrontRight.setTargetPosition(distance);
+        motorBackRight.setTargetPosition(-distance);
+        motorFrontRight.setTargetPosition(-distance);
+        motorFrontLeft.setTargetPosition(distance);
+        motorBackLeft.setTargetPosition(distance);
 
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(-power);
@@ -472,6 +469,8 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
+        motorFrontLeft.setTargetPosition(distance);
+        motorBackLeft.setTargetPosition(distance);
 
         motorFrontLeft.setPower(-power);
         motorBackRight.setPower(power);
@@ -505,10 +504,12 @@ public class VenusAutoRedCorner extends LinearOpMode {
     }
 
 
-    public void strafeLeft(double power, int distance) {
+    public void StrafeLeft(double power, int distance) {
 
-        motorBackRight.setTargetPosition(-distance);
+        motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
+        motorFrontLeft.setTargetPosition(distance);
+        motorBackLeft.setTargetPosition(distance);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -542,7 +543,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
     }
 
 
-    public void strafeRight(double power, int distance) {
+    public void StrafeRight(double power, int distance) {
 
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
@@ -579,4 +580,8 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
     }
 
+
 }
+
+
+
