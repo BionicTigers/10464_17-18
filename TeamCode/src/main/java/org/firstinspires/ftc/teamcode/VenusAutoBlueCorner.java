@@ -225,12 +225,12 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                     sleep(3000);
 
 
-                    if (leo.blue() > roger.blue()) {
+                    if (leo.blue() < roger.blue()) {
                         eddie.setPosition(0.65);
 
                         blue = true;
                         sleep(1000);
-                    } else if (leo.blue() < roger.blue()) {
+                    } else if (leo.blue() > roger.blue()) {
                         eddie.setPosition(0.35);
                         sleep(1000);
 
@@ -284,12 +284,12 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                     sleep(3000);
 
 
-                    if (leo.blue() > roger.blue()) {
+                    if (leo.blue() < roger.blue()) {
                         eddie.setPosition(0.65);
 
                         blue = true;
                         sleep(1000);
-                    } else if (leo.blue() < roger.blue()) {
+                    } else if (leo.blue() > roger.blue()) {
                         eddie.setPosition(0.35);
                         sleep(1000);
 
