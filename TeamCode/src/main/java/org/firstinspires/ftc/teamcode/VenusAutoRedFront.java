@@ -9,10 +9,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+import static com.sun.tools.javac.util.Constants.format;
 
 
 @Autonomous(name="Red Front", group ="Red")
@@ -44,7 +52,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
         eddie = hardwareMap.servo.get("eddie"); //swing servo
         clark = hardwareMap.servo.get("clark"); //drop down servo
-        roger = hardwareMap.colorSensor.get( "roger"); //right color sensor
+        roger = hardwareMap.colorSensor.get("roger"); //right color sensor
         leo = hardwareMap.colorSensor.get("leo"); //left color sensor
         blue = false;
         gameState = 0;
@@ -93,262 +101,272 @@ public class VenusAutoRedFront extends LinearOpMode {
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessa
-
-
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-        telemetry.addData("VuMark", vuMark);
-
-
-        //telemetr.addData(">", "Press Play to start");
-        //telemetry.update();
         waitForStart();
-
-
-        switch (vuMark) {
-            case RIGHT: //Go to Right column
-                telemetry.addData("vumark","right");
-
-                clark.setPosition(0.18);
-                sleep(3000);
-
-
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.3);
-
-                    blue = true;
-                    sleep(2000);
-                }
-                else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.65);
-                    sleep(1000);
-
-                    blue = false;
-                }
-                else {
-                    telemetry.addData("eddie", "did not work");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                driveBackward(.5,525);
-                sleep(1000);
-
-                pointTurnRight(.5, 255);
-                sleep(1000);
-
-                strafeRight(.5,90);
-
-                driveBackward(.5,100);
-                sleep(1000);
-
-                hamilton.setPosition(1);
-                sleep(1000);
-
-                driveBackward(.5,100);
-                sleep(500);
-
-                driveBackward(.5,-120);
-                sleep(500);
-
-                hamilton.setPosition(.3);
-                sleep(500);
-
-                stop();
-
-                break;
-
-            case LEFT: //Go to Left column
-
-                telemetry.addData("vumark","left");
-                clark.setPosition(0.18);
-                sleep(3000);
-
-
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.3);
-
-                    blue = true;
-                    sleep(2000);
-                }
-                else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.65);
-                    sleep(1000);
-
-                    blue = false;
-                }
-                else {
-                    telemetry.addData("eddie", "did not work");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                driveBackward(.5,525);
-                sleep(1000);
-
-                pointTurnRight(.5, 255);
-                sleep(1000);
-
-                strafeRight(.5,-90);
-                sleep(500);
-
-                driveBackward(.5,100);
-                sleep(1000);
-
-                hamilton.setPosition(1);
-                sleep(1000);
-
-                driveBackward(.5,100);
-                sleep(500);
-
-                driveBackward(.5,-120);
-                sleep(500);
-
-                hamilton.setPosition(.3);
-                sleep(500);
-
-                stop();
-
-                break;
-
-
-            case CENTER: //Go to Center column
-                telemetry.addData("vumark","center");
-                clark.setPosition(0.18);
-                sleep(3000);
-
-
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.3);
-
-                    blue = true;
-                    sleep(2000);
-                }
-                else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.65);
-                    sleep(1000);
-
-                    blue = false;
-                }
-                else {
-                    telemetry.addData("eddie", "did not work");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                driveBackward(.5,525);
-                sleep(1000);
-
-                pointTurnRight(.5, 255);
-                sleep(1000);
-
-                driveBackward(.5,100);
-                sleep(1000);
-
-                hamilton.setPosition(1);
-                sleep(1000);
-
-                driveBackward(.5,100);
-                sleep(500);
-
-                driveBackward(.5,-120);
-                sleep(500);
-
-                hamilton.setPosition(.3);
-                sleep(500);
-
-                stop();
-
-                break;
-
-            default: //ACTUAL START OF PROGRAM
-                telemetry.addData("vumark","you dumbass, its not reading");
-                clark.setPosition(0.18);
-                sleep(3000);
-
-
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.3);
-
-                    blue = true;
-                    sleep(2000);
-                }
-                else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.65);
-                    sleep(1000);
-
-                    blue = false;
-                }
-                else {
-                    telemetry.addData("eddie", "did not work");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                driveBackward(.5,525);
-                sleep(1000);
-
-                pointTurnRight(.5, 255);
-                sleep(1000);
-
-                driveBackward(.5,100);
-                sleep(1000);
-
-                hamilton.setPosition(1);
-                sleep(1000);
-
-                driveBackward(.5,100);
-                sleep(500);
-
-                driveBackward(.5,-120);
-                sleep(500);
-
-                hamilton.setPosition(.3);
-                sleep(500);
-
-                stop();
-
-                break;
-
-        }
-
         relicTrackables.activate();
 
-        while (opModeIsActive()) {
+
+            telemetry.update();
 
 
+            switch (vuMark) {
+                case RIGHT: //Go to Right column
+                    telemetry.addData("vumark", "right");
+
+                    clark.setPosition(0.25);
+                    sleep(3000);
+
+
+                    if (leo.blue() < roger.blue()) {
+                        eddie.setPosition(0.3); //flick right
+
+                        blue = true;
+                        sleep(2000);
+                    } else if (leo.blue() > roger.blue()) {
+                        eddie.setPosition(0.65);
+                        sleep(1000);
+
+                        blue = false;
+                    } else {
+                        telemetry.addData("eddie", "did not work");
+                        sleep(250);
+                    }
+
+                    eddie.setPosition(0.55);
+                    sleep(1000);
+
+                    clark.setPosition(0.8);
+                    sleep(1000);
+
+                    //MOVE
+
+                    driveBackward(.5, 500);
+                    sleep(1000);
+
+                    pointTurnRight(.5, 260);
+                    sleep(1000);
+
+                    strafeRight(.5, 90);
+
+                    driveBackward(.5, 100);
+                    sleep(1000);
+
+                    hamilton.setPosition(1);
+                    sleep(1000);
+
+                    driveBackward(.5, 100);
+                    sleep(500);
+
+                    driveBackward(.5, -120);
+                    sleep(500);
+
+                    hamilton.setPosition(.3);
+                    sleep(500);
+
+                    stop();
+
+                    break;
+
+                case LEFT: //Go to Left column
+
+                    telemetry.addData("vumark", "you dumbass, its not reading");
+                    clark.setPosition(0.25);
+                    sleep(3000);
+
+
+                    if (leo.blue() < roger.blue()) {
+                        eddie.setPosition(0.3);
+
+                        blue = true;
+                        sleep(2000);
+                    } else if (leo.blue() > roger.blue()) {
+                        eddie.setPosition(0.65);
+                        sleep(1000);
+
+                        blue = false;
+                    } else {
+                        telemetry.addData("eddie", "did not work");
+                        sleep(250);
+                    }
+
+                    eddie.setPosition(0.55);
+                    sleep(1000);
+
+                    clark.setPosition(0.8);
+                    sleep(1000);
+
+                    //MOVE
+
+                    driveBackward(.5, 580);
+                    sleep(1000);
+
+                    pointTurnRight(.5, 260);
+                    sleep(1000);
+
+                    driveBackward(.5, 100);
+                    sleep(1000);
+
+                    hamilton.setPosition(1);
+                    sleep(1000);
+
+                    driveBackward(.5, 100);
+                    sleep(500);
+
+                    driveBackward(.5, -120);
+                    sleep(500);
+
+                    hamilton.setPosition(.3);
+                    sleep(500);
+
+                    stop();
+
+                    break;
+
+                case CENTER: //Go to Center column
+                    telemetry.addData("vumark", "you dumbass, its not reading");
+                    clark.setPosition(0.25);
+                    sleep(3000);
+
+
+                    if (leo.blue() < roger.blue()) {
+                        eddie.setPosition(0.3);
+
+                        blue = true;
+                        sleep(2000);
+                    } else if (leo.blue() > roger.blue()) {
+                        eddie.setPosition(0.65);
+                        sleep(1000);
+
+                        blue = false;
+                    } else {
+                        telemetry.addData("eddie", "did not work");
+                        sleep(250);
+                    }
+
+                    eddie.setPosition(0.55);
+                    sleep(1000);
+
+                    clark.setPosition(0.8);
+                    sleep(1000);
+
+                    //MOVE
+
+                    driveBackward(.5, 540);
+                    sleep(1000);
+
+                    pointTurnRight(.5, 260);
+                    sleep(1000);
+
+                    driveBackward(.5, 100);
+                    sleep(1000);
+
+                    hamilton.setPosition(1);
+                    sleep(1000);
+
+                    driveBackward(.5, 100);
+                    sleep(500);
+
+                    driveBackward(.5, -120);
+                    sleep(500);
+
+                    hamilton.setPosition(.3);
+                    sleep(500);
+
+                    stop();
+
+                    break;
+
+                default: //ACTUAL START OF PROGRAM
+                    telemetry.addData("vumark", "you dumbass, its not reading");
+                    clark.setPosition(0.22);
+                    sleep(3000);
+
+
+                    if (leo.blue() < roger.blue()) {
+                        eddie.setPosition(0.3);
+
+                        blue = true;
+                        sleep(2000);
+                    } else if (leo.blue() > roger.blue()) {
+                        eddie.setPosition(0.65);
+                        sleep(1000);
+
+                        blue = false;
+                    } else {
+                        telemetry.addData("eddie", "did not work");
+                        sleep(250);
+                    }
+
+                    eddie.setPosition(0.55);
+                    sleep(1000);
+
+                    clark.setPosition(0.8);
+                    sleep(1000);
+
+                    //MOVE
+
+                    driveBackward(.5, 540);
+                    sleep(1000);
+
+                    pointTurnRight(.5, 268);
+                    sleep(1000);
+
+                    driveBackward(.5, 80);
+                    sleep(1000);
+
+                    hamilton.setPosition(1);
+                    sleep(1000);
+
+                    driveBackward(.5, -75);
+
+                    driveBackward(.5, 100);
+                    sleep(500);
+
+                    driveBackward(.5, -110);
+                    sleep(500);
+
+                    hamilton.setPosition(.3);
+                    sleep(500);
+
+                    stop();
+
+                    break;
+
+            }
+
+            relicTrackables.activate();
+
+            while (opModeIsActive()) {
+                if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                    telemetry.addData("VuMark",
+                            "%s visible", vuMark);
+                    OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+                    telemetry.addData("Pose", format(pose));
+                    if (pose != null) {
+                        VectorF trans = pose.getTranslation();
+                        Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
+                        // Extract the X, Y, and Z components of the offset of the target relative to the robot
+                        double tX = trans.get(0);
+                        double tY = trans.get(1);
+                        double tZ = trans.get(2);
+
+                        // Extract the rotational components of the target relative to the robot
+                        double rX = rot.firstAngle;
+                        double rY = rot.secondAngle;
+                        double rZ = rot.thirdAngle;
+                    }
+                } else {
+                    telemetry.addData("VuMark", "not visible");
+                }
+
+
+
+            }
+            idle();
+            telemetry.update();
         }
-        idle();
-        telemetry.update();
-    }
 
 
     public void driveForward ( double power, int distance){
