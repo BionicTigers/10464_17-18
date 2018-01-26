@@ -109,7 +109,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
             telemetry.update();
 
-
+//
             switch (vuMark) {
                 case RIGHT: //Go to Right column
                     telemetry.addData("vumark", "right");
