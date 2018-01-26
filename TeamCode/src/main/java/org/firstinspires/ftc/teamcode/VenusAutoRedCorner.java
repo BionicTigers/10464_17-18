@@ -119,7 +119,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                     sleep(1000);
                 }
                 else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.6);
+                    eddie.setPosition(0.65);
                     sleep(1000);
 
                     blue = false;
@@ -170,13 +170,13 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
 
                 if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.3);
+                    eddie.setPosition(0.35);
 
                     blue = true;
                     sleep(1000);
                 }
                 else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.6);
+                    eddie.setPosition(0.65);
                     sleep(1000);
 
                     blue = false;
@@ -234,7 +234,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                     sleep(1000);
                 }
                 else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.6);
+                    eddie.setPosition(0.65);
                     sleep(1000);
 
                     blue = false;
@@ -282,17 +282,17 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
             default: //ACTUAL START OF PROGRAM
                 //JEWELS//
-                clark.setPosition(0.1);
+                clark.setPosition(0.2);
                 sleep(3000);
 
 
                 if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.4);
+                    eddie.setPosition(0.35);
 
                     blue = true;
                     sleep(1000);
                 } else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.6);
+                    eddie.setPosition(0.65);
                     sleep(1000);
 
                     blue = false;
@@ -312,7 +312,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 DriveBackward(.5, 345);
                 sleep(1000);
 
-                StrafeRight(.7, 270);
+                StrafeRight(.7, 275);
                 sleep(1000);
 
                 DriveBackward(.5, 70);
