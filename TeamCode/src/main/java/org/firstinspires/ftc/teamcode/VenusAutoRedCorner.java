@@ -323,7 +323,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
 //surround with if
                 StrafeRight(.7, 275);
                 sleep(1000);
-                //
+
 
                 DriveBackward(.5, 70);
                 sleep(2000);
