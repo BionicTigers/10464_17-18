@@ -240,6 +240,10 @@ public void loop() {
         donneet.setPosition(.5);
     }
 
+    if(gamepad1.a){
+        eddie.setPosition(.55);
+    }
+
 // CAR WASHER //
     billiam.setPower(-gamepad2.left_stick_y);
 

@@ -14,8 +14,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-import java.sql.Driver;
-
 
 @Autonomous(name="VenusAutoBlueCorner ", group ="Vuforia")
 
@@ -101,249 +99,92 @@ public class VenusAutoBlueCorner extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
+        while(opModeIsActive()) {
 
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-        telemetry.addData("VuMark", vuMark);
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-        switch (vuMark) {
-                case RIGHT: //Go to Right column
-                    clark.setPosition(0.2);
-                    sleep(3000);
+            telemetry.addData("VuMark", vuMark);
 
+            telemetry.addData("vumark", "you dumbass, its not reading");
+            clark.setPosition(0.23);
+            sleep(3000);
 
-                    if (leo.blue() < roger.blue()) {
-                        eddie.setPosition(0.65);
+            telemetry.addData("leo", leo.blue());
+            telemetry.addData("leo", leo.red());
 
-                        blue = true;
-                        sleep(1000);
-                    } else if (leo.blue() > roger.blue()) {
-                        eddie.setPosition(0.35);
-                        sleep(1000);
 
-                        blue = false;
-                    } else {
-                        telemetry.addData("eddie", "did not work");
-                        sleep(250);
-                    }
+            if (leo.blue() > leo.red()) {
+                telemetry.addData("leo", leo.blue());
+                telemetry.addData("leo", leo.red());
+                eddie.setPosition(0.3);
+                blue = true;
+                sleep(2000);
 
-                    eddie.setPosition(0.55);
-                    sleep(1000);
+            } else if (leo.blue() < leo.red()) {
+                telemetry.addData("leo", leo.blue());
+                telemetry.addData("leo", leo.red());
+                eddie.setPosition(0.65);
+                sleep(1000);
 
-                    clark.setPosition(0.8);
-                    sleep(1000);
-
-                    //MOVE
-
-                    DriveForward(.5, 345);
-                    sleep(1000);
-
-                    PointTurnRight(0., 440);
-                    sleep(1000);
-
-                    StrafeLeft(.7, 220);
-                    sleep(1000);
-
-                    DriveBackward(.5, 70);
-                    sleep(2000);
-
-                    hamilton.setPosition(1);
-                    sleep(500);
-
-                    DriveForward(.5, 28);
-                    sleep(1000);
-
-                    hamilton.setPosition(.3);
-
-                    motorFrontLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    motorFrontRight.setPower(0);
-                    sleep(1000);
-
-                    break;
-                case LEFT: //Go to Left column
-                    clark.setPosition(0.2);
-                    sleep(3000);
-
-
-                    if (leo.blue() < roger.blue()) {
-                        eddie.setPosition(0.65);
-
-                        blue = true;
-                        sleep(1000);
-                    } else if (leo.blue() > roger.blue()) {
-                        eddie.setPosition(0.35);
-                        sleep(1000);
-
-                        blue = false;
-                    } else {
-                        telemetry.addData("eddie", "did not work");
-                        sleep(250);
-                    }
-
-                    eddie.setPosition(0.55);
-                    sleep(1000);
-
-                    clark.setPosition(0.8);
-                    sleep(1000);
-
-                    //MOVE
-
-                    DriveForward(.5, 345);
-                    sleep(1000);
-
-                    PointTurnRight(0.5, 440);
-                    sleep(1000);
-
-                    StrafeLeft(.7, 275);
-                    sleep(1000);
-
-                    DriveBackward(.5, 70);
-                    sleep(2000);
-
-                    hamilton.setPosition(1);
-                    //burr.setPosition(1);
-                    sleep(500);
-
-                    DriveForward(.5, 28);
-                    sleep(1000);
-
-                    hamilton.setPosition(.3);
-                    //burr.setPosition(0.3);
-
-                    motorFrontLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    motorFrontRight.setPower(0);
-                    sleep(1000);
-
-
-                    break;
-                case CENTER: //Go to Center column
-                    clark.setPosition(0.2);
-                    sleep(3000);
-
-
-                    if (leo.blue() < roger.blue()) {
-                        eddie.setPosition(0.65);
-
-                        blue = true;
-                        sleep(1000);
-                    } else if (leo.blue() > roger.blue()) {
-                        eddie.setPosition(0.35);
-                        sleep(1000);
-
-                        blue = false;
-                    } else {
-                        telemetry.addData("eddie", "did not work");
-                        sleep(250);
-                    }
-
-                    eddie.setPosition(0.55);
-                    sleep(1000);
-
-                    clark.setPosition(0.8);
-                    sleep(1000);
-
-                    //MOVE
-
-                    DriveForward(.5, 345);
-                    sleep(1000);
-
-                    PointTurnRight(0.5, 440);
-                    sleep(1000);
-
-                    StrafeRight(.7, 20);
-                    sleep(1000);
-
-                    //PointTurnRight(.5,80);
-                    DriveBackward(.5, 70);
-                    sleep(2000);
-
-                    hamilton.setPosition(1);
-                    //burr.setPosition(1);
-                    sleep(500);
-
-                    DriveForward(.5, 28);
-                    sleep(1000);
-
-                    hamilton.setPosition(.3);
-                    //burr.setPosition(0.3);
-                    motorFrontLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    motorFrontRight.setPower(0);
-                    sleep(1000);
-
-                    break;
-
-                default: //ACTUAL START OF PROGRAM
-                    //JEWELS//
-                    clark.setPosition(0.225);
-                    sleep(3000);
-
-
-                    if (leo.blue() < roger.blue()) {
-                        eddie.setPosition(0.65);
-
-                        blue = true;
-                        sleep(1000);
-                    } else if (leo.blue() > roger.blue()) {
-                        eddie.setPosition(0.35);
-                        sleep(1000);
-
-                        blue = false;
-                    } else {
-                        telemetry.addData("eddie", "NOT CORRECT");
-                        sleep(250);
-                    }
-
-                    eddie.setPosition(0.55);
-                    sleep(1000);
-
-                    clark.setPosition(0.75);
-                    sleep(1000);
-
-                    //MOVE
-
-                    DriveForward(.5, 345);
-                    sleep(1000);
-
-                    StrafeRight(.7, 255);
-                    sleep(1000);
-
-                    PointTurnRight(0.5, 465);
-                    sleep(1000);
-
-                    DriveBackward(.5, 70);
-                    sleep(2000);
-
-                    hamilton.setPosition(1);
-                    sleep(500);
-
-                    DriveForward(.5, 28);
-                    sleep(500);
-
-                    hamilton.setPosition(.3);
-                    //burr.setPosition(0.3);
-                    sleep(1000);
-
-                    motorFrontLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    motorFrontRight.setPower(0);
-                    sleep(10000);
-
-                    break;
+                blue = false;
+            } else {
+                telemetry.addData("leo", leo.blue());
+                telemetry.addData("leo", leo.red());
+                telemetry.addData("eddie", "did not work");
+                sleep(250);
             }
+
+            eddie.setPosition(0.55);
+            sleep(1000);
+
+            clark.setPosition(0.75);
+            sleep(1000);
+
+            //MOVE
+
+            DriveForward(.5, 345);
+            sleep(1000);
+
+            StrafeRight(.7, 255);
+            sleep(1000);
+
+            PointTurnRight(0.5, 465);
+            sleep(1000);
+
+            StrafeRight(.5, -80);
+            sleep(250);
+
+            DriveBackward(.5, 70);
+            sleep(1000);
+
+            hamilton.setPosition(1);
+            sleep(500);
+
+            DriveBackward(.5, -60);
+            sleep(500);
+
+            hamilton.setPosition(.3);
+            sleep(250);
+
+            DriveBackward(.5, 80);
+            sleep(500);
+
+            DriveBackward(.5, -70);
+            sleep(500);
+
+
+            motorFrontLeft.setPower(0);
+            motorBackRight.setPower(0);
+            motorBackLeft.setPower(0);
+            motorFrontRight.setPower(0);
+            sleep(10000);
+        }
+
+
+
 
             relicTrackables.activate();
-
-            while (opModeIsActive()) {
-
-
-            }
 
             idle();
             telemetry.update();

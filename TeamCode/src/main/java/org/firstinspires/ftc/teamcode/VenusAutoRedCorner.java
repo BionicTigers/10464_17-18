@@ -14,8 +14,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-import java.sql.Driver;
-
 
 @Autonomous(name="VenusAutoRedCorner ", group ="Vuforia")
 
@@ -282,22 +280,32 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
             default: //ACTUAL START OF PROGRAM
                 //JEWELS//
-                clark.setPosition(0.2);
+                telemetry.addData("vumark", "you dumbass, its not reading");
+                clark.setPosition(0.23);
                 sleep(3000);
 
+                telemetry.addData("leo", leo.blue());
+                telemetry.addData("leo", leo.red());
 
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.35);
 
+                if (leo.blue() < leo.red()) {
+                    telemetry.addData("leo", leo.blue());
+                    telemetry.addData("leo", leo.red());
+                    eddie.setPosition(0.3);
                     blue = true;
-                    sleep(1000);
-                } else if (leo.blue() > roger.blue()) {
+                    sleep(2000);
+
+                } else if (leo.blue() > leo.red()) {
+                    telemetry.addData("leo", leo.blue());
+                    telemetry.addData("leo", leo.red());
                     eddie.setPosition(0.65);
                     sleep(1000);
 
                     blue = false;
                 } else {
-                    telemetry.addData("eddie", "NOT CORRECT");
+                    telemetry.addData("leo", leo.blue());
+                    telemetry.addData("leo", leo.red());
+                    telemetry.addData("eddie", "did not work");
                     sleep(250);
                 }
 
@@ -312,8 +320,10 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 DriveBackward(.5, 345);
                 sleep(1000);
 
+//surround with if
                 StrafeRight(.7, 275);
                 sleep(1000);
+                //
 
                 DriveBackward(.5, 70);
                 sleep(2000);
@@ -321,12 +331,17 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 hamilton.setPosition(1);
                 sleep(500);
 
-                DriveForward(.5, 28);
-                sleep(500);
+                DriveBackward(.5, -80);
+                sleep(250);
 
                 hamilton.setPosition(.3);
-                //burr.setPosition(0.3);
                 sleep(1000);
+
+                DriveBackward(.5, 80);
+                sleep(500);
+
+                DriveBackward(.5, -60);
+                sleep(500);
 
                 motorFrontLeft.setPower(0);
                 motorBackRight.setPower(0);
