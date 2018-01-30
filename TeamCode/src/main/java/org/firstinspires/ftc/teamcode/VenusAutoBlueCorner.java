@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.sql.Driver;
 
 
-@Autonomous(name="VenusAutoBlueCorner ", group ="Vuforia")
+@Autonomous(name="Blue Corner ", group = "Blue")
 
 public class VenusAutoBlueCorner extends LinearOpMode {
 
