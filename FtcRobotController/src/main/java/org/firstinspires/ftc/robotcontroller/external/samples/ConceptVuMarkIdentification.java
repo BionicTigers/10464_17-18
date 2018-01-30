@@ -99,8 +99,6 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                 telemetry.addData("VuMark", "not visible");
             }
 
-
-
             telemetry.update();
         }
     }
