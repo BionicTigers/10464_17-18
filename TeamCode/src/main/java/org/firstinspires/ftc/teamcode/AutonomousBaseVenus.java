@@ -229,7 +229,8 @@ public abstract class AutonomousBaseVenus extends OpMode {
             case MoveState.STRAFE_TOWARDS_GOAL:
                 // Moves the bot towards the goal, while always pointing at desiredAngle
                 double P = .50;
-                double H = Math.toRadians(heading);
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+                double H = Math.toRadians(angles.firstAngle);
                 double Ht = Math.toRadians(map.angleToGoal());
 
                 motorFrontRight.setPower(-P * Math.sin(H - Ht));
@@ -250,12 +251,14 @@ public abstract class AutonomousBaseVenus extends OpMode {
                     motorFrontRight.setPower(power);
                     motorFrontLeft.setPower(-power);
                     motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(power); }
+                    motorBackRight.setPower(power);
+                }
                 else {
                     motorFrontRight.setPower(-power);
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
-                    motorBackRight.setPower(-power); }
+                    motorBackRight.setPower(-power);
+                }
                 break;
 
             case MoveState.TURN_TOWARDS_ANGLE:

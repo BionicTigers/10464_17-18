@@ -1,15 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -19,42 +21,61 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+
+import java.io.File;
+
+import static org.firstinspires.ftc.teamcode.Map.angleToGoal;
+import static org.firstinspires.ftc.teamcode.Map.distanceToGoal;
 
 
 @Autonomous(name="Red Front", group ="Red")
 
 public class VenusAutoRedFront extends LinearOpMode {
 
-    public static final String TAG = "Vuforia VuMark Sample";
 
-    OpenGLMatrix lastLocation = null;
-    VuforiaLocalizer vuforia;
-    public DcMotor motorFrontLeft;
-    public DcMotor motorBackRight;
+    public final double DISTANCE_TOLERANCE = 1.0 / 10; //tolerance for heading calculations
+
     public DcMotor motorFrontRight;
     public DcMotor motorBackLeft;
-    public DcMotor wilbert; //Four Bar Right
-    public DcMotor evangelino; //Four Bar Left
-    public Servo hamilton; //Glyph Flipper
-    //public Servo burr; //Glyph Flipper 2
+    public DcMotor motorFrontLeft;
+    public DcMotor motorBackRight;
+    private Servo eddie;
+    private Servo clark;
+    private ColorSensor leo;
+    private ColorSensor roger;
+    private Servo hamilton;
+    private VuforiaLocalizer vuforia;
+    private VuforiaTrackable relicTemplate;
+    public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+    public double waitTime;
+    public int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+    public VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+    public static BNO055IMU imu;
+
+    int gameState;
+    public int moveState;
+    public double power;
+    public Orientation angles;
+    public double heading;
+    public double desiredAngle;
+    public boolean turnRight;
+    public int cDistF, lDistF, dDistF; //Forward distance variables
+    public int cDistS, lDistS, dDistS; //Sideways distance variables
+    public int cDistW, lDistW, dDistW; //Sideways distance variables
     public ElapsedTime runtime = new ElapsedTime();
-    int i;
-    boolean blue;
-    private Servo clark; //drop down servo (for color sensor)
-    private Servo eddie; //swing servo (for color sensor)
-    private ColorSensor roger; //right color sensor
-    private ColorSensor leo; //left color sensor
-    private double waitTime;
-    private int gameState;
+
+    public int startPos = 6;
+    Map map = new Map(startPos);
 
 
-    @Override public void runOpMode() {
+    @Override
+    public void runOpMode() {
 
         eddie = hardwareMap.servo.get("eddie"); //swing servo
         clark = hardwareMap.servo.get("clark"); //drop down servo
         roger = hardwareMap.colorSensor.get("roger"); //right color sensor
         leo = hardwareMap.colorSensor.get("leo"); //left color sensor
-        blue = false;
         gameState = 0;
         waitTime = 0;
 
@@ -92,7 +113,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
         telemetry.update();
 
-         // can help in debugging; otherwise not necessary
+        // can help in debugging; otherwise not necessary
 
         //telemetry.addData(">", "Press Play to start");
         //telemetry.update();
@@ -113,94 +134,81 @@ public class VenusAutoRedFront extends LinearOpMode {
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                 telemetry.addData("VuMark", "%s visible", vuMark);
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
                 telemetry.addData("Pose", format(pose));
                 if (pose != null) {
-                    VectorF trans = pose.getTranslation();
-                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
-                    // Extract the X, Y, and Z components of the offset of the target relative to the robot
-                    double tX = trans.get(0);
-                    double tY = trans.get(1);
-                    double tZ = trans.get(2);
+                    telemetry.addData("position", "vuforia is null");
 
-                    // Extract the rotational components of the target relative to the robot
-                    double rX = rot.firstAngle;
-                    double rY = rot.secondAngle;
-                    double rZ = rot.thirdAngle;
                 }
-            }
-
-
-            else {
+            } else {
                 telemetry.addData("VuMark", "not visible");
             }
 
-            telemetry.update();
 
-            while(opModeIsActive()){
+                telemetry.update();
 
-
-            telemetry.addData("vumark", "you dumbass, its not reading");
-            clark.setPosition(0.23);
-            sleep(3000);
-            telemetry.addData("leo", leo.blue());
-            telemetry.addData("leo", leo.red());
-            if (leo.blue() < leo.red()) {
+                clark.setPosition(0.23);
+                sleep(3000);
                 telemetry.addData("leo", leo.blue());
                 telemetry.addData("leo", leo.red());
-                eddie.setPosition(0.3);
-                blue = true;
-                sleep(2000);
-            } else if (leo.blue() > leo.red()) {
-                telemetry.addData("leo", leo.blue());
-                telemetry.addData("leo", leo.red());
-                eddie.setPosition(0.65);
+                if (leo.blue() < leo.red()) {
+                    telemetry.addData("leo", leo.blue());
+                    telemetry.addData("leo", leo.red());
+                    eddie.setPosition(0.3);
+
+                    sleep(2000);
+                } else if (leo.blue() > leo.red()) {
+                    telemetry.addData("leo", leo.blue());
+                    telemetry.addData("leo", leo.red());
+                    eddie.setPosition(0.65);
+                    sleep(1000);
+
+                } else {
+                    telemetry.addData("leo", leo.blue());
+                    telemetry.addData("leo", leo.red());
+                    telemetry.addData("eddie", "did not work");
+                    sleep(250);
+                }
+                eddie.setPosition(0.55);
                 sleep(1000);
-                blue = false;
-            } else {
-                telemetry.addData("leo", leo.blue());
-                telemetry.addData("leo", leo.red());
-                telemetry.addData("eddie", "did not work");
-                sleep(250);
-            }
-            eddie.setPosition(0.55);
-            sleep(1000);
-            clark.setPosition(0.8);
-            sleep(1000);
+                clark.setPosition(0.8);
+                sleep(1000);
 
-            if(vuMark == RelicRecoveryVuMark.LEFT){
-                driveBackward(.5,470);
-            }
-            else if(vuMark == RelicRecoveryVuMark.CENTER){
-                driveBackward(.5,510);
-            }
-            else if(vuMark == RelicRecoveryVuMark.RIGHT){
-                driveBackward(.5,540);
-            }
-            else{
-                driveBackward(.5,510);
-            }
+                Map.setRobot(10, 2);
 
-            sleep(1000);
-            pointTurnRight(.5, 268);
-            sleep(1000);
-            driveBackward(.5, 80);
-            sleep(1000);
-            hamilton.setPosition(1);
-            sleep(1000);
-            driveBackward(.5, -75);
-            driveBackward(.5, 100);
-            sleep(500);
-            driveBackward(.5, -110);
-            sleep(500);
-            hamilton.setPosition(.3);
-            sleep(500);
-            stop();
-            break;
+                switch (vuMark) {
+                    case LEFT:
+                        Map.setGoal(6.5, 1);
+                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
+
+                        if (distanceToGoal() <= .1) {
+                            moveState = MoveState.STOP;
+                        }
+                    case RIGHT:
+                        Map.setGoal(7.5, 1);
+                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
+
+                        if (distanceToGoal() <= .1) {
+                            moveState = MoveState.STOP;
+                        }
+                    case CENTER:
+                        Map.setGoal(7, 1);
+                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
+
+                        if (distanceToGoal() <= .1) {
+                            moveState = MoveState.STOP;
+                        }
+                    case UNKNOWN:
+                        Map.setGoal(7, 1);
+                        moveState = MoveState.STRAFE_TOWARDS_GOAL;
+
+                        if (distanceToGoal() <= .1) {
+                            moveState = MoveState.STOP;
+                        }
+
 
             }
-
         }
     }
 
@@ -209,8 +217,163 @@ public class VenusAutoRedFront extends LinearOpMode {
     }
 
 
-public void driveForward ( double power, int distance){
+    private static class MoveState {
+        private static final int STOP = 0;
+        private static final int FORWARD = 1;
+        private static final int BACKWARD = 2;
+        private static final int LEFT = 3;
+        private static final int RIGHT = 4;
+        private static final int TURN_TOWARDS_GOAL = 5;
+        private static final int STRAFE_TOWARDS_GOAL = 15;
+        private static final int TURN_TOWARDS_ANGLE = 16;
+        private static final int RIGHT_SLOW = 18;
+    }
 
+
+
+
+    public void moveState() {
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        imu.initialize(parameters);
+
+        BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
+        String filename = "BNO055IMUCalibration.json";
+        File file = AppUtil.getInstance().getSettingsFile(filename);
+        ReadWriteFile.writeFile(file, calibrationData.serialize());
+        telemetry.log().add("saved to '%s'", filename);
+
+
+        switch (moveState) {
+            case MoveState.STOP:
+                // Halts all drivetrain movement of the robot
+                motorFrontRight.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorBackLeft.setPower(0);
+                motorBackRight.setPower(0);
+                break;
+
+            case MoveState.FORWARD:
+                // Moves the bot forward at half speed
+                power = .75; //power coefficient
+                if (distanceToGoal() > DISTANCE_TOLERANCE) {
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(power);
+                }
+                break;
+
+            case MoveState.BACKWARD:
+                // Moves the bot backwards at half speed
+                power = .75; //power coefficient
+                if (distanceToGoal() > DISTANCE_TOLERANCE) {
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(-power);
+                }
+                break;
+
+            case MoveState.LEFT:
+                // Moves the bot left at half speed
+                power = .75; //power coefficient
+                if (distanceToGoal() > DISTANCE_TOLERANCE) {
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power);
+                }
+                break;
+
+            case MoveState.RIGHT:
+                // Moves the bot right at half speed
+                power = .75; //power coefficient
+                if (distanceToGoal() > DISTANCE_TOLERANCE) {
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(power);
+                }
+                break;
+
+            case MoveState.RIGHT_SLOW:
+                // Moves the bot right at half speed
+                power = .25; //power coefficient
+                if (distanceToGoal() > DISTANCE_TOLERANCE) {
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(power);
+                }
+                break;
+
+            case MoveState.STRAFE_TOWARDS_GOAL:
+                // Moves the bot towards the goal, while always pointing at desiredAngle
+                double P = .50;
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+                double H = Math.toRadians(angles.firstAngle);
+                double Ht = Math.toRadians(angleToGoal());
+
+                motorFrontRight.setPower(-P * Math.sin(H - Ht));
+                motorFrontLeft.setPower(-P * Math.sin(H - Ht));
+                motorBackLeft.setPower(P * Math.cos(H - Ht));
+                motorBackRight.setPower(P * Math.cos(H - Ht));
+                break;
+
+            case MoveState.TURN_TOWARDS_GOAL:
+                // Orients the bot to face the goal
+                power = .50;
+                if (heading <= 180) {
+                    turnRight = heading <= angleToGoal() && heading + 180 >= angleToGoal();
+                } else {
+                    turnRight = !(heading >= angleToGoal() && heading - 180 <= angleToGoal());
+                }
+
+                if (turnRight) {
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(power);
+                } else {
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power);
+                }
+                break;
+
+            case MoveState.TURN_TOWARDS_ANGLE:
+                // Orients the bot to face at desiredAngle.
+                power = .50;
+                if (heading <= 180) {
+                    turnRight = heading <= desiredAngle && heading + 180 >= desiredAngle;
+                } else {
+                    turnRight = !(heading >= desiredAngle && heading - 180 <= desiredAngle);
+                }
+
+                if (turnRight) {
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power);
+                } else {
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power);
+                }
+                break;
+        }
+
+    }
+    public void driveForward(double power, int distance){
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
         motorBackLeft.setTargetPosition(distance);
@@ -246,168 +409,14 @@ public void driveForward ( double power, int distance){
         sleep(500);
     }
 
-    public void driveBackward(double power, int distance) {
-
-        motorBackRight.setTargetPosition(-distance);
-        motorFrontRight.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(-distance);
-        motorFrontLeft.setTargetPosition(-distance);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    public void driveBackward(double power, int distance){
+        motorBackRight.setTargetPosition(distance);
+        motorFrontRight.setTargetPosition(distance);
+        motorBackLeft.setTargetPosition(distance);
+        motorFrontLeft.setTargetPosition(distance);
 
         motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(-power*1.45);
-        motorBackLeft.setPower(-power*0.65);
-        motorFrontRight.setPower(-power);
-
-        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
-
-        }
-        motorFrontLeft.setPower(0);
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-        motorFrontRight.setPower(0);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        sleep(500);
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        sleep(500);
-    }
-
-    public void pointTurnRight(double power, int distance) {
-
-        motorBackRight.setTargetPosition(-distance);
-        motorFrontRight.setTargetPosition(-distance);
-        motorFrontLeft.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(distance);
-
-        motorFrontLeft.setPower(power);
         motorBackRight.setPower(-power);
-        motorBackLeft.setPower(power);
-        motorFrontRight.setPower(-power);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
-
-        }
-        motorFrontLeft.setPower(0);
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-        motorFrontRight.setPower(0);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        sleep(500);
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        sleep(500);
-    }
-
-    public void pointTurnLeft(double power, int distance) {
-
-        motorBackRight.setTargetPosition(distance);
-        motorFrontRight.setTargetPosition(distance);
-        motorFrontLeft.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(-distance);
-
-        motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(-power);
-        motorFrontRight.setPower(power);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
-
-        }
-        motorFrontLeft.setPower(0);
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-        motorFrontRight.setPower(0);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        sleep(500);
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        sleep(500);
-    }
-
-
-    public void strafeLeft(double power, int distance) {
-
-        motorBackRight.setTargetPosition(distance);
-        motorFrontRight.setTargetPosition(distance);
-        motorFrontLeft.setTargetPosition(distance);
-        motorBackLeft.setTargetPosition(distance);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(power);
-        motorBackLeft.setPower(-power);
-        motorFrontRight.setPower(power);
-
-        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
-
-        }
-        motorFrontLeft.setPower(0);
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-        motorFrontRight.setPower(0);
-
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        sleep(500);
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        sleep(500);
-    }
-
-
-    public void strafeRight(double power, int distance) {
-        motorBackRight.setTargetPosition(distance);
-        motorFrontRight.setTargetPosition(distance);
-        motorFrontLeft.setTargetPosition(-distance);
-        motorBackLeft.setTargetPosition(-distance);
-
-        motorFrontLeft.setPower(power);
-        motorBackRight.setPower(power);
         motorBackLeft.setPower(-power);
         motorFrontRight.setPower(-power);
 
@@ -416,8 +425,7 @@ public void driveForward ( double power, int distance){
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
-
+        while (motorBackRight.isBusy() && motorFrontRight.isBusy() && motorBackLeft.isBusy() && motorFrontLeft.isBusy())  {
         }
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
@@ -435,9 +443,7 @@ public void driveForward ( double power, int distance){
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleep(500);
-
     }
-
 
 }
 
