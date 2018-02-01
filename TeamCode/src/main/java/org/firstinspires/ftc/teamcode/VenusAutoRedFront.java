@@ -34,32 +34,17 @@ import static org.firstinspires.ftc.teamcode.Map.distanceToGoal;
 public class VenusAutoRedFront extends LinearOpMode {
 
 
-    public final double DISTANCE_TOLERANCE = 1.0 / 10; //tolerance for heading calculations
-
     public DcMotor motorFrontRight;
     public DcMotor motorBackLeft;
     public DcMotor motorFrontLeft;
     public DcMotor motorBackRight;
-    private Servo eddie;
-    private Servo clark;
-    private ColorSensor leo;
-    private ColorSensor roger;
-    private Servo hamilton;
-    private VuforiaLocalizer vuforia;
-    private VuforiaTrackable relicTemplate;
-    public RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-    public double waitTime;
     public int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
     public VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-    public static BNO055IMU imu;
+    private BNO055IMU imu;
 
-    int gameState;
-    public int moveState;
-    public double power;
-    public Orientation angles;
-    public double heading;
-    public double desiredAngle;
-    public boolean turnRight;
+    private int moveState;
+    private double heading;
+    private double desiredAngle;
     public int cDistF, lDistF, dDistF; //Forward distance variables
     public int cDistS, lDistS, dDistS; //Sideways distance variables
     public int cDistW, lDistW, dDistW; //Sideways distance variables
@@ -72,18 +57,23 @@ public class VenusAutoRedFront extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        eddie = hardwareMap.servo.get("eddie"); //swing servo
-        clark = hardwareMap.servo.get("clark"); //drop down servo
-        roger = hardwareMap.colorSensor.get("roger"); //right color sensor
-        leo = hardwareMap.colorSensor.get("leo"); //left color sensor
-        gameState = 0;
-        waitTime = 0;
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        heading = angles.firstAngle;
+
+        this.desiredAngle = 90;
+
+        Servo eddie = hardwareMap.servo.get("eddie");
+        Servo clark = hardwareMap.servo.get("clark");
+        ColorSensor roger = hardwareMap.colorSensor.get("roger");
+        ColorSensor leo = hardwareMap.colorSensor.get("leo");
+
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        hamilton = hardwareMap.servo.get("hamilton");
+        imu = (BNO055IMU) hardwareMap.i2cDevice.get("imu");
+        Servo hamilton = hardwareMap.servo.get("hamilton");
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -125,8 +115,8 @@ public class VenusAutoRedFront extends LinearOpMode {
 
             parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
             parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-            this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-            VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+            VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+            VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
             VuforiaTrackable relicTemplate = relicTrackables.get(0);
             relicTemplate.setName("relicVuMarkTemplate");
             relicTrackables.activate();
@@ -226,7 +216,6 @@ public class VenusAutoRedFront extends LinearOpMode {
         private static final int TURN_TOWARDS_GOAL = 5;
         private static final int STRAFE_TOWARDS_GOAL = 15;
         private static final int TURN_TOWARDS_ANGLE = 16;
-        private static final int RIGHT_SLOW = 18;
     }
 
 
@@ -249,7 +238,7 @@ public class VenusAutoRedFront extends LinearOpMode {
         ReadWriteFile.writeFile(file, calibrationData.serialize());
         telemetry.log().add("saved to '%s'", filename);
 
-
+        double DISTANCE_TOLERANCE = 1.0 / 10;
         switch (moveState) {
             case MoveState.STOP:
                 // Halts all drivetrain movement of the robot
@@ -261,7 +250,8 @@ public class VenusAutoRedFront extends LinearOpMode {
 
             case MoveState.FORWARD:
                 // Moves the bot forward at half speed
-                power = .75; //power coefficient
+                double power = .75;
+
                 if (distanceToGoal() > DISTANCE_TOLERANCE) {
                     motorFrontRight.setPower(power);
                     motorFrontLeft.setPower(power);
@@ -303,21 +293,11 @@ public class VenusAutoRedFront extends LinearOpMode {
                 }
                 break;
 
-            case MoveState.RIGHT_SLOW:
-                // Moves the bot right at half speed
-                power = .25; //power coefficient
-                if (distanceToGoal() > DISTANCE_TOLERANCE) {
-                    motorFrontRight.setPower(-power);
-                    motorFrontLeft.setPower(power);
-                    motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(power);
-                }
-                break;
 
             case MoveState.STRAFE_TOWARDS_GOAL:
                 // Moves the bot towards the goal, while always pointing at desiredAngle
                 double P = .50;
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+                Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
                 double H = Math.toRadians(angles.firstAngle);
                 double Ht = Math.toRadians(angleToGoal());
 
@@ -330,6 +310,7 @@ public class VenusAutoRedFront extends LinearOpMode {
             case MoveState.TURN_TOWARDS_GOAL:
                 // Orients the bot to face the goal
                 power = .50;
+                boolean turnRight;
                 if (heading <= 180) {
                     turnRight = heading <= angleToGoal() && heading + 180 >= angleToGoal();
                 } else {
