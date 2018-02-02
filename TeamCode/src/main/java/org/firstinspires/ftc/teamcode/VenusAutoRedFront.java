@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 /**
- * Created by Sean O on 11/23/2016.
+ * Created by Emily on 1/24/18
  */
-@Autonomous(name="Red Front", group="Blue")
+@Autonomous(name="Red Front", group="Red")
 public class VenusAutoRedFront extends AutonomousBaseVenus {
 
     public void gameState() {
@@ -28,7 +28,7 @@ public class VenusAutoRedFront extends AutonomousBaseVenus {
                 }
                 break;
 
-            case 777:
+            case 2:
                 moveState = MoveState.FULL_STOP;
                 break;
         }

@@ -84,7 +84,7 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
     double formatAngle;
     Map map = new Map(startPos);
 
-
+    @Override
     public void runOpMode() {
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         heading = angles.firstAngle;
@@ -152,6 +152,7 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()){
+            calibrateIMU();
             gameState();
             moveState();
         }
@@ -175,7 +176,7 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
             ReadWriteFile.writeFile(file, calibrationData.serialize());
             telemetry.log().add("saved to '%s'", filename);
 
-            double DISTANCE_TOLERANCE = 1.0 / 10;
+
             switch (moveState) {
                 case MoveState.STOP:
                     // Halts all drivetrain movement of the robot
@@ -297,7 +298,7 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
                     break;
             }
 
-            double DEGREES_TO_FEET = 3.96 * Math.PI / 1120 / 12;
+
             moveRobot(dDistS * DEGREES_TO_FEET, (heading+90%360));
             moveRobot(dDistF * DEGREES_TO_FEET, heading);
     }
