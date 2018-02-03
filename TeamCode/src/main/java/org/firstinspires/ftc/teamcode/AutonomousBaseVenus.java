@@ -2,18 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -60,13 +55,10 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
     public DcMotor evangelino;
     public DcMotor wilbert;
     public static BNO055IMU imu;
-
+    public Orientation angles;
 
     public int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-    public VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-    public ElapsedTime runtime = new ElapsedTime();
 
-    public Orientation angles;
     public double heading;
     public double desiredAngle;
     public double tDiff;
@@ -84,15 +76,15 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
     double formatAngle;
     Map map = new Map(startPos);
 
+
     @Override
     public void runOpMode() {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        heading = angles.firstAngle;
 
-        this.desiredAngle = 90;
+        heading = angles.firstAngle;
 
         Servo eddie = hardwareMap.servo.get("eddie");
         Servo clark = hardwareMap.servo.get("clark");
+        Servo hamilton = hardwareMap.servo.get("hamilton");
         ColorSensor roger = hardwareMap.colorSensor.get("roger");
         ColorSensor leo = hardwareMap.colorSensor.get("leo");
 
@@ -101,8 +93,8 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+
         imu = (BNO055IMU) hardwareMap.i2cDevice.get("imu");
-        Servo hamilton = hardwareMap.servo.get("hamilton");
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -151,7 +143,7 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
         telemetry.addData("vuMark", vuMark);
         waitForStart();
 
-        while(opModeIsActive()){
+        while (opModeIsActive()) {
             calibrateIMU();
             gameState();
             moveState();
@@ -159,174 +151,158 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
     }
 
 
-        public void moveState() {
-            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-            parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-            parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-            parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-            parameters.loggingEnabled = true;
-            parameters.loggingTag = "IMU";
-            parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+    public void moveState() {
 
-            imu.initialize(parameters);
+        switch (moveState) {
+            case MoveState.STOP:
+                // Halts all drivetrain movement of the robot
+                motorFrontRight.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorBackLeft.setPower(0);
+                motorBackRight.setPower(0);
+                break;
 
-            BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
-            String filename = "BNO055IMUCalibration.json";
-            File file = AppUtil.getInstance().getSettingsFile(filename);
-            ReadWriteFile.writeFile(file, calibrationData.serialize());
-            telemetry.log().add("saved to '%s'", filename);
+            case MoveState.FORWARD:
+                // Moves the bot forward at half speed
+                power = .75;
 
+                if (distanceToGoal() > DISTANCE_TOLERANCE) {
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(power);
+                }
+                break;
 
-            switch (moveState) {
-                case MoveState.STOP:
-                    // Halts all drivetrain movement of the robot
-                    motorFrontRight.setPower(0);
-                    motorFrontLeft.setPower(0);
-                    motorBackLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    break;
+            case MoveState.BACKWARD:
+                // Moves the bot backwards at half speed
+                power = .75; //power coefficient
+                if (distanceToGoal() > DISTANCE_TOLERANCE) {
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(-power);
+                }
+                break;
 
-                case MoveState.FORWARD:
-                    // Moves the bot forward at half speed
-                    power = .75;
+            case MoveState.LEFT:
+                // Moves the bot left at half speed
+                power = .75; //power coefficient
+                if (distanceToGoal() > DISTANCE_TOLERANCE) {
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power);
+                }
+                break;
 
-                    if (distanceToGoal() > DISTANCE_TOLERANCE) {
-                        motorFrontRight.setPower(power);
-                        motorFrontLeft.setPower(power);
-                        motorBackLeft.setPower(power);
-                        motorBackRight.setPower(power);
-                    }
-                    break;
-
-                case MoveState.BACKWARD:
-                    // Moves the bot backwards at half speed
-                    power = .75; //power coefficient
-                    if (distanceToGoal() > DISTANCE_TOLERANCE) {
-                        motorFrontRight.setPower(-power);
-                        motorFrontLeft.setPower(-power);
-                        motorBackLeft.setPower(-power);
-                        motorBackRight.setPower(-power);
-                    }
-                    break;
-
-                case MoveState.LEFT:
-                    // Moves the bot left at half speed
-                    power = .75; //power coefficient
-                    if (distanceToGoal() > DISTANCE_TOLERANCE) {
-                        motorFrontRight.setPower(power);
-                        motorFrontLeft.setPower(-power);
-                        motorBackLeft.setPower(power);
-                        motorBackRight.setPower(-power);
-                    }
-                    break;
-
-                case MoveState.RIGHT:
-                    // Moves the bot right at half speed
-                    power = .75; //power coefficient
-                    if (distanceToGoal() > DISTANCE_TOLERANCE) {
-                        motorFrontRight.setPower(-power);
-                        motorFrontLeft.setPower(power);
-                        motorBackLeft.setPower(-power);
-                        motorBackRight.setPower(power);
-                    }
-                    break;
+            case MoveState.RIGHT:
+                // Moves the bot right at half speed
+                power = .75; //power coefficient
+                if (distanceToGoal() > DISTANCE_TOLERANCE) {
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(power);
+                }
+                break;
 
 
-                case MoveState.STRAFE_TOWARDS_GOAL:
-                    // Moves the bot towards the goal, while always pointing at desiredAngle
-                    double P = .50;
-                    double H = Math.toRadians(angles.firstAngle);
-                    double Ht = Math.toRadians(angleToGoal());
+            case MoveState.STRAFE_TOWARDS_GOAL:
+                // Moves the bot towards the goal, while always pointing at desiredAngle
+                double P = .50;
+                double H = Math.toRadians(angles.firstAngle);
+                double Ht = Math.toRadians(angleToGoal());
 
-                    motorFrontRight.setPower(-P * Math.sin(H - Ht));
-                    motorFrontLeft.setPower(-P * Math.sin(H - Ht));
-                    motorBackLeft.setPower(P * Math.cos(H - Ht));
-                    motorBackRight.setPower(P * Math.cos(H - Ht));
-                    break;
+                motorFrontRight.setPower(-P * Math.sin(H - Ht));
+                motorFrontLeft.setPower(-P * Math.sin(H - Ht));
+                motorBackLeft.setPower(P * Math.cos(H - Ht));
+                motorBackRight.setPower(P * Math.cos(H - Ht));
+                break;
 
-                case MoveState.TURN_TOWARDS_GOAL:
-                    // Orients the bot to face the goal
-                    power = .50;
-                    boolean turnRight;
-                    if (heading <= 180) {
-                        turnRight = heading <= angleToGoal() && heading + 180 >= angleToGoal();
-                    } else {
-                        turnRight = !(heading >= angleToGoal() && heading - 180 <= angleToGoal());
-                    }
+            case MoveState.TURN_TOWARDS_GOAL:
+                // Orients the bot to face the goal
+                power = .50;
+                boolean turnRight;
+                if (heading <= 180) {
+                    turnRight = heading <= angleToGoal() && heading + 180 >= angleToGoal();
+                } else {
+                    turnRight = !(heading >= angleToGoal() && heading - 180 <= angleToGoal());
+                }
 
-                    if (turnRight) {
-                        motorFrontRight.setPower(power);
-                        motorFrontLeft.setPower(-power);
-                        motorBackLeft.setPower(-power);
-                        motorBackRight.setPower(power);
-                    } else {
-                        motorFrontRight.setPower(-power);
-                        motorFrontLeft.setPower(power);
-                        motorBackLeft.setPower(power);
-                        motorBackRight.setPower(-power);
-                    }
-                    break;
+                if (turnRight) {
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(-power);
+                    motorBackRight.setPower(power);
+                } else {
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power);
+                }
+                break;
 
-                case MoveState.TURN_TOWARDS_ANGLE:
-                    // Orients the bot to face at desiredAngle.
-                    power = .50;
-                    if (heading <= 180) {
-                        turnRight = heading <= desiredAngle && heading + 180 >= desiredAngle;
-                    } else {
-                        turnRight = !(heading >= desiredAngle && heading - 180 <= desiredAngle);
-                    }
+            case MoveState.TURN_TOWARDS_ANGLE:
+                // Orients the bot to face at desiredAngle.
+                power = .50;
+                if (heading <= 180) {
+                    turnRight = heading <= desiredAngle && heading + 180 >= desiredAngle;
+                } else {
+                    turnRight = !(heading >= desiredAngle && heading - 180 <= desiredAngle);
+                }
 
-                    if (turnRight) {
-                        motorFrontRight.setPower(power);
-                        motorFrontLeft.setPower(-power);
-                        motorBackLeft.setPower(power);
-                        motorBackRight.setPower(-power);
-                    } else {
-                        motorFrontRight.setPower(-power);
-                        motorFrontLeft.setPower(power);
-                        motorBackLeft.setPower(power);
-                        motorBackRight.setPower(-power);
-                    }
-                    break;
-                case MoveState.FULL_STOP:
-                    // Stop ALL robot movement, and resets servo to default pos
+                if (turnRight) {
+                    motorFrontRight.setPower(power);
+                    motorFrontLeft.setPower(-power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power);
+                } else {
+                    motorFrontRight.setPower(-power);
+                    motorFrontLeft.setPower(power);
+                    motorBackLeft.setPower(power);
+                    motorBackRight.setPower(-power);
+                }
+                break;
+            case MoveState.FULL_STOP:
+                // Stop ALL robot movement, and resets servo to default pos
 
-                    motorFrontLeft.setPower(0);
-                    motorFrontRight.setPower(0);
-                    motorBackLeft.setPower(0);
-                    motorBackRight.setPower(0);
-                    break;
-            }
+                motorFrontLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackLeft.setPower(0);
+                motorBackRight.setPower(0);
+                break;
+        }
 
 
-            moveRobot(dDistS * DEGREES_TO_FEET, (heading+90%360));
-            moveRobot(dDistF * DEGREES_TO_FEET, heading);
+        moveRobot(dDistS * DEGREES_TO_FEET, (heading + 90 % 360));
+        moveRobot(dDistF * DEGREES_TO_FEET, heading);
     }
 
 
-        public void gameState(){
-            heading = angles.firstAngle;
+    public void gameState() {
+        heading = angles.firstAngle;
 
-            lDistF = cDistF;
-            cDistF = ( motorBackLeft.getCurrentPosition()
-                    + motorBackRight.getCurrentPosition()
-            ) / 2;
-            dDistF = cDistF - lDistF;
+        lDistF = cDistF;
+        cDistF = (motorBackLeft.getCurrentPosition()
+                + motorBackRight.getCurrentPosition()
+        ) / 2;
+        dDistF = cDistF - lDistF;
 
-            lDistS = cDistS;
-            cDistS = ( motorFrontLeft.getCurrentPosition()
-                    + motorFrontRight.getCurrentPosition()
-            ) / 2;
-            dDistS = cDistS - lDistS;
+        lDistS = cDistS;
+        cDistS = (motorFrontLeft.getCurrentPosition()
+                + motorFrontRight.getCurrentPosition()
+        ) / 2;
+        dDistS = cDistS - lDistS;
 
-            lDistW = cDistW;
+        lDistW = cDistW;
 
-            dDistW = cDistW - lDistW;
+        dDistW = cDistW - lDistW;
 
-            if(tDiff == 0){
-                tDiff = getRuntime();
-            }
+        if (tDiff == 0) {
+            tDiff = getRuntime();
         }
+    }
 
 
     public static void calibrateIMU() {
