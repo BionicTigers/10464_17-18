@@ -2,28 +2,20 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ReadWriteFile;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
-
-import java.io.File;
 
 import static org.firstinspires.ftc.teamcode.Map.angleToGoal;
 import static org.firstinspires.ftc.teamcode.Map.distanceToGoal;
 import static org.firstinspires.ftc.teamcode.Map.moveRobot;
 
 
-public abstract class AutonomousBaseVenus extends LinearOpMode {
+public abstract class AutonomousBaseVenus extends OpMode {
 
     public final double HEADING_TOLERANCE = 7; //tolerance for heading calculations
     public final double DISTANCE_TOLERANCE = 1.0 / 10; //tolerance for heading calculations
@@ -54,10 +46,7 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
     public DcMotor motorBackRight;
     public DcMotor evangelino;
     public DcMotor wilbert;
-    public static BNO055IMU imu;
     public Orientation angles;
-
-    public int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
     public double heading;
     public double desiredAngle;
@@ -74,19 +63,22 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
 
     boolean turnRight;
     double formatAngle;
+    BNO055IMU imu;
+
     Map map = new Map(startPos);
 
 
     @Override
-    public void runOpMode() {
+    public void init() {
 
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         heading = angles.firstAngle;
 
-        Servo eddie = hardwareMap.servo.get("eddie");
-        Servo clark = hardwareMap.servo.get("clark");
-        Servo hamilton = hardwareMap.servo.get("hamilton");
-        ColorSensor roger = hardwareMap.colorSensor.get("roger");
-        ColorSensor leo = hardwareMap.colorSensor.get("leo");
+//        Servo eddie = hardwareMap.servo.get("eddie");
+//        Servo clark = hardwareMap.servo.get("clark");
+//        Servo hamilton = hardwareMap.servo.get("hamilton");
+//        ColorSensor roger = hardwareMap.colorSensor.get("roger");
+//        ColorSensor leo = hardwareMap.colorSensor.get("leo");
 
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
@@ -94,10 +86,10 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
 
-        imu = (BNO055IMU) hardwareMap.i2cDevice.get("imu");
-
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
+
+        imu = (BNO055IMU) hardwareMap.gyroSensor.get("imu");
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -128,30 +120,26 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
 
         //telemetry.addData(">", "Press Play to start");
         //telemetry.update();
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+//
+//        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
+//        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+//        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+//        VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
+//        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+//        relicTemplate.setName("relicVuMarkTemplate");
+//        relicTrackables.activate();
+//
+//        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+//        telemetry.addData("vuMark", vuMark);
 
-        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-        VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate");
-        relicTrackables.activate();
-
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        telemetry.addData("vuMark", vuMark);
-        waitForStart();
-
-        while (opModeIsActive()) {
-            calibrateIMU();
-            gameState();
-            moveState();
-        }
     }
 
 
     public void moveState() {
+
+        heading = angles.firstAngle;
 
         switch (moveState) {
             case MoveState.STOP:
@@ -223,7 +211,6 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
             case MoveState.TURN_TOWARDS_GOAL:
                 // Orients the bot to face the goal
                 power = .50;
-                boolean turnRight;
                 if (heading <= 180) {
                     turnRight = heading <= angleToGoal() && heading + 180 >= angleToGoal();
                 } else {
@@ -304,16 +291,6 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
         }
     }
 
-
-    public static void calibrateIMU() {
-        BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
-
-        String filename = "AdafruitIMUCalibration.json";
-        File file = AppUtil.getInstance().getSettingsFile(filename);
-        ReadWriteFile.writeFile(file, calibrationData.serialize());
-    }
-
-
     public void telemetry() {
         telemetry.addData("angle to goal ", map.angleToGoal());
         telemetry.addData("Runtime ", getRuntime());
@@ -329,6 +306,14 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
         telemetry.addData("lined up?", linedUpAngle(5));
         telemetry.addData("desired angle", desiredAngle);
         telemetry.addData("moveState", moveState);
+    }
+
+
+    @Override
+    public void loop(){
+        gameState();
+        moveState();
+        telemetry();
     }
 
 
@@ -348,10 +333,4 @@ public abstract class AutonomousBaseVenus extends LinearOpMode {
         return Math.abs(heading - map.angleToGoalRev()) < HEADING_TOLERANCE || (heading > 360 - HEADING_TOLERANCE && map.angleToGoalRev() < HEADING_TOLERANCE || (heading < HEADING_TOLERANCE && map.angleToGoalRev() > 360 - HEADING_TOLERANCE));
     }
 }
-
-
-
-
-
-
 
