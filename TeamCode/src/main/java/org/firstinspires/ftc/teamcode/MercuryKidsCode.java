@@ -6,7 +6,6 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.robotcore.external.Func;
@@ -109,10 +108,10 @@ public class MercuryKidsCode extends OpMode {
             final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) - rightX;
             final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX;
 
-            motorFrontLeft.setPower(v5);//1
-            motorFrontRight.setPower(v6);//2
-            motorBackLeft.setPower(v7);//3
-            motorBackRight.setPower(v8);//4
+            motorFrontLeft.setPower(v5/2);//1
+            motorFrontRight.setPower(v6/2);//2
+            motorBackLeft.setPower(v7/2);//3
+            motorBackRight.setPower(v8/2);//4
 
         } else if (calibToggle == 0) { //regular drive
             double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
@@ -126,10 +125,10 @@ public class MercuryKidsCode extends OpMode {
             final double v3 = (P * sinRAngle) - (P * cosRAngle) + rightX;
             final double v4 = (P * sinRAngle) + (P * cosRAngle) - rightX;
 
-            motorFrontRight.setPower(v1);
-            motorFrontLeft.setPower(v2);
-            motorBackRight.setPower(v3);
-            motorBackLeft.setPower(v4);
+            motorFrontRight.setPower(v1/2);
+            motorFrontLeft.setPower(v2/2);
+            motorBackRight.setPower(v3/2);
+            motorBackLeft.setPower(v4/2);
         }
     }
     private String composeTelemetry() {

@@ -2,13 +2,21 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import static org.firstinspires.ftc.teamcode.Map.angleToGoal;
 import static org.firstinspires.ftc.teamcode.Map.distanceToGoal;
@@ -39,31 +47,40 @@ public abstract class AutonomousBaseVenus extends OpMode {
         public static final int TURN_TOWARDS_ANGLE = 16;
         public static final int FULL_STOP = 17;
     }
+    DcMotor motorFrontRight;
+    DcMotor motorBackLeft;
+    DcMotor motorFrontLeft;
+    DcMotor motorBackRight;
+    DcMotor evangelino;
+    DcMotor wilbert;
+    DcMotor billiam;
+    Orientation angles;
+    Servo eddie;
+    Servo clark;
+    Servo hamilton;
+    ColorSensor roger;
+    ColorSensor leo;
+    Servo franny;
+    Servo donneet;
+    Servo brandy;
 
-    public DcMotor motorFrontRight;
-    public DcMotor motorBackLeft;
-    public DcMotor motorFrontLeft;
-    public DcMotor motorBackRight;
-    public DcMotor evangelino;
-    public DcMotor wilbert;
-    public Orientation angles;
+    int moveState;
+    int gameState;
 
-    public double heading;
-    public double desiredAngle;
-    public double tDiff;
-    public double power;
+    double heading;
+    double desiredAngle;
+    double tDiff;
+    double power;
 
-    public int moveState;
-    public int gameState;
-    public int cDistF, lDistF, dDistF; //Forward distance variables
-    public int cDistS, lDistS, dDistS; //Sideways distance variables
-    public int cDistW, lDistW, dDistW; //Sideways distance variables
-    public int startPos = 6;
-    public int waitTime;
+    int cDistF, lDistF, dDistF; //Forward distance variables
+    int cDistS, lDistS, dDistS; //Sideways distance variables
+    int cDistW, lDistW, dDistW; //Sideways distance variables
+    int startPos = 6;
 
     boolean turnRight;
     double formatAngle;
     BNO055IMU imu;
+    VuforiaLocalizer vuforia;
 
     Map map = new Map(startPos);
 
@@ -71,32 +88,69 @@ public abstract class AutonomousBaseVenus extends OpMode {
     @Override
     public void init() {
 
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        imu.initialize(parameters);
+        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8" +
+                "xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjOD" +
+                "yuPWupm2p7DtSY4TRX5opqFjG" +
+                "QVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);// can help in debugging; otherwise not necessary
+
+        telemetry.addData("little shit", "1234");
+
+        BNO055IMU.Parameters parameter = new BNO055IMU.Parameters();
+        parameter.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        parameter.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameter.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameter.loggingEnabled = true;
+        parameter.loggingTag = "IMU";
+        parameter.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameter);
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         heading = angles.firstAngle;
 
-//        Servo eddie = hardwareMap.servo.get("eddie");
-//        Servo clark = hardwareMap.servo.get("clark");
-//        Servo hamilton = hardwareMap.servo.get("hamilton");
-//        ColorSensor roger = hardwareMap.colorSensor.get("roger");
-//        ColorSensor leo = hardwareMap.colorSensor.get("leo");
+        eddie = hardwareMap.servo.get("eddie");
+        clark = hardwareMap.servo.get("clark");
+        hamilton = hardwareMap.servo.get("hamilton");
+        roger = hardwareMap.colorSensor.get("roger");
+        leo = hardwareMap.colorSensor.get("leo");
+        franny = hardwareMap.servo.get("franny");
+        donneet = hardwareMap.servo.get("donneet");
+        brandy = hardwareMap.servo.get("brandy");
 
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        evangelino = hardwareMap.dcMotor.get("evangelino");
+        wilbert = hardwareMap.dcMotor.get("wilbert");
+        billiam = hardwareMap.dcMotor.get("billiam");
+
+        gameState = 0;
+        moveState = 0;
+        turnRight = false;
+        formatAngle = 0;
+        tDiff = 0;
+
+        dDistW = 1;
+        cDistF = 1;
+        lDistF = 1;
+        dDistF = 1;
+        lDistS = 1;
+        cDistS = 1;
+        dDistS = 1;
+        cDistW = 1;
+        lDistW = 1;
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        telemetry.addData("that little shit", "123");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         // Send telemetry message to signify robot waiting;
@@ -126,23 +180,33 @@ public abstract class AutonomousBaseVenus extends OpMode {
 
         // can help in debugging; otherwise not necessary
 
-        //telemetry.addData(">", "Press Play to start");
-        //telemetry.update();
-//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-//
-//        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
-//        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-//        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-//        VuforiaTrackables relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
-//        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-//        relicTemplate.setName("relicVuMarkTemplate");
-//        relicTrackables.activate();
-//
-//        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-//        telemetry.addData("vuMark", vuMark);
+        telemetry.addData(">", "Press Play to start");
 
     }
+
+        public void vuforia() {
+
+            VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+            VuforiaTrackable relicTemplate = relicTrackables.get(0);
+            relicTemplate.setName("relicVuMarkTemplate");
+
+            relicTrackables.activate();
+
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            switch(vuMark){
+                case UNKNOWN:
+
+                case LEFT:
+
+                case CENTER:
+
+                case RIGHT:
+
+            }
+
+
+        }
+
 
 
     public void moveState() {
@@ -319,9 +383,9 @@ public abstract class AutonomousBaseVenus extends OpMode {
 
     @Override
     public void loop(){
+        vuforia();
         gameState();
         moveState();
-        telemetry();
     }
 
 
@@ -338,7 +402,7 @@ public abstract class AutonomousBaseVenus extends OpMode {
     }
 
     public boolean linedUpRev() {
-        return Math.abs(heading - map.angleToGoalRev()) < HEADING_TOLERANCE || (heading > 360 - HEADING_TOLERANCE && map.angleToGoalRev() < HEADING_TOLERANCE || (heading < HEADING_TOLERANCE && map.angleToGoalRev() > 360 - HEADING_TOLERANCE));
+        return Math.abs(heading - map.angleToGoalRev()) < HEADING_TOLERANCE || (heading > 360 - HEADING_TOLERANCE &&
+                map.angleToGoalRev() < HEADING_TOLERANCE || (heading < HEADING_TOLERANCE && map.angleToGoalRev() > 360 - HEADING_TOLERANCE));
     }
 }
-
