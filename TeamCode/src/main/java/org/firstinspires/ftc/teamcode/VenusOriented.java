@@ -128,9 +128,8 @@ public void loop() {
         telemetry.log().add("saved to '%s'", filename); }
 
     if (gamepad1.x) { //toggle on
-        calibToggle = 1; }
-
-    if (gamepad1.b) { //toggle off
+        calibToggle = 1;
+    } else if (gamepad1.b) { //toggle off
         calibToggle = 0; }
 
     if (calibToggle == 1) { //when toggled we are oriented with this math

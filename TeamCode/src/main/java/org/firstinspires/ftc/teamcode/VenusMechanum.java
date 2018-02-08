@@ -29,10 +29,10 @@ public class VenusMechanum extends OpMode {
     private Servo eddie = null; // Flicker
     private Servo clark = null; // Dropper
 // RELIC \\
-    //private DcMotor georgery; // Extender
-    //private Servo brandy = null; // Elbow
-    //private Servo franny = null; // Left Finger
-    //private Servo mobert = null; // Right Finger
+    private DcMotor georgery; // Extender
+    private Servo brandy = null; // Elbow
+    private Servo franny = null; // Left Finger
+    private Servo mobert = null; // Right Finger
 // VARIABLES \\
     private double elbowPos;
 
@@ -96,34 +96,30 @@ public void loop() {
     motorBackLeft.setPower(v4);
 
 // RELIC //
-//    if (gamepad1.dpad_up) { // Extension
-//        georgery.setPower(0.75); }
-//    else if (gamepad1.dpad_down) {
-//        georgery.setPower(-0.75); }
-//    else {
-//        georgery.setPower(0.0); }
-//
-//    if (gamepad1.right_bumper) { // Grabbing
-//        elbowPos += .01;
-//        brandy.setPosition(elbowPos); }
-//
-//    else if (gamepad1.left_bumper) {
-//        elbowPos -= .01;
-//        brandy.setPosition(elbowPos); }
-//
-//    if (gamepad1.right_trigger > .7) { // Grabbing
-//        franny.setPosition(0.00);
-//        mobert.setPosition(0.00); }
-//    else if (gamepad1.left_trigger > .7) {
-//        franny.setPosition(1.00);
-//        mobert.setPosition(1.00); }
-//
-//    if (gamepad2.dpad_up) {
-//            brandy.setPosition(0.3); } // Elbow
-//
-//    if (gamepad2.dpad_down) {
-//            brandy.setPosition(0.9); }
-//
+    if (gamepad1.dpad_up) { // Extension
+        georgery.setPower(0.75); }
+    else if (gamepad1.dpad_down) {
+        georgery.setPower(-0.75);
+    } else {
+        georgery.setPower(0.00); }
+
+    if (gamepad1.right_bumper) { // Grabbing
+        elbowPos += 0.01;
+        brandy.setPosition(elbowPos); }
+    else if (gamepad1.left_bumper) {
+        elbowPos -= 0.01;
+        brandy.setPosition(elbowPos); }
+
+    if (gamepad1.right_trigger > .7) { // Grabbing
+        mobert.setPosition(0.10); }
+    else if (gamepad1.left_trigger > .7) {
+        mobert.setPosition(0.90); }
+
+    if (gamepad2.dpad_up) {
+        brandy.setPosition(0.30); } // Elbow
+    if (gamepad2.dpad_down) {
+        brandy.setPosition(0.90); }
+
 //    if (gamepad2.dpad_left) {
 //            franny.setPosition(0.5); }
 //
@@ -137,40 +133,30 @@ public void loop() {
 
 // FOUR BAR WITH ENCODERS //
     if (gamepad2.a) {
-        evangelino.setPower(-.90);
-        wilbert.setPower(.90);
-
+        evangelino.setPower(-0.90);
+        wilbert.setPower(0.90);
     } else if (gamepad2.y) {
-        evangelino.setPower(.90);
-        wilbert.setPower(-.90);
-
+        evangelino.setPower(0.90);
+        wilbert.setPower(-0.90);
     } else {
-        evangelino.setPower(0);
-        wilbert.setPower(0);
-    }
+        evangelino.setPower(0.00);
+        wilbert.setPower(0.00); }
 
 // GATE //
     if (gamepad2.x) {
-        donneet.setPosition(1);
+        donneet.setPosition(0.90);
     } else if (gamepad2.b) {
-        donneet.setPosition(.5);
-    }
+        donneet.setPosition(0.50); }
+    if(gamepad1.a) {
+        eddie.setPosition(0.55); }
 
 // CAR WASHER //
-    if (gamepad2.right_bumper) {
-        billiam.setPower(.75);
-    } else if (gamepad2.right_trigger > .7) {
-        billiam.setPower(-.75);
-    } else {
-        billiam.setPower(0.00);
-    }
+    billiam.setPower(-gamepad2.left_stick_y);
 
 // GLYPH FLIPPER //
     if (gamepad2.left_trigger > .7) {
-        hamilton.setPosition(0.3);
+        hamilton.setPosition(0.30);
     } else if (gamepad2.left_bumper) {
-        hamilton.setPosition(1);
+        hamilton.setPosition(1.00);
     } else if (gamepad2.dpad_up) {
-        hamilton.setPosition(0.4); }
-    }
-}
+        hamilton.setPosition(0.40); } } }
