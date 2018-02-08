@@ -22,6 +22,8 @@ public class Map extends LinearOpMode {
     static double curX;
     static double curY;
 
+    double p;
+
     public void runOpMode(){
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
@@ -59,6 +61,10 @@ public class Map extends LinearOpMode {
         motorFrontRight.setTargetPosition((int)strafeDist);
         motorBackLeft.setTargetPosition((int)strafeDist);
         motorFrontLeft.setTargetPosition((int)strafeDist);
+
+        if(x > y){
+            p = (x/y);
+        }
 
         motorFrontLeft.setPower ();
         motorBackRight.setPower ();

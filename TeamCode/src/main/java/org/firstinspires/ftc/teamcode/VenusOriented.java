@@ -178,7 +178,15 @@ public void loop() {
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
+
+        telemetry.addData("fr",v1);
+        telemetry.addData("fl",v2);
+        telemetry.addData("br",v3);
+        telemetry.addData("bl",v4);
+
+        telemetry.update();
     }
+
 
 // RELIC //
     if (gamepad1.dpad_up) { // Extension
