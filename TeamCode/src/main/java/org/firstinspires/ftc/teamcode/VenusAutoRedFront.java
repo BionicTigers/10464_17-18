@@ -146,6 +146,7 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 telemetry.update();
 
+
                 clark.setPosition(0.21);
                 sleep(3000);
 
@@ -182,17 +183,17 @@ public class VenusAutoRedFront extends LinearOpMode {
 
                 //MOVE
 
-                driveBackward(.9, ralph);
-                pointTurnRight(.9, 265);
+                driveBackward(.5, ralph);
+                pointTurnRight(.5, 250);
 
-                driveBackward(.9, 120);
+                driveBackward(.5, 120);
 
                 hamilton.setPosition(1);
                 sleep(500);
-                driveBackward(.9, -120);
-                driveBackward(.9, 130);
+                driveBackward(.5, -120);
+                driveBackward(.5, 130);
 
-                driveBackward(.9, -240);
+                driveBackward(.5, -120);
 
                 hamilton.setPosition(.3);
 
