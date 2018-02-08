@@ -62,14 +62,28 @@ public class Map extends LinearOpMode {
         motorBackLeft.setTargetPosition((int)strafeDist);
         motorFrontLeft.setTargetPosition((int)strafeDist);
 
-        if(x > y){
-            p = (x/y);
+        if(Math.abs(x) > Math.abs(y)){
+            y = y/x;
+            x = x/x;
+        } else {
+            x = x/y;
+            y = y/y;
         }
 
-        motorFrontLeft.setPower ();
-        motorBackRight.setPower ();
-        motorBackLeft.setPower  ();
-        motorFrontRight.setPower();
+        double P = Math.hypot(x, y);
+        double robotAngle = Math.atan2(y, x);
+        double sinRAngle = Math.sin(robotAngle);
+        double cosRAngle = Math.cos(robotAngle);
+
+        final double v1 = (P * sinRAngle) + (P * cosRAngle);
+        final double v2 = (P * sinRAngle) - (P * cosRAngle);
+        final double v3 = (P * sinRAngle) - (P * cosRAngle);
+        final double v4 = (P * sinRAngle) + (P * cosRAngle);
+
+        motorFrontLeft.setPower (v1);
+        motorBackRight.setPower (v2);
+        motorBackLeft.setPower  (v3);
+        motorFrontRight.setPower(v4);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
