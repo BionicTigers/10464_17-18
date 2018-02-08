@@ -43,10 +43,10 @@ public class VenusOriented extends OpMode {
     public Servo eddie = null; // Flicker
     public Servo clark = null; // Dropper
 // RELIC \\
-    //public DcMotor georgery; // Extender
-    //public Servo brandy = null; // Elbow
+    public DcMotor georgery; // Extender
+    public Servo brandy = null; // Elbow
     //public Servo franny = null; // Left Finger
-    //public Servo mobert = null; // Right Finger
+    public Servo mobert = null; // Right Finger
 //IMU\\
     BNO055IMU imu;
     public Orientation angles;
@@ -80,10 +80,10 @@ public class VenusOriented extends OpMode {
     eddie = hardwareMap.servo.get("eddie");
     clark = hardwareMap.servo.get("clark");
 // RELIC \\
-    //georgery = hardwareMap.dcMotor.get("georgery");
-    //brandy = hardwareMap.servo.get("brandy");
+    georgery = hardwareMap.dcMotor.get("georgery");
+    brandy = hardwareMap.servo.get("brandy");
     //franny = hardwareMap.servo.get("franny");
-    //mobert = hardwareMap.servo.get("mobert");
+    mobert = hardwareMap.servo.get("mobert");
 //IMU\\
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
     parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -180,34 +180,35 @@ public void loop() {
     }
 
 // RELIC //
-//    if (gamepad1.dpad_up) { // Extension
-//        georgery.setPower(0.75); }
-//    else if (gamepad1.dpad_down) {
-//        georgery.setPower(-0.75); }
-//    else {
-//        georgery.setPower(0.0); }
-//
-//    if (gamepad1.right_bumper) { // Grabbing
-//        elbowPos += .01;
-//        brandy.setPosition(elbowPos); }
-//
-//    else if (gamepad1.left_bumper) {
-//        elbowPos -= .01;
-//        brandy.setPosition(elbowPos); }
-//
-//    if (gamepad1.right_trigger > .7) { // Grabbing
-//        franny.setPosition(0.00);
-//        mobert.setPosition(0.00); }
-//    else if (gamepad1.left_trigger > .7) {
-//        franny.setPosition(1.00);
-//        mobert.setPosition(1.00); }
-//
-//    if (gamepad2.dpad_up) {
-//            brandy.setPosition(0.3); } // Elbow
-//
-//    if (gamepad2.dpad_down) {
-//            brandy.setPosition(0.9); }
-//
+    if (gamepad1.dpad_up) { // Extension
+        georgery.setPower(0.75); }
+    else if (gamepad1.dpad_down) {
+        georgery.setPower(-0.75); }
+    else {
+        georgery.setPower(0.0); }
+
+    if (gamepad1.right_bumper) { // Grabbing
+        elbowPos += .01;
+        brandy.setPosition(elbowPos); }
+
+    else if (gamepad1.left_bumper) {
+        elbowPos -= .01;
+        brandy.setPosition(elbowPos); }
+
+    if (gamepad1.right_trigger > .7) { // Grabbing
+
+        mobert.setPosition(0.00); }
+
+    else if (gamepad1.left_trigger > .7) {
+
+        mobert.setPosition(1.00); }
+
+    if (gamepad2.dpad_up) {
+            brandy.setPosition(0.3); } // Elbow
+
+    if (gamepad2.dpad_down) {
+            brandy.setPosition(0.9); }
+
 //    if (gamepad2.dpad_left) {
 //            franny.setPosition(0.5); }
 //

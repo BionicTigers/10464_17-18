@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
@@ -31,6 +32,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
     //public Servo burr; //Glyph Flipper 2
     public ElapsedTime runtime = new ElapsedTime();
     int i;
+    int ralph;
     boolean blue;
     private Servo clark; //drop down servo (for color sensor)
     private Servo eddie; //swing servo (for color sensor)
@@ -87,200 +89,40 @@ public class VenusAutoRedCorner extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
+        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8" +
+                "xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjOD" +
+                "yuPWupm2p7DtSY4TRX5opqFjG" +
+                "QVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necess
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
 
-        telemetry.addData(">", "Press Play to start");
-        telemetry.update();
+        relicTrackables.activate();
         waitForStart();
 
+        while (opModeIsActive()) {
 
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                telemetry.addData("VuMark", "%s visible", vuMark);
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
 
-        telemetry.addData("VuMark", vuMark);
-
-        switch (vuMark) {
-            case RIGHT: //Go to Right column
-                clark.setPosition(0.2);
-                sleep(3000);
-
-
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.45);
-
-                    blue = true;
-                    sleep(1000);
-                }
-                else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.65);
-                    sleep(1000);
-
-                    blue = false;
-                }
-                else {
-                    telemetry.addData("eddie", "NOT CORRECT");
-                    sleep(250);
+                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    ralph = 215;
+                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    ralph = 275;
+                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    ralph = 335;
+                } else {
+                    ralph = 275;
                 }
 
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                DriveBackward(.5, 345);
-                sleep(1000);
-
-                StrafeRight(.7, 100);
-                sleep(1000);
-
-                //PointTurnRight(.5,80);
-                DriveBackward(.5,75);
-                sleep(2000);
-
-                hamilton.setPosition(1);
-                //burr.setPosition(1);
-                sleep(500);
-
-                DriveForward(.5,30);
-                sleep(1000);
-
-                hamilton.setPosition(.3);
-                //burr.setPosition(0.3);
-
-                motorFrontLeft.setPower(0);
-                motorBackRight.setPower(0);
-                motorBackLeft.setPower(0);
-                motorFrontRight.setPower(0);
-                sleep(1000);
-
-                break;
-            case LEFT: //Go to Left column
-                clark.setPosition(0.2);
-                sleep(3000);
+                telemetry.addData("ralph = ", ralph);
 
 
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.35);
-
-                    blue = true;
-                    sleep(1000);
-                }
-                else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.65);
-                    sleep(1000);
-
-                    blue = false;
-                }
-                else {
-                    telemetry.addData("eddie", "NOT CORRECT");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                DriveBackward(.5, 345);
-                sleep(1000);
-
-                StrafeRight(.7, 330);
-                sleep(1000);
-
-                //PointTurnRight(.5,80);
-                DriveBackward(.5,75);
-                sleep(2000);
-
-                hamilton.setPosition(1);
-                //burr.setPosition(1);
-                sleep(500);
-
-                DriveForward(.5,30);
-                sleep(1000);
-
-                hamilton.setPosition(.3);
-                //burr.setPosition(0.3);
-
-                motorFrontLeft.setPower(0);
-                motorBackRight.setPower(0);
-                motorBackLeft.setPower(0);
-                motorFrontRight.setPower(0);
-                sleep(1000);
-
-
-                break;
-            case CENTER: //Go to Center column
-                clark.setPosition(0.2);
-                sleep(3000);
-
-
-                if (leo.blue() < roger.blue()) {
-                    eddie.setPosition(0.45);
-
-                    blue = true;
-                    sleep(1000);
-                }
-                else if (leo.blue() > roger.blue()) {
-                    eddie.setPosition(0.65);
-                    sleep(1000);
-
-                    blue = false;
-                }
-                else {
-                    telemetry.addData("eddie", "NOT CORRECT");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.8);
-                sleep(1000);
-
-                //MOVE
-
-                DriveBackward(.5, 345);
-                sleep(1000);
-
-
-                StrafeRight(.7, 270);
-                sleep(1000);
-
-                //PointTurnRight(.5,80);
-                DriveBackward(.5,70);
-                sleep(2000);
-
-                hamilton.setPosition(1);
-                //burr.setPosition(1);
-                sleep(500);
-
-                DriveForward(.5,28);
-                sleep(1000);
-
-                hamilton.setPosition(.3);
-                //burr.setPosition(0.3);
-                motorFrontLeft.setPower(0);
-                motorBackRight.setPower(0);
-                motorBackLeft.setPower(0);
-                motorFrontRight.setPower(0);
-                sleep(1000);
-
-                break;
-
-            default: //ACTUAL START OF PROGRAM
-                //JEWELS//
-                telemetry.addData("vumark", "you dumbass, its not reading");
                 clark.setPosition(0.23);
                 sleep(3000);
 
@@ -317,30 +159,30 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
                 //MOVE
 
-                DriveBackward(.5, 345);
-                sleep(1000);
-
-//surround with if
-                StrafeRight(.7, 275);
+                driveBackward(.5, 345);
                 sleep(1000);
 
 
-                DriveBackward(.5, 70);
+                strafeRight(.7, ralph);
+                sleep(1000);
+
+
+                driveBackward(.5, 70);
                 sleep(2000);
 
                 hamilton.setPosition(1);
                 sleep(500);
 
-                DriveBackward(.5, -80);
+                driveBackward(.5, -80);
                 sleep(250);
 
                 hamilton.setPosition(.3);
                 sleep(1000);
 
-                DriveBackward(.5, 80);
+                driveBackward(.5, 80);
                 sleep(500);
 
-                DriveBackward(.5, -60);
+                driveBackward(.5, -60);
                 sleep(500);
 
                 motorFrontLeft.setPower(0);
@@ -350,24 +192,14 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 sleep(10000);
 
                 break;
+            }
         }
-
-        relicTrackables.activate();
-
-        while (opModeIsActive()) {
-
-
-        }
-
-        idle();
-        telemetry.update();
     }
-
 //    String format(OpenGLMatrix transformationMatrix) {
 //        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
 
 
-    public void DriveForward ( double power, int distance){
+    public void driveForward ( double power, int distance){
 
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
@@ -404,7 +236,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
         sleep(500);
     }
 
-    public void DriveBackward(double power, int distance) {
+    public void driveBackward(double power, int distance) {
 
         motorBackRight.setTargetPosition(-distance);
         motorFrontRight.setTargetPosition(-distance);
@@ -519,7 +351,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
     }
 
 
-    public void StrafeLeft(double power, int distance) {
+    public void strafeLeft(double power, int distance) {
 
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
@@ -558,7 +390,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
     }
 
 
-    public void StrafeRight(double power, int distance) {
+    public void strafeRight(double power, int distance) {
 
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);

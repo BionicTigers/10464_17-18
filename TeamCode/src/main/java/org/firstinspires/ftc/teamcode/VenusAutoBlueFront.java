@@ -9,11 +9,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -27,16 +22,17 @@ public class VenusAutoBlueFront extends LinearOpMode {
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
-    public DcMotor motorFrontLeft;
-    public DcMotor motorBackRight;
-    public DcMotor motorFrontRight;
-    public DcMotor motorBackLeft;
+    public static DcMotor motorFrontLeft;
+    public static DcMotor motorBackRight;
+    public static DcMotor motorFrontRight;
+    public static DcMotor motorBackLeft;
     public DcMotor wilbert; //Four Bar Right
     public DcMotor evangelino; //Four Bar Left
     public Servo hamilton; //Glyph Flipper
     //public Servo burr; //Glyph Flipper 2
     public ElapsedTime runtime = new ElapsedTime();
     int i;
+    int ralph;
     boolean blue;
     private Servo clark; //drop down servo (for color sensor)
     private Servo eddie; //swing servo (for color sensor)
@@ -93,46 +89,38 @@ public class VenusAutoBlueFront extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjODyuPWupm2p7DtSY4TRX5opqFjGQVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
+        parameters.vuforiaLicenseKey = "AfBkGLH/////AAAAGUUS7r9Ue00upoglw/0yqTBLwhqYHpjwUK9zxmWMMFGuNGPjo/RjNOTsS8POmdQLHwe3/75saYsyb+mxz6p4O8" +
+                "xFwDT7FEYMmKW2NKaLKCA2078PZgJjnyw+34GV8IBUvi2SOre0m/g0X5eajpAhJ8ZFYNIMbUfavjQX3O7P0UHyXsC3MKxfjMzIqG1AgfRevcR/ONOJlONZw7YIZU3STjOD" +
+                "yuPWupm2p7DtSY4TRX5opqFjG" +
+                "QVKWa2IlNoszsN0szgW/xJ1Oz5VZp4oDRS8efG0jOq1QlGw7IJOs4XXZMcsk0RW/70fVeBiT+LMzM8Ih/BUxtVVK4pcLMpb2wlzdKVLkSD8LOpaFWmgOhxtNz2M";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-        //telemetry.addData(">", "Press Play to start");
-        //telemetry.update();
-        waitForStart();
 
         relicTrackables.activate();
+        waitForStart();
 
         while (opModeIsActive()) {
+
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
-                telemetry.addData("Pose", format(pose));
-                if (pose != null) {
-                    VectorF trans = pose.getTranslation();
-                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
-                    // Extract the X, Y, and Z components of the offset of the target relative to the robot
-                    double tX = trans.get(0);
-                    double tY = trans.get(1);
-                    double tZ = trans.get(2);
-
-                    // Extract the rotational components of the target relative to the robot
-                    double rX = rot.firstAngle;
-                    double rY = rot.secondAngle;
-                    double rZ = rot.thirdAngle;
+                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    ralph = 440;
+                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    ralph = 520;
+                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    ralph = 600;
+                } else {
+                    ralph = 520;
                 }
-            } else {
-                telemetry.addData("VuMark", "not visible");
-            }
 
-            telemetry.update();
-
-            while(opModeIsActive()){
+                telemetry.update();
 
                 telemetry.addData("vumark", "you dumbass, its not reading");
                 clark.setPosition(0.23);
@@ -162,20 +150,8 @@ public class VenusAutoBlueFront extends LinearOpMode {
                 clark.setPosition(0.8);
                 sleep(1000);
                 //MOVE
-//                if(vuMark == RelicRecoveryVuMark.LEFT){
-//                    driveBackward(.5,-420);
-//                }
-//                else if(vuMark == RelicRecoveryVuMark.CENTER){
-//                    driveBackward(.5,-480);
-//                }
-//                else if(vuMark == RelicRecoveryVuMark.RIGHT){
-//                    driveBackward(.5,-530);
-//                }
-//                else{
-//                    driveBackward(.5,-480);
-//                }
 
-                driveBackward(.5,-520);
+                driveBackward(.5,-ralph);
                 pointTurnRight(.5, 230);
                 sleep(1000);
                 driveBackward(.5, 120);
@@ -184,6 +160,8 @@ public class VenusAutoBlueFront extends LinearOpMode {
                 sleep(1000);
                 driveBackward(.5, -75);
                 driveBackward(.5, 100);
+                driveBackward(.5,-50);
+
                 sleep(500);
                 hamilton.setPosition(.3);
                 sleep(500);
@@ -199,7 +177,7 @@ public class VenusAutoBlueFront extends LinearOpMode {
 
 
 
-    public void driveForward ( double power, int distance){
+    public static void driveForward ( double power, int distance){
 
         motorBackRight.setTargetPosition(distance);
         motorFrontRight.setTargetPosition(distance);
@@ -228,12 +206,11 @@ public class VenusAutoBlueFront extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        sleep(500);
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        sleep(500);
+
     }
 
     public void driveBackward(double power, int distance) {
