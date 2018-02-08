@@ -60,10 +60,18 @@ public class Map extends LinearOpMode {
         motorBackLeft.setTargetPosition((int)strafeDist);
         motorFrontLeft.setTargetPosition((int)strafeDist);
 
-        motorFrontLeft.setPower ();
-        motorBackRight.setPower ();
-        motorBackLeft.setPower  ();
-        motorFrontRight.setPower();
+
+
+
+
+
+
+
+
+        motorFrontLeft.setPower (v1);
+        motorBackRight.setPower (v2);
+        motorBackLeft.setPower  (v3);
+        motorFrontRight.setPower(v4);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
