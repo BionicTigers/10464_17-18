@@ -108,10 +108,10 @@ public class MercuryKidsCode extends OpMode {
             final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) - rightX;
             final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX;
 
-            motorFrontLeft.setPower(v5/2);//1
-            motorFrontRight.setPower(v6/2);//2
-            motorBackLeft.setPower(v7/2);//3
-            motorBackRight.setPower(v8/2);//4
+            motorFrontLeft.setPower(v5);//1
+            motorFrontRight.setPower(v6);//2
+            motorBackLeft.setPower(v7);//3
+            motorBackRight.setPower(v8);//4
 
         } else if (calibToggle == 0) { //regular drive
             double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
