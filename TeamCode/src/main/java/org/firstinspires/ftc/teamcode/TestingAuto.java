@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 
-@Autonomous(name="testing auto")
+@Autonomous(name="Testing Auto")
 
 public class TestingAuto extends LinearOpMode {
 
