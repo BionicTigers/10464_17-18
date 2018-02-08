@@ -125,16 +125,13 @@ public void loop() {
         String filename = "BNO055IMUCalibration.json";
         File file = AppUtil.getInstance().getSettingsFile(filename);
         ReadWriteFile.writeFile(file, calibrationData.serialize());
-        telemetry.log().add("saved to '%s'", filename);
-    }
+        telemetry.log().add("saved to '%s'", filename); }
 
     if (gamepad1.x) { //toggle on
-        calibToggle = 1;
-    }
+        calibToggle = 1; }
 
     if (gamepad1.b) { //toggle off
-        calibToggle = 0;
-    }
+        calibToggle = 0; }
 
     if (calibToggle == 1) { //when toggled we are oriented with this math
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
@@ -161,7 +158,6 @@ public void loop() {
         telemetry.addData("v5", v5);
         telemetry.addData("v6", v6);
         telemetry.addData("angles.firstAngle", angles.firstAngle);
-
     } else if (calibToggle == 0) { //regular drive
         double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
@@ -179,44 +175,37 @@ public void loop() {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
-        telemetry.addData("fr",v1);
-        telemetry.addData("fl",v2);
-        telemetry.addData("br",v3);
-        telemetry.addData("bl",v4);
+        telemetry.addData("FR",v1);
+        telemetry.addData("FL",v2);
+        telemetry.addData("BR",v3);
+        telemetry.addData("BL",v4);
 
-        telemetry.update();
-    }
-
+        telemetry.update(); }
 
 // RELIC //
     if (gamepad1.dpad_up) { // Extension
         georgery.setPower(0.75); }
     else if (gamepad1.dpad_down) {
-        georgery.setPower(-0.75); }
-    else {
-        georgery.setPower(0.0); }
+        georgery.setPower(-0.75);
+    } else {
+        georgery.setPower(0.00); }
 
     if (gamepad1.right_bumper) { // Grabbing
-        elbowPos += .01;
+        elbowPos += 0.01;
         brandy.setPosition(elbowPos); }
-
     else if (gamepad1.left_bumper) {
-        elbowPos -= .01;
+        elbowPos -= 0.01;
         brandy.setPosition(elbowPos); }
 
     if (gamepad1.right_trigger > .7) { // Grabbing
-
-        mobert.setPosition(0.00); }
-
+        mobert.setPosition(0.10); }
     else if (gamepad1.left_trigger > .7) {
-
-        mobert.setPosition(1.00); }
+        mobert.setPosition(0.90); }
 
     if (gamepad2.dpad_up) {
-            brandy.setPosition(0.3); } // Elbow
-
+            brandy.setPosition(0.30); } // Elbow
     if (gamepad2.dpad_down) {
-            brandy.setPosition(0.9); }
+            brandy.setPosition(0.90); }
 
 //    if (gamepad2.dpad_left) {
 //            franny.setPosition(0.5); }
@@ -231,40 +220,34 @@ public void loop() {
 
 // FOUR BAR WITH ENCODERS //
     if (gamepad2.a) {
-        evangelino.setPower(-.90);
-        wilbert.setPower(.90);
-
+        evangelino.setPower(-0.90);
+        wilbert.setPower(0.90);
     } else if (gamepad2.y) {
-        evangelino.setPower(.90);
-        wilbert.setPower(-.90);
-
+        evangelino.setPower(0.90);
+        wilbert.setPower(-0.90);
     } else {
-        evangelino.setPower(0);
-        wilbert.setPower(0);
-    }
+        evangelino.setPower(0.00);
+        wilbert.setPower(0.00); }
 
 // GATE //
     if (gamepad2.x) {
-        donneet.setPosition(1);
+        donneet.setPosition(0.90);
     } else if (gamepad2.b) {
-        donneet.setPosition(.5);
-    }
-
-    if(gamepad1.a){
-        eddie.setPosition(.55);
-    }
+        donneet.setPosition(0.50); }
+    if(gamepad1.a) {
+        eddie.setPosition(0.55); }
 
 // CAR WASHER //
     billiam.setPower(-gamepad2.left_stick_y);
 
 // GLYPH FLIPPER //
     if (gamepad2.left_trigger > .7) {
-        hamilton.setPosition(0.3);
+        hamilton.setPosition(0.30);
     } else if (gamepad2.left_bumper) {
-        hamilton.setPosition(1);
+        hamilton.setPosition(1.00);
     } else if (gamepad2.dpad_up) {
-        hamilton.setPosition(0.4); }
-}
+        hamilton.setPosition(0.40); } }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
