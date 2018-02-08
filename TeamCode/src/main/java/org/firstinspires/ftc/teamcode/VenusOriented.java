@@ -140,13 +140,14 @@ public void loop() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         double P = Math.hypot(-gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
+        double D = (robotAngle - angles.firstAngle);
         double rightX = -gamepad1.right_stick_x;
 
 
-        final double v5 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) - rightX;
-        final double v6 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) + rightX;
-        final double v7 = P * Math.sin(robotAngle - angles.firstAngle) - P * Math.cos(robotAngle - angles.firstAngle) - rightX;
-        final double v8 = P * Math.sin(robotAngle - angles.firstAngle) + P * Math.cos(robotAngle - angles.firstAngle) + rightX;
+        final double v5 = P * Math.sin(D) + P * Math.cos(D) - rightX;
+        final double v6 = P * Math.sin(D) - P * Math.cos(D) + rightX;
+        final double v7 = P * Math.sin(D) - P * Math.cos(D) - rightX;
+        final double v8 = P * Math.sin(D) + P * Math.cos(D) + rightX;
 
         motorFrontLeft.setPower(v5);//1
         motorFrontRight.setPower(v6);//2
