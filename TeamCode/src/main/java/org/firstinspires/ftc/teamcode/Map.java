@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 /**
@@ -10,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 @Autonomous(name="Map")
 
-public class Map extends LinearOpMode {
+public abstract class Map extends LinearOpMode {
 
     public static DcMotor motorFrontLeft;
     public static DcMotor motorBackRight;
@@ -22,10 +23,7 @@ public class Map extends LinearOpMode {
     static double curX;
     static double curY;
 
-    double p;
-
-    public void runOpMode(){
-
+    public static void setup(HardwareMap hardwareMap){
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -37,7 +35,7 @@ public class Map extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public double revTicks = 173.333333333333333;
+    public static double revTicks = 173.333333333333333;
 
     public static void setGoal(double x, double y) {
         goalX = x;
@@ -49,13 +47,13 @@ public class Map extends LinearOpMode {
         curY = y;
     }
 
-    public double x = goalX - curX;
+    public static double x = goalX - curX;
 
-    public double y = goalY - curY;
+    public static double y = goalY - curY;
 
-    public double strafeDist = Math.sqrt(x * x + y * y) * revTicks;
+    public static double strafeDist = Math.sqrt(x * x + y * y) * revTicks;
 
-    public void driveToGoal(){
+    public static void driveToGoal(){
 
         motorBackRight.setTargetPosition((int)strafeDist);
         motorFrontRight.setTargetPosition((int)strafeDist);
