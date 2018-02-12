@@ -22,6 +22,7 @@ public abstract class Map extends LinearOpMode {
     static double curX;
     static double curY;
 
+
     public void runOpMode(){
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
@@ -33,6 +34,8 @@ public abstract class Map extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
+    fg
 
     public static double revTicks = 173.333333333333333;
 
@@ -62,7 +65,7 @@ public abstract class Map extends LinearOpMode {
         if(Math.abs(x) > Math.abs(y)){
             y = y/x;
             x = x/x;
-        } else {
+         } else {
             x = x/y;
             y = y/y;
         }
@@ -101,7 +104,11 @@ public abstract class Map extends LinearOpMode {
 
     }
 
+
 }
+
+
+
 
 
 

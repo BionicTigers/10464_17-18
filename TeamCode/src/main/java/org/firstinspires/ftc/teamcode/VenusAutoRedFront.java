@@ -193,7 +193,7 @@ public class VenusAutoRedFront extends LinearOpMode {
                 driveBackward(.5, -120);
                 driveBackward(.5, 130);
 
-                driveBackward(.5, -120);
+                driveBackward(.5, -100);
 
                 hamilton.setPosition(.3);
 

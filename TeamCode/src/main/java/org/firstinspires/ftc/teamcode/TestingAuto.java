@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -9,10 +10,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
+import static org.firstinspires.ftc.teamcode.Map.driveToGoal;
+import static org.firstinspires.ftc.teamcode.Map.setGoal;
+import static org.firstinspires.ftc.teamcode.Map.setRobot;
+
 
 @Autonomous(name="Testing Auto")
 
-public class TestingAuto extends Map {
+public class TestingAuto extends LinearOpMode {
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
@@ -81,12 +86,15 @@ public class TestingAuto extends Map {
 
         waitForStart();
 
-        setRobot(10, 2);
+        while (opModeIsActive()) {
 
-        setGoal(11, 5);
+            setRobot(10, 2);
 
-        driveToGoal();
+            setGoal(11, 5);
 
+            driveToGoal();
+
+        }
     }
 }
 

@@ -125,10 +125,10 @@ public class MercuryKidsCode extends OpMode {
             final double v3 = (P * sinRAngle) - (P * cosRAngle) + rightX;
             final double v4 = (P * sinRAngle) + (P * cosRAngle) - rightX;
 
-            motorFrontRight.setPower(v1/2);
-            motorFrontLeft.setPower(v2/2);
-            motorBackRight.setPower(v3/2);
-            motorBackLeft.setPower(v4/2);
+            motorFrontRight.setPower(v1);
+            motorFrontLeft.setPower(v2);
+            motorBackRight.setPower(v3);
+            motorBackLeft.setPower(v4);
         }
     }
     private String composeTelemetry() {

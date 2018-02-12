@@ -111,19 +111,19 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
 
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    ralph = 215;
+                    ralph = 180;
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    ralph = 275;
+                    ralph = 260;
                 } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    ralph = 335;
+                    ralph = 340;
                 } else {
-                    ralph = 275;
+                    ralph = 260;
                 }
 
                 telemetry.addData("ralph = ", ralph);
 
 
-                clark.setPosition(0.23);
+                clark.setPosition(0.21);
                 sleep(3000);
 
                 telemetry.addData("leo", leo.blue());
@@ -160,15 +160,15 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 //MOVE
 
                 driveBackward(.5, 345);
-                sleep(1000);
+                sleep(500);
 
 
                 strafeRight(.7, ralph);
-                sleep(1000);
+                sleep(500);
 
 
                 driveBackward(.5, 70);
-                sleep(2000);
+                sleep(500);
 
                 hamilton.setPosition(1);
                 sleep(500);
@@ -177,7 +177,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 sleep(250);
 
                 hamilton.setPosition(.3);
-                sleep(1000);
+                sleep(500);
 
                 driveBackward(.5, 80);
                 sleep(500);
