@@ -217,6 +217,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (motorBackRight.isBusy() && motorFrontRight.isBusy() && motorBackLeft.isBusy() && motorFrontLeft.isBusy())  {
+            telemetry.addData("moving"," forward");
         }
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);

@@ -189,22 +189,22 @@ public void loop() {
     } else {
         georgery.setPower(0.00); }
 
-    if (gamepad1.right_bumper) { // Grabbing
-        elbowPos += 0.01;
-        brandy.setPosition(elbowPos); }
-    else if (gamepad1.left_bumper) {
-        elbowPos -= 0.01;
-        brandy.setPosition(elbowPos); }
+//    if (gamepad1.right_bumper) { // Grabbing
+//        elbowPos += 0.01;
+//        brandy.setPosition(elbowPos); }
+//    else if (gamepad1.left_bumper) {
+//        elbowPos -= 0.01;
+//        brandy.setPosition(elbowPos); }
 
-    if (gamepad1.right_trigger > .7) { // Grabbing
-        mobert.setPosition(0.10); }
-    else if (gamepad1.left_trigger > .7) {
-        mobert.setPosition(0.90); }
+    if (gamepad2.right_trigger > .7) { // Grabbing
+        brandy.setPosition(0.10); }
+    else if (gamepad2.left_trigger > .7) {
+        brandy.setPosition(0.90); }
 
     if (gamepad2.dpad_up) {
-            brandy.setPosition(0.30); } // Elbow
+            mobert.setPosition(0.10); } // Elbow
     if (gamepad2.dpad_down) {
-            brandy.setPosition(0.90); }
+            mobert.setPosition(0.90); }
 
 //    if (gamepad2.dpad_left) {
 //            franny.setPosition(0.5); }

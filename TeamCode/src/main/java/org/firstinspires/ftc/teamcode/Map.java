@@ -17,10 +17,10 @@ public abstract class Map extends LinearOpMode {
     public static DcMotor motorFrontRight;
     public static DcMotor motorBackLeft;
 
-    static double goalX;
-    static double goalY;
-    static double curX;
-    static double curY;
+    static double goalX = 0;
+    static double goalY = 0;
+    static double curX = 0;
+    static double curY = 0;
 
 
     public void runOpMode(){
@@ -33,15 +33,21 @@ public abstract class Map extends LinearOpMode {
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        telemetry.addData("init", "complete");
     }
 
-    fg
 
     public static double revTicks = 173.333333333333333;
 
+    /**
+     * Precondition: Must call {@code setRobot} first
+     */
     public static void setGoal(double x, double y) {
         goalX = x;
         goalY = y;
+
+        updateXY();
     }
 
     public static void setRobot(double x, double y) {
@@ -49,11 +55,19 @@ public abstract class Map extends LinearOpMode {
         curY = y;
     }
 
-    public static double x = goalX - curX;
+    private static void updateXY() {
+        y = goalY - curY;
+        x = goalX - curX;
+    }
 
-    public static double y = goalY - curY;
+    public static double x = 0;
+    public static double y = 0;
 
-    public static double strafeDist = Math.sqrt(x * x + y * y) * revTicks;
+    public static double strafeDist;
+
+    public static void updateStrafeDist() {
+        strafeDist = Math.sqrt(x * x + y * y) * revTicks;
+    }
 
     public static void driveToGoal(){
 

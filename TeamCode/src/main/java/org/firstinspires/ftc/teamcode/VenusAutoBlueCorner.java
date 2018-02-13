@@ -110,14 +110,14 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
 
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    ralph = 380;
+                if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    ralph = 180;
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    ralph = 460;
-                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    ralph = 540;
+                    ralph = 260;
+                } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    ralph = 340;
                 } else {
-                    ralph = 460;
+                    ralph = 260;
                 }
 
                 telemetry.addData("ralph = ", ralph);
@@ -168,7 +168,7 @@ public class VenusAutoBlueCorner extends LinearOpMode {
                 strafeRight(.7, ralph);
                 sleep(500);
 
-                pointTurnRight(.9, 495);
+                pointTurnRight(.9, 500);
                 sleep(500);
 
                 driveBackward(.5, 80);

@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import static org.firstinspires.ftc.teamcode.Map.driveToGoal;
 import static org.firstinspires.ftc.teamcode.Map.setGoal;
 import static org.firstinspires.ftc.teamcode.Map.setRobot;
+import static org.firstinspires.ftc.teamcode.Map.updateStrafeDist;
 
 
 @Autonomous(name="Testing Auto")
@@ -86,14 +87,20 @@ public class TestingAuto extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        try {
+            while (opModeIsActive()) {
 
-            setRobot(10, 2);
+                setRobot(10, 2);
 
-            setGoal(11, 5);
+                setGoal(11, 5);
 
-            driveToGoal();
+                updateStrafeDist();
 
+                driveToGoal();
+
+            }
+        } catch (Exception e) {
+            telemetry.addData("Error: ", e.getMessage());
         }
     }
 }
