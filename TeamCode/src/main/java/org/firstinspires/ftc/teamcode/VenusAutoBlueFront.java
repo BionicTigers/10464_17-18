@@ -35,6 +35,7 @@ public class VenusAutoBlueFront extends LinearOpMode {
     public DcMotor wilbert; //Four Bar Right
     public DcMotor evangelino; //Four Bar Left
     public Servo hamilton;
+    public DcMotor billiam;
     //Glyph Flipper
     //public Servo burr; //Glyph Flipper 2
     public ElapsedTime runtime = new ElapsedTime();
@@ -42,7 +43,8 @@ public class VenusAutoBlueFront extends LinearOpMode {
     int ralph; // distance variable for vuforia
     boolean blue;
     private Servo clark; //drop down servo (for color sensor)
-    private Servo eddie; //swing servo (for color sensor)
+    private Servo eddie; // swing servo (for color sensor)
+    public Servo donneet;
     private ColorSensor roger; //right color sensor
     private ColorSensor leo; //left color sensor
     private double waitTime;
@@ -76,6 +78,8 @@ public class VenusAutoBlueFront extends LinearOpMode {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         hamilton = hardwareMap.servo.get("hamilton");
+        billiam = hardwareMap.dcMotor.get("billiam");
+        donneet = hardwareMap.servo.get("donneet");
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -131,14 +135,14 @@ public class VenusAutoBlueFront extends LinearOpMode {
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
 
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    ralph = 440;
+                if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    ralph = 220;
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    ralph = 520;
-                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    ralph = 600;
+                    ralph = 310;
+                } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    ralph = 420;
                 } else {
-                    ralph = 520;
+                    ralph = 300;
                 }
                 telemetry.addData("z",angles.firstAngle);
                 telemetry.addData("y",angles.secondAngle);
@@ -184,13 +188,27 @@ public class VenusAutoBlueFront extends LinearOpMode {
                 //MOVE
 
                 driveBackward (.9, -ralph);
-                pointTurnRight(.9, 240);
+                pointTurnRight(.9, 230);
                 driveBackward (.9, 110);
                 hamilton.setPosition(1);
                 sleep(500);
                 driveBackward (.9, -110);
                 driveBackward (.9, 110);
-                driveBackward (.9, -90);
+                driveBackward (.9, -60);
+
+                //get more glyphs
+//                donneet.setPosition(.75);
+//                billiam.setPower(.7);
+//                driveBackward (.9, -200);
+//                sleep(500);
+//                billiam.setPower(0);
+//                donneet.setPosition(.5);
+//                driveBackward(.9,300);
+//                hamilton.setPosition(1);
+//                driveBackward(.9,-60);
+
+
+
 
                 hamilton.setPosition(.3);
 

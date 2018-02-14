@@ -1,24 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import static org.firstinspires.ftc.teamcode.Map.driveToGoal;
-import static org.firstinspires.ftc.teamcode.Map.setGoal;
-import static org.firstinspires.ftc.teamcode.Map.setRobot;
-import static org.firstinspires.ftc.teamcode.Map.updateStrafeDist;
-
 
 @Autonomous(name="Testing Auto")
 
-public class TestingAuto extends LinearOpMode {
+public class TestingAuto extends Map {
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
@@ -26,36 +17,37 @@ public class TestingAuto extends LinearOpMode {
     public DcMotor motorBackRight;
     public DcMotor motorFrontRight;
     public DcMotor motorBackLeft;
-    public DcMotor wilbert; //Four Bar Righ
-    public DcMotor evangelino; //Four Bar Left
-    public Servo hamilton; //Glyph Flipper
-    //public Servo burr; //Glyph Flipper 2
-    public ElapsedTime runtime = new ElapsedTime();
-    int i;
-    boolean blue;
-    private Servo clark; //drop down servo (for color sensor)
-    private Servo eddie; //swing servo (for color sensor)
-    private ColorSensor roger; //right color sensor
-    private ColorSensor leo; //left color sensor
-    private double waitTime;
-    private int gameState;
+//    public DcMotor wilbert; //Four Bar Righ
+//    public DcMotor evangelino; //Four Bar Left
+//    public Servo hamilton; //Glyph Flipper
+//    //public Servo burr; //Glyph Flipper 2
+//    public ElapsedTime runtime = new ElapsedTime();
+//    int i;
+//    boolean blue;
+//    private Servo clark; //drop down servo (for color sensor)
+//    private Servo eddie; //swing servo (for color sensor)
+//    private ColorSensor roger; //right color sensor
+//    private ColorSensor leo; //left color sensor
+//    private double waitTime;
+//    private int gameState;
 
     @Override
     public void runOpMode() {
 
-        eddie = hardwareMap.servo.get("eddie"); //swing servo
-        clark = hardwareMap.servo.get("clark"); //drop down servo
-        roger = hardwareMap.colorSensor.get("roger"); //right color sensor
-        leo = hardwareMap.colorSensor.get("leo"); //left color sensor
-        blue = false;
-        gameState = 0;
-        waitTime = 0;
+//        eddie = hardwareMap.servo.get("eddie"); //swing servo
+//        clark = hardwareMap.servo.get("clark"); //drop down servo
+//        roger = hardwareMap.colorSensor.get("roger"); //right color sensor
+//        leo = hardwareMap.colorSensor.get("leo"); //left color sensor
+//        blue = false;
+//        gameState = 0;
+//        waitTime = 0;
+//        hamilton = hardwareMap.servo.get("hamilton");
 
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        hamilton = hardwareMap.servo.get("hamilton");
+
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);

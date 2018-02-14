@@ -22,7 +22,7 @@ public abstract class Map extends LinearOpMode {
     static double curX = 0;
     static double curY = 0;
 
-
+    @Override
     public void runOpMode(){
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");

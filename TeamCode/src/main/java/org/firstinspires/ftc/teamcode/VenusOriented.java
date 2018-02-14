@@ -196,14 +196,14 @@ public void loop() {
 //        elbowPos -= 0.01;
 //        brandy.setPosition(elbowPos); }
 
-    if (gamepad2.right_trigger > .7) { // Grabbing
+    if (gamepad1.right_trigger > .7) { // Grabbing
         brandy.setPosition(0.10); }
-    else if (gamepad2.left_trigger > .7) {
-        brandy.setPosition(0.90); }
+    else if (gamepad1.left_trigger > .7) {
+        brandy.setPosition(0.85); }
 
-    if (gamepad2.dpad_up) {
-            mobert.setPosition(0.10); } // Elbow
-    if (gamepad2.dpad_down) {
+    if (gamepad1.right_bumper) {
+            mobert.setPosition(0.40); } // Elbow
+    if (gamepad1.left_bumper) {
             mobert.setPosition(0.90); }
 
 //    if (gamepad2.dpad_left) {
@@ -230,10 +230,11 @@ public void loop() {
 
 // GATE //
     if (gamepad2.x) {
-        donneet.setPosition(0.90);
-    } else if (gamepad2.b) {
-        donneet.setPosition(0.50); }
-    if(gamepad1.a) {
+        donneet.setPosition(0.75);
+    } else {
+        donneet.setPosition(0.50);
+    }
+    if(gamepad2.a) {
         eddie.setPosition(0.55); }
 
 // CAR WASHER //
