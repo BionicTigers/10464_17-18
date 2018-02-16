@@ -202,9 +202,9 @@ public void loop() {
         brandy.setPosition(0.85); }
 
     if (gamepad1.right_bumper) {
-            mobert.setPosition(0.40); } // Elbow
+            mobert.setPosition(0.5); } // Elbow
     if (gamepad1.left_bumper) {
-            mobert.setPosition(0.90); }
+            mobert.setPosition(-0.5); }
 
 //    if (gamepad2.dpad_left) {
 //            franny.setPosition(0.5); }
