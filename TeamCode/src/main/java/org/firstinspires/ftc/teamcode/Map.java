@@ -45,6 +45,7 @@ public abstract class Map extends LinearOpMode {
      * Precondition: Must call {@code setRobot} first
      */
     public static void setGoal(double x, double y) {
+        //somechthing is returning null
         goalX = x;
         goalY = y;
 
