@@ -136,13 +136,13 @@ public class VenusAutoBlueFront extends LinearOpMode {
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
 
                 if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    ralph = 220;
-                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     ralph = 310;
+                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    ralph = 400;
                 } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    ralph = 420;
+                    ralph = 500;
                 } else {
-                    ralph = 300;
+                    ralph = 400;
                 }
                 telemetry.addData("z",angles.firstAngle);
                 telemetry.addData("y",angles.secondAngle);
@@ -156,6 +156,7 @@ public class VenusAutoBlueFront extends LinearOpMode {
 
                 telemetry.addData("leo", leo.blue());
                 telemetry.addData("leo", leo.red());
+
 
 
                 if (leo.blue() > leo.red()) {
@@ -187,14 +188,19 @@ public class VenusAutoBlueFront extends LinearOpMode {
 
                 //MOVE
 
-                driveBackward (.9, -ralph);
-                pointTurnRight(.9, 230);
-                driveBackward (.9, 110);
+                driveBackward(.5, -ralph);
+                pointTurnRight(.5, 210);
+
+                driveBackward(.5, 140);
+
                 hamilton.setPosition(1);
                 sleep(500);
-                driveBackward (.9, -110);
-                driveBackward (.9, 110);
-                driveBackward (.9, -60);
+                driveBackward(.5, -120);
+                driveBackward(.5, 130);
+
+                driveBackward(.5, -60);
+
+                hamilton.setPosition(.3);
 
                 //get more glyphs
 //                donneet.setPosition(.75);
@@ -267,10 +273,10 @@ public class VenusAutoBlueFront extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(-power * 1.45);
-        motorBackLeft.setPower(-power * 0.65);
-        motorFrontRight.setPower(-power);
+        motorFrontLeft.setPower(-power*.65);
+        motorBackRight.setPower(-power *1.35);
+        motorBackLeft.setPower(-power *.65);
+        motorFrontRight.setPower(-power *1.35);
 
         while (motorFrontLeft.isBusy() && motorBackRight.isBusy() && motorBackLeft.isBusy() && motorFrontRight.isBusy()) {
 

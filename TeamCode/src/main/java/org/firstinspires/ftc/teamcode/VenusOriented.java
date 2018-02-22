@@ -196,15 +196,24 @@ public void loop() {
 //        elbowPos -= 0.01;
 //        brandy.setPosition(elbowPos); }
 
-    if (gamepad1.right_trigger > .7) { // Grabbing
-        brandy.setPosition(0.10); }
+    if (gamepad1.right_trigger > .7) {
+        mobert.setPosition(0.40); }// claw/finger
+
+
     else if (gamepad1.left_trigger > .7) {
-        brandy.setPosition(0.85); }
+        mobert.setPosition(0.90);
+    }
+
+
 
     if (gamepad1.right_bumper) {
-            mobert.setPosition(0.5); } // Elbow
+        brandy.setPosition(0.10);
+    }
+
+             // Elbow
     if (gamepad1.left_bumper) {
-            mobert.setPosition(-0.5); }
+        brandy.setPosition(0.85);
+    }
 
 //    if (gamepad2.dpad_left) {
 //            franny.setPosition(0.5); }

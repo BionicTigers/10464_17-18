@@ -22,8 +22,9 @@ public abstract class Map extends LinearOpMode {
     static double curX = 0;
     static double curY = 0;
 
+
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -67,7 +68,9 @@ public abstract class Map extends LinearOpMode {
 
     public static void updateStrafeDist() {
         strafeDist = Math.sqrt(x * x + y * y) * revTicks;
+
     }
+
 
     public static void driveToGoal(){
 
@@ -120,6 +123,7 @@ public abstract class Map extends LinearOpMode {
 
 
 }
+
 
 
 
