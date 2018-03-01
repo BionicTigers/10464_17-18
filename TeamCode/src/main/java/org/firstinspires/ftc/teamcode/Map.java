@@ -32,7 +32,7 @@ public class Map extends LinearOpMode {
     }
 
     @Override
-    public void runOpMode () {
+    public void runOpMode() {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -51,31 +51,27 @@ public class Map extends LinearOpMode {
     /**
      * Precondition: Must call {@code setRobot} first
      */
-    public static double setGoal(double x, double y) {
+    public static void setGoal(double x, double y) {
         //something is returning null
         goalX = x;
         goalY = y;
 
-        return goalX;
-
     }
 
-    public static double setRobot(double x, double y) {
+    public static void setRobot(double x, double y) {
         //something is returning null
         curX = x;
         curY = y;
 
-        return curX;
     }
 
-    public static double updateXY() {
+    public void updateXY() {
         y = goalY - curY;
         x = goalX - curX;
-
-        return x;
     }
 
     public static double strafeDist;
+
 
     public static double updateStrafeDist() {
         strafeDist = Math.sqrt(x * x + y * y) * revTicks;
