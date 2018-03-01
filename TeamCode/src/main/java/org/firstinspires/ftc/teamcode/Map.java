@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 @Autonomous(name="Map")
 
-public abstract class Map extends LinearOpMode {
+public class Map extends LinearOpMode {
 
     public static DcMotor motorFrontLeft;
     public static DcMotor motorBackRight;
@@ -22,9 +22,17 @@ public abstract class Map extends LinearOpMode {
     static double curX = 0;
     static double curY = 0;
 
+    static double x = 0;
+    static double y = 0;
+
+    // Constructor
+    public Map(double startX, double startY) {
+        curX = startX;
+        curY = startY;
+    }
 
     @Override
-    public void runOpMode() {
+    public void runOpMode () {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -38,54 +46,55 @@ public abstract class Map extends LinearOpMode {
         telemetry.addData("init", "complete");
     }
 
-
     public static double revTicks = 173.333333333333333;
 
     /**
      * Precondition: Must call {@code setRobot} first
      */
-    public static void setGoal(double x, double y) {
+    public static double setGoal(double x, double y) {
         //something is returning null
         goalX = x;
         goalY = y;
 
-        updateXY();
+        return goalX;
+
     }
 
-    public static void setRobot(double x, double y) {
+    public static double setRobot(double x, double y) {
+        //something is returning null
         curX = x;
         curY = y;
+
+        return curX;
     }
 
-    private static void updateXY() {
+    public static double updateXY() {
         y = goalY - curY;
         x = goalX - curX;
-    }
 
-    public static double x = 0;
-    public static double y = 0;
+        return x;
+    }
 
     public static double strafeDist;
 
-    public static void updateStrafeDist() {
+    public static double updateStrafeDist() {
         strafeDist = Math.sqrt(x * x + y * y) * revTicks;
 
+        return strafeDist;
     }
 
+    public static void driveToGoal() {
+        motorBackRight.setTargetPosition((int) strafeDist);
+        motorFrontRight.setTargetPosition((int) strafeDist);
+        motorBackLeft.setTargetPosition((int) strafeDist);
+        motorFrontLeft.setTargetPosition((int) strafeDist);
 
-    public static void driveToGoal(){
-
-        motorBackRight.setTargetPosition((int)strafeDist);
-        motorFrontRight.setTargetPosition((int)strafeDist);
-        motorBackLeft.setTargetPosition((int)strafeDist);
-        motorFrontLeft.setTargetPosition((int)strafeDist);
-
-        if(Math.abs(x) > Math.abs(y)){
-            y = y/x;
-            x = x/x;
-         } else {
-            x = x/y;
-            y = y/y;
+        if (Math.abs(x) > Math.abs(y)) {
+            y = y / x;
+            x = x / x;
+        } else {
+            x = x / y;
+            y = y / y;
         }
 
         double P = Math.hypot(x, y);
@@ -98,9 +107,9 @@ public abstract class Map extends LinearOpMode {
         final double v3 = (P * sinRAngle) - (P * cosRAngle);
         final double v4 = (P * sinRAngle) + (P * cosRAngle);
 
-        motorFrontLeft.setPower (v1);
-        motorBackRight.setPower (v2);
-        motorBackLeft.setPower  (v3);
+        motorFrontLeft.setPower(v1);
+        motorBackRight.setPower(v2);
+        motorBackLeft.setPower(v3);
         motorFrontRight.setPower(v4);
 
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -108,7 +117,7 @@ public abstract class Map extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (motorBackRight.isBusy() && motorFrontRight.isBusy() && motorBackLeft.isBusy() && motorFrontLeft.isBusy())  {
+        while (motorBackRight.isBusy() && motorFrontRight.isBusy() && motorBackLeft.isBusy() && motorFrontLeft.isBusy()) {
         }
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
@@ -123,7 +132,9 @@ public abstract class Map extends LinearOpMode {
     }
 
 
+
 }
+
 
 
 

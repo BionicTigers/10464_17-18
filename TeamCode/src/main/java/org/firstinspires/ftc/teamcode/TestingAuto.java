@@ -8,22 +8,25 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous(name="TestingAuto")
 public class TestingAuto extends Map {
 
-    @Override
+    public TestingAuto() {
+        super(10, 2);
+    }
+
     public void runOpMode() {
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            setRobot(10, 2);
+            Map.setRobot(10, 2);
             telemetry.addData("setRobot", "robot is set");
 
-            setGoal(11, 5);
+            Map.setGoal(11, 5);
             telemetry.addData("setGoal", "goal is set");
 
-            updateStrafeDist();
+            Map.updateStrafeDist();
 
-            driveToGoal();
+            Map.driveToGoal();
         }
 
     }
