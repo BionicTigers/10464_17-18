@@ -22,7 +22,7 @@
 //
 //@Autonomous(name="Cruise", group ="Red")
 //
-//public class MechanumCruise extends LinearOpMode {
+//public class MecanumCruise extends LinearOpMode {
 //
 //    OpenGLMatrix lastLocation = null;
 //    VuforiaLocalizer vuforia;

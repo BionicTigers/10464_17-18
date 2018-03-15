@@ -7,10 +7,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name="Venus Mechanum", group="Venus")
+@TeleOp(name="Venus Mecanum", group="Venus")
 
 
-public class VenusMechanum extends OpMode {
+public class VenusMecanum extends OpMode {
 
 // DRIVETRAIN \\
     private DcMotor motorFrontRight;
