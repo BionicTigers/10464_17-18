@@ -10,12 +10,7 @@ android {
     }
 
     compileSdkVersion 26
-    buildToolsVersion '26.0.3'
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
+    buildToolsVersion '27.0.3'
 }
 repositories {
     flatDir {
