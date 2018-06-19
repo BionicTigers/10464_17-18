@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 
 @Autonomous
-
+//JoJo
 public class AutonomousBase extends LinearOpMode {
 
     OpenGLMatrix lastLocation = null;
