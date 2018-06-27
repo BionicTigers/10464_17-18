@@ -67,10 +67,10 @@ public class MecanumCruise extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void setCruiseControl(int speed, int distance) { //Distance should be in rotations
-        distance = distance * 288; //288 encoder ticks per revolution of REV Core Hex Motor
+    public void setCruiseControl(int speed, int distance) { //Distance should be in full wheel rotations
+        distance = distance * 560 * 2; //560 encoder ticks per revolution of Classic NeveRest 20s, on Mercury it is geared down a 2:1
 
-        final double desiredDistancePerSecond = (1.5 / 100 * speed);
+        final double desiredDistancePerSecond = (((200 / 60) / 100) * speed); //200 is the reasonable RPM of a loaded NeveRest 20
 
         motorFrontLeft.setTargetPosition(distance);
         motorBackRight.setTargetPosition(distance);
