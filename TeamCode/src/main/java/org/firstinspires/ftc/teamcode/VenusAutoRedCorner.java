@@ -44,19 +44,19 @@ public class VenusAutoRedCorner extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        eddie = hardwareMap.servo.get("eddie"); //swing servo
-        clark = hardwareMap.servo.get("clark"); //drop down servo
-        roger = hardwareMap.colorSensor.get("roger"); //right color sensor
-        leo = hardwareMap.colorSensor.get("leo"); //left color sensor
-        blue = false;
+//        eddie = hardwareMap.servo.get("eddie"); //swing servo
+//        clark = hardwareMap.servo.get("clark"); //drop down servo
+//        roger = hardwareMap.colorSensor.get("roger"); //right color sensor
+//        leo = hardwareMap.colorSensor.get("leo"); //left color sensor
+        //blue = false;
         gameState = 0;
         waitTime = 0;
 
-        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
-        motorBackRight = hardwareMap.dcMotor.get("backRight");
-        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        hamilton = hardwareMap.servo.get("hamilton");
+        motorFrontLeft = hardwareMap.dcMotor.get("motorLannay");
+        motorBackRight = hardwareMap.dcMotor.get("motorRigetony");
+        motorFrontRight = hardwareMap.dcMotor.get("motorRachella");
+        motorBackLeft = hardwareMap.dcMotor.get("motorLeone");
+        //hamilton = hardwareMap.servo.get("hamilton");
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -105,56 +105,56 @@ public class VenusAutoRedCorner extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                telemetry.addData("VuMark", "%s visible", vuMark);
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+//            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+//            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+//                telemetry.addData("VuMark", "%s visible", vuMark);
+//                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+//
+//                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+//                    ralph = 130;
+//                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+//                    ralph = 240;
+//                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
+//                    ralph = 330;
+//                } else {
+//                    ralph = 230;
+//                }
+//
+//                telemetry.addData("ralph = ", ralph);
+//
+//
+//                //clark.setPosition(0.21);
+//                sleep(3000);
+//
+//                telemetry.addData("leo", leo.blue());
+//                telemetry.addData("leo", leo.red());
 
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    ralph = 130;
-                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    ralph = 240;
-                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    ralph = 330;
-                } else {
-                    ralph = 230;
-                }
 
-                telemetry.addData("ralph = ", ralph);
-
-
-                clark.setPosition(0.21);
-                sleep(3000);
-
-                telemetry.addData("leo", leo.blue());
-                telemetry.addData("leo", leo.red());
-
-
-                if (leo.blue() < leo.red()) {
-                    telemetry.addData("leo", leo.blue());
-                    telemetry.addData("leo", leo.red());
-                    eddie.setPosition(0.3);
-                    blue = true;
-                    sleep(2000);
-
-                } else if (leo.blue() > leo.red()) {
-                    telemetry.addData("leo", leo.blue());
-                    telemetry.addData("leo", leo.red());
-                    eddie.setPosition(0.65);
-                    sleep(1000);
-
-                    blue = false;
-                } else {
-                    telemetry.addData("leo", leo.blue());
-                    telemetry.addData("leo", leo.red());
-                    telemetry.addData("eddie", "did not work");
-                    sleep(250);
-                }
-
-                eddie.setPosition(0.55);
-                sleep(1000);
-
-                clark.setPosition(0.7);
+//                if (leo.blue() < leo.red()) {
+//                    telemetry.addData("leo", leo.blue());
+//                    telemetry.addData("leo", leo.red());
+//                    eddie.setPosition(0.3);
+//                    blue = true;
+//                    sleep(2000);
+//
+//                } else if (leo.blue() > leo.red()) {
+//                    telemetry.addData("leo", leo.blue());
+//                    telemetry.addData("leo", leo.red());
+//                    eddie.setPosition(0.65);
+//                    sleep(1000);
+//
+//                    blue = false;
+//                } else {
+//                    telemetry.addData("leo", leo.blue());
+//                    telemetry.addData("leo", leo.red());
+//                    telemetry.addData("eddie", "did not work");
+//                    sleep(250);
+//                }
+//
+//                eddie.setPosition(0.55);
+//                sleep(1000);
+//
+//                clark.setPosition(0.7);
                 sleep(1000);
 
                 //MOVE
@@ -172,14 +172,14 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 driveBackward(.5, 80);
                 sleep(500);
 
-                hamilton.setPosition(1);
-                sleep(500);
+             //   hamilton.setPosition(1);
+              //  sleep(500);
 
                 driveBackward(.5, -60);
                 sleep(250);
 
-                hamilton.setPosition(.3);
-                sleep(500);
+             //   hamilton.setPosition(.3);
+            //    sleep(500);
 
                 driveBackward(.5, 60);
                 sleep(500);
@@ -196,7 +196,7 @@ public class VenusAutoRedCorner extends LinearOpMode {
                 break;
             }
         }
-    }
+
 //    String format(OpenGLMatrix transformationMatrix) {
 //        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
 
